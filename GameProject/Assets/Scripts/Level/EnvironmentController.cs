@@ -1,11 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class EnvironmentController : MonoBehaviour
 {
-    private ObjectPool<ColoredObstacle> pool;
+    private Queue<ColoredObstacle> obstaclesPool;
     
     [SerializeField] private Background background;
 
@@ -14,25 +13,27 @@ public class EnvironmentController : MonoBehaviour
         background.SetColor(color);
     }
 
-    public void SetNewColor(PrismPiece prismPiece)
+    public void SetNewColor(GameManager.KeyColor color)
     {
-        ChangeBackground(prismPiece.getColor);
-        RepaintPool(prismPiece.getColor);
+        ChangeBackground(color);
+        RepaintPool(color);
     }
     
     private void RepaintPool(GameManager.KeyColor color)
     {
-        for (int i = 0; i < pool.CountAll; i++)
+        for (int i = 0; i < obstaclesPool.Count; i++)
         {
-            pool.Get(out var obstacle);
-            if (obstacle.getColor == color)
-            {
-                obstacle.gameObject.SetActive(true);
-            }
-            else
+            var obstacle = obstaclesPool.Dequeue();
+            if (obstacle.getColor() == color)
             {
                 obstacle.gameObject.SetActive(false);
             }
+            else
+            {
+                obstacle.gameObject.SetActive(true);
+            }
+            obstaclesPool.Enqueue(obstacle);
         }
+        
     }
 }

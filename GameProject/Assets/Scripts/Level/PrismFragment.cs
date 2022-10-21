@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ColoredObstacle : MonoBehaviour
+public class PrismFragment : MonoBehaviour
 {
     [SerializeField] private GameManager.KeyColor keyColor;
 

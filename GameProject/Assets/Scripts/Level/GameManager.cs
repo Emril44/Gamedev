@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,10 +10,16 @@ public class GameManager : MonoBehaviour
         Green,
         Yellow,
         Blue
+        //...
     }
 
-    public void SetNewColor(PrismPiece prismPiece)
+    public void SetNewColor(PrismFragment prismFragment)
     {
-        environmentController.SetNewColor(prismPiece);
+        environmentController.SetNewColor(prismFragment.getColor());
+    }
+
+    public void AddSparks(int sparksAmount)
+    {
+        PlayerPrefs.SetInt("Sparks", PlayerPrefs.GetInt("Sparks") + sparksAmount);
     }
 }
