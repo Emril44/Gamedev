@@ -5,12 +5,23 @@ using UnityEngine;
 public class EnvironmentController : MonoBehaviour
 {
     private Queue<ColoredObstacle> obstaclesPool;
-    
-    [SerializeField] private Background background;
+
+    public static EnvironmentController Instance { get; private set; }
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     private void ChangeBackground(GameManager.KeyColor color)
     {
-        background.SetColor(color);
+        //...
     }
 
     public void SetNewColor(GameManager.KeyColor color)

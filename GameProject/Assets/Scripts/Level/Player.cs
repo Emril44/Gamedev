@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField]private GameManager gameManager;
     void PutPrism(PrismFragment prismFragment)
     {
-        gameManager.SetNewColor(prismFragment);
+        GameManager.Instance.SetNewColor(prismFragment);
     }
     void GetSparks(SparksPile sparksPile)
     {
-        gameManager.AddSparks(sparksPile.sparksAmount);
+        GameManager.Instance.AddSparks(sparksPile.sparksAmount);
     }
     
     void OnTriggerEnter2D(Collider2D other)
