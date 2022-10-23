@@ -15,21 +15,32 @@ public class MainMenuUIManager : MonoBehaviour
         }
     }
     
-    public void ShowSavesMenu()
+    public void ShowNewGameScreen() //SavesNew Canvas
     {
         //...
     }
 
-    public void ShowStartGameMenu()
+    public void ShowLoadScreen() //SavesLoad Canvas
     {
         //...
     }
 
-    public void ShowSettingsMenu()
+    public void ShowSettingsScreen()
     {
         //...
     }
 
+    public void ShowAboutScreen()
+    {
+        //...
+    }
+
+    public void ShowQuitScreen()
+    {
+        //...
+    }
+
+    
     public void ExitGame()
     {
         //...

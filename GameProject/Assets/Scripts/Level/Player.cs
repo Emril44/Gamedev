@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
@@ -22,6 +23,7 @@ public class Player : MonoBehaviour
     void GetSparks(SparksPile sparksPile)
     {
         GameManager.Instance.AddSparks(sparksPile.sparksAmount);
+        Destroy(sparksPile.gameObject);
     }
     
     void OnTriggerEnter2D(Collider2D other)
