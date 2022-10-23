@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
+[RequireComponent(typeof(Collider2D))]
 public class PrismFragment : MonoBehaviour
 {
     [SerializeField] private GameManager.KeyColor keyColor;
