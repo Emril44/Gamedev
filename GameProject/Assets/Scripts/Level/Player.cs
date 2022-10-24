@@ -20,10 +20,10 @@ public class Player : MonoBehaviour
     {
         GameManager.Instance.SetNewColor(prismFragment);
     }
-    void GetSparks(SparksPile sparksPile)
+    void GetSparks(GameObject spark)
     {
-        GameManager.Instance.AddSparks(sparksPile.sparksAmount);
-        Destroy(sparksPile.gameObject);
+        GameManager.Instance.AddSparks(1);
+        Destroy(spark.gameObject);
     }
     
     void OnTriggerEnter2D(Collider2D other)
@@ -32,11 +32,15 @@ public class Player : MonoBehaviour
         {
             PutPrism(other.gameObject.GetComponent<PrismFragment>());
         }
-        else if (other.gameObject.CompareTag("Sparks"))
+        else if (other.gameObject.CompareTag("Spark"))
         {
-            GetSparks(other.gameObject.GetComponent<SparksPile>());
+            GetSparks(other.gameObject);
         }
         else if (other.gameObject.CompareTag("Enemy"))
+        {
+            //...
+        }
+        else if (other.gameObject.CompareTag("Trap"))
         {
             //...
         }

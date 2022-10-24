@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnvironmentController : MonoBehaviour
 {
-    private Queue<ColoredObstacle> obstaclesPool;
+    private Queue<ColoredObject> coloredObjectsPool;
 
     public static EnvironmentController Instance { get; private set; }
     private void Awake()
@@ -32,19 +32,19 @@ public class EnvironmentController : MonoBehaviour
     void FillPool()
     {
         /*
-        obstaclesPool = new Queue<ColoredObstacle>();
-        foreach (ColoredObstacle obstacle in FindObjectsOfType<ColoredObstacle>())
+        obstaclesPool = new Queue<ColoredObject>();
+        foreach (ColoredObject object in FindObjectsOfType<ColoredObject>())
         {
-            obstaclesPool.Enqueue(obstacle);
+            coloredObjectsPool.Enqueue(object);
         }
         */
     }
 
     private void RepaintPool(GameManager.KeyColor color)
     {
-        for (int i = 0; i < obstaclesPool.Count; i++)
+        for (int i = 0; i < coloredObjectsPool.Count; i++)
         {
-            var obstacle = obstaclesPool.Dequeue();
+            var obstacle = coloredObjectsPool.Dequeue();
             if (obstacle.getColor() == color)
             {
                 obstacle.gameObject.SetActive(false);
@@ -53,7 +53,7 @@ public class EnvironmentController : MonoBehaviour
             {
                 obstacle.gameObject.SetActive(true);
             }
-            obstaclesPool.Enqueue(obstacle);
+            coloredObjectsPool.Enqueue(obstacle);
         }
         
     }
