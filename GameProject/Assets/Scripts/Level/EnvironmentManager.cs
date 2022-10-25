@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnvironmentController : MonoBehaviour
+public class EnvironmentManager : MonoBehaviour
 {
     private Queue<ColoredObject> coloredObjectsPool;
 
-    public static EnvironmentController Instance { get; private set; }
+    public static EnvironmentManager Instance { get; private set; }
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -18,12 +18,12 @@ public class EnvironmentController : MonoBehaviour
         }
     }
 
-    private void ChangeBackground(GameManager.KeyColor color)
+    private void ChangeBackground(PrismColor color)
     {
         //...
     }
 
-    public void SetNewColor(GameManager.KeyColor color)
+    public void SetNewColor(PrismColor color)
     {
         ChangeBackground(color);
         RepaintPool(color);
@@ -40,7 +40,7 @@ public class EnvironmentController : MonoBehaviour
         */
     }
 
-    private void RepaintPool(GameManager.KeyColor color)
+    private void RepaintPool(PrismColor color)
     {
         for (int i = 0; i < coloredObjectsPool.Count; i++)
         {

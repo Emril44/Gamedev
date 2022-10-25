@@ -3,10 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class ColoredObject : MonoBehaviour
 {
-    [SerializeField] private GameManager.KeyColor keyColor;
+    [SerializeField] private PrismColor color;
 
-    public GameManager.KeyColor getColor()
+    public PrismColor getColor()
     {
-        return keyColor;
+        return color;
     }
 }

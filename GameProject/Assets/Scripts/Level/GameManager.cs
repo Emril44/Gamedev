@@ -1,8 +1,12 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    public List<Quest> quests = new List<Quest>();
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -14,23 +18,15 @@ public class GameManager : MonoBehaviour
             Instance = this;
         }
     }
-    
-    public enum KeyColor
-    {
-        Red,
-        Green,
-        Yellow,
-        Blue
-        //...
-    }
 
-    public void SetNewColor(PrismFragment prismFragment)
+    public void SetNewColor(PrismShard prismShard)
     {
-        EnvironmentController.Instance.SetNewColor(prismFragment.getColor());
+        EnvironmentManager.Instance.SetNewColor(prismShard.getColor());
     }
 
     public void AddSparks(int sparksAmount)
     {
         PlayerPrefs.SetInt("Sparks", PlayerPrefs.GetInt("Sparks") + sparksAmount);
+        // update current day's sparks quest
     }
 }

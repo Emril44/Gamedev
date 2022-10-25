@@ -16,9 +16,9 @@ public class Player : MonoBehaviour
         }
     }
     
-    void PutPrism(PrismFragment prismFragment)
+    void PutPrism(PrismShard prismShard)
     {
-        GameManager.Instance.SetNewColor(prismFragment);
+        GameManager.Instance.SetNewColor(prismShard);
     }
     void GetSparks(GameObject spark)
     {
@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Prism"))
         {
-            PutPrism(other.gameObject.GetComponent<PrismFragment>());
+            PutPrism(other.gameObject.GetComponent<PrismShard>());
         }
         else if (other.gameObject.CompareTag("Spark"))
         {

@@ -41,11 +41,20 @@ public class LevelUIManager : MonoBehaviour
         //...
     }
 
+    public void ShowQuestsScreen()
+    { 
+        //...
+    }
+
     public void ShowQuitScreen()
     {
         //...
     }
 
+    public void ShowDialogue(Dialogue dialogue)
+    {
+        //... has to trigger dialogue's quest progression if a quest is provided
+    }
+
     //HUD stuff
-    //NPC dialogs
 }
