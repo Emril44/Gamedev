@@ -402,7 +402,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: PrismShard
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1860143141828390329, guid: 4fa44a3bd01ed2847911b332fb12859a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 4fa44a3bd01ed2847911b332fb12859a, type: 3}
 --- !u!4 &7127595195080161299 stripped
 Transform:
