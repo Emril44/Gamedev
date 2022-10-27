@@ -3,6 +3,12 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class Player : MonoBehaviour
 {
+    [SerializeField] private float movementSpeed = 3f;
+    [SerializeField] private float jumpVelocity = 0.2f;
+    private PolygonCollider2D groundCollider;
+    private Rigidbody2D rb;
+
+    
     public static Player Instance { get; private set; }
     private void Awake()
     {
@@ -14,7 +20,22 @@ public class Player : MonoBehaviour
         {
             Instance = this;
         }
+        rb = GetComponent<Rigidbody2D>();
+        groundCollider = GetComponent<PolygonCollider2D>();
+     
     }
+
+    void FixedUpdate()
+    {
+        float horizontalMove = Input.GetAxis("Horizontal");
+        float verticalMove = rb.velocity.y;
+        if (Input.GetAxis("Jump") > 0 && groundCollider.IsTouchingLayers(LayerMask.GetMask("Ground")))
+        {
+            verticalMove += jumpVelocity;
+        }
+        rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
+    }
+        
     
     void PutPrism(PrismShard prismShard)
     {
