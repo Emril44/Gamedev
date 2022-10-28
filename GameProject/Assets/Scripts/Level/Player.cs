@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     private PolygonCollider2D groundCollider;
     private Rigidbody2D rb;
 
-    
+ 
     public static Player Instance { get; private set; }
     private void Awake()
     {
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
         }
         rb = GetComponent<Rigidbody2D>();
         groundCollider = GetComponent<PolygonCollider2D>();
-     
+        rb.freezeRotation = true;
     }
 
     void FixedUpdate()
@@ -36,11 +36,11 @@ public class Player : MonoBehaviour
         rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
     }
         
-    
     void PutPrism(PrismShard prismShard)
     {
         GameManager.Instance.SetNewColor(prismShard);
     }
+    
     void GetSparks(GameObject spark)
     {
         GameManager.Instance.AddSparks(1);
