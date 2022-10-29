@@ -6,9 +6,9 @@ TagManager:
   tags:
   - Prism
   - Spark
-  - Enemy
   - Door
-  - Trap
+  - Damage
+  - DeadlyDamage
   layers:
   - Default
   - TransparentFX

@@ -3,12 +3,13 @@ using UnityEngine;
 public class CamMovement : MonoBehaviour
 {
     private Camera mainCam;
-    [SerializeField] private GameObject player;
+    private GameObject player;
     [SerializeField] private float scalingSpeed;
 
     void Start()
     {
         mainCam = GetComponent<Camera>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void LateUpdate()
