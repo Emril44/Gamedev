@@ -34,6 +34,7 @@ public class DialogueManager : MonoBehaviour
         {
             dialogOptions[i] = Instantiate(dialogueOption, dialogueCanvas.transform);
             dialogOptions[i].SetActive(false);
+            dialogOptions[i].transform.localPosition += new Vector3(0, -50 * i);
         }
         dialogueText.text = "";
     }
@@ -117,12 +118,12 @@ public class DialogueManager : MonoBehaviour
         {
             dialogOptions[i].SetActive(true);
             dialogOptions[i].GetComponentInChildren<TMP_Text>().text = options[i];
-            dialogOptions[i].transform.localPosition += new Vector3(0, -50*i);
             int j = i;
+            dialogOptions[i].GetComponent<Button>().onClick.RemoveAllListeners();
             dialogOptions[i].GetComponent<Button>().onClick.AddListener(() => GetButtonRes(j));
         }
     }
-
+    
     public void GetButtonRes(int i)
     {
         foreach (var option in dialogOptions)
@@ -134,7 +135,7 @@ public class DialogueManager : MonoBehaviour
         }
         if (!dialogue.GetCurrent().IsOption())
         {
-            Debug.LogError("Everything works fine, but it should not be called :/");
+            Debug.LogError("It should not be called as it is not an option");
         }
         if (dialogue.GetCurrent().IsOption())
         {
