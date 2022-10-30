@@ -16,6 +16,7 @@ public class EnvironmentManager : MonoBehaviour
         {
             Instance = this;
         }
+        FillPool();
     }
 
     private void ChangeBackground(PrismColor color)
@@ -31,13 +32,11 @@ public class EnvironmentManager : MonoBehaviour
 
     void FillPool()
     {
-        /*
-        obstaclesPool = new Queue<ColoredObject>();
-        foreach (ColoredObject object in FindObjectsOfType<ColoredObject>())
+        coloredObjectsPool = new Queue<ColoredObject>();
+        foreach (ColoredObject obj in FindObjectsOfType<ColoredObject>())
         {
-            coloredObjectsPool.Enqueue(object);
+            coloredObjectsPool.Enqueue(obj);
         }
-        */
     }
 
     private void RepaintPool(PrismColor color)
@@ -55,6 +54,5 @@ public class EnvironmentManager : MonoBehaviour
             }
             coloredObjectsPool.Enqueue(obstacle);
         }
-        
     }
 }

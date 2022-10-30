@@ -14,6 +14,7 @@ public class DialogueManager : MonoBehaviour
 
     private GameObject[] dialogOptions;
     private int phraseCounter;
+    private DialogueTrigger trigger;
 
     public static DialogueManager Instance { get; private set; }
     private void Awake()
@@ -39,11 +40,12 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
     }
     
-    public void GetTriggered(GameObject NPC, Dialogue dialogue)
+    public void GetTriggered(GameObject NPC, DialogueTrigger trigger, Dialogue dialogue)
     {
         phraseCounter = 0;
         dialogueCanvas.SetActive(true);
         this.dialogue = Instantiate(dialogue);
+        this.trigger = trigger;
         var node = dialogue.GetCurrent();
         if (node == null)
         {
@@ -78,6 +80,7 @@ public class DialogueManager : MonoBehaviour
             dialogueCanvas.SetActive(false);
             dialogue = null;
             dialogueText.text = "";
+            trigger.OnDialogueFinished();
             return;
         }
         if (node.IsOption())
