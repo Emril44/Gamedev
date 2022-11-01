@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +22,7 @@ public class EnvironmentManager : MonoBehaviour
 
     private void ChangeBackground(PrismColor color)
     {
-        //...
+        //TODO:...
     }
 
     public void SetNewColor(PrismColor color)
@@ -41,7 +42,6 @@ public class EnvironmentManager : MonoBehaviour
 
     private void RepaintPool(PrismColor color)
     {
-        //TODO: if grabbable
         for (int i = 0; i < coloredObjectsPool.Count; i++)
         {
             var obstacle = coloredObjectsPool.Dequeue();
@@ -55,5 +55,18 @@ public class EnvironmentManager : MonoBehaviour
             }
             coloredObjectsPool.Enqueue(obstacle);
         }
+        var obj = PlayerInteraction.Instance.GetGrabbed();
+        if (obj != null && obj.GetComponent<ColoredObject>().getColor() == color)
+        {
+            obj.SetActive(true);
+            StartCoroutine(DropGrabbed(obj));
+        }
+    }
+
+    IEnumerator DropGrabbed(GameObject obj)
+    {
+        PlayerInteraction.Instance.Drop();
+        yield return new WaitForSeconds(0.5f);
+        obj.SetActive(false);
     }
 }
