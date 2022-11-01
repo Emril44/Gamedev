@@ -9,6 +9,7 @@ TagManager:
   - Door
   - Damage
   - DeadlyDamage
+  - Grabbable
   layers:
   - Default
   - TransparentFX

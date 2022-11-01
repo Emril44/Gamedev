@@ -41,6 +41,7 @@ public class EnvironmentManager : MonoBehaviour
 
     private void RepaintPool(PrismColor color)
     {
+        //TODO: if grabbable
         for (int i = 0; i < coloredObjectsPool.Count; i++)
         {
             var obstacle = coloredObjectsPool.Dequeue();
