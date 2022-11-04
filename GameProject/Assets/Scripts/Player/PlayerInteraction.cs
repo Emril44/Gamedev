@@ -105,7 +105,7 @@ public class PlayerInteraction : MonoBehaviour
                 StartCoroutine(SetInWater(true));
                 break;
             default:
-                Debug.Log("No interaction with " + other.gameObject.tag);
+                //Debug.Log("No interaction with " + other.gameObject.tag);
                 break;
         }
     }
