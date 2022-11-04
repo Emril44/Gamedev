@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -91,26 +92,38 @@ public class PlayerInteraction : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Prism"))
+        switch (other.gameObject.tag)
         {
-            PutPrism(other.gameObject.GetComponent<PrismShard>());
-            Destroy(other.gameObject);
+            case "Prism":
+                PutPrism(other.gameObject.GetComponent<PrismShard>());
+                break;
+            case "Spark":
+                GetSparks(other.gameObject);
+                break;
+            case "Water":
+                StopAllCoroutines();
+                StartCoroutine(SetInWater(true));
+                break;
+            default:
+                Debug.Log("No interaction with " + other.gameObject.tag);
+                break;
         }
-        else if (other.gameObject.CompareTag("Spark"))
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        switch (other.gameObject.tag)
         {
-            GetSparks(other.gameObject);
+            case "Water":
+                StopAllCoroutines();
+                StartCoroutine(SetInWater(false));
+                break;
         }
-        else if (other.gameObject.CompareTag("Damage"))
-        {
-            //...
-        }
-        else if (other.gameObject.CompareTag("DeadlyDamage"))
-        {
-            //...
-        }
-        else if (other.gameObject.CompareTag("Door"))
-        {
-            //...
-        }
+    }
+
+    IEnumerator SetInWater(bool isInWater)
+    {
+        yield return new WaitForSeconds(0.1f);
+        gameObject.GetComponent<PlayerMovement>().SetInWater(isInWater);
     }
 }

@@ -10,6 +10,7 @@ TagManager:
   - Damage
   - DeadlyDamage
   - Grabbable
+  - Water
   layers:
   - Default
   - TransparentFX
