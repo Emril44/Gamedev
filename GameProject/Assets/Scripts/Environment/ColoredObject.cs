@@ -4,7 +4,6 @@ using UnityEngine;
 public class ColoredObject : MonoBehaviour
 {
     [SerializeField] private PrismColor color;
-    [SerializeField] private bool floatable = false;
     private bool isDynamic = false;
     private Rigidbody2D rb;
 
@@ -21,14 +20,7 @@ public class ColoredObject : MonoBehaviour
     {
         if (isDynamic && other.CompareTag("Water"))
         {
-            if (floatable)
-            {
-                rb.gravityScale = -0.3f;
-            }
-            else
-            {
-                rb.gravityScale = 0f;
-            }
+            rb.gravityScale = 0.1f;
         }
     }
 
