@@ -11,6 +11,7 @@ TagManager:
   - DeadlyDamage
   - Grabbable
   - Water
+  - Lever
   layers:
   - Default
   - TransparentFX

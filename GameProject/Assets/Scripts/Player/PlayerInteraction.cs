@@ -7,9 +7,11 @@ public class PlayerInteraction : MonoBehaviour
 {
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
+    private bool nearLever = false;
+    private GameObject leverGO;
     private Transform oldParent;
     private GameObject grabbedObject;
-    private Vector3 oldRelativePosition;
+    //private Vector3 oldRelativePosition;
 
     public static PlayerInteraction Instance { get; private set; }
     private void Awake()
@@ -46,6 +48,13 @@ public class PlayerInteraction : MonoBehaviour
             else 
             {
                 Grab();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (nearLever)
+            {
+                leverGO.GetComponent<Lever>().Toggle();
             }
         }
     }
@@ -104,6 +113,10 @@ public class PlayerInteraction : MonoBehaviour
                 StopAllCoroutines();
                 StartCoroutine(SetInWater(true));
                 break;
+            case "Lever":
+                nearLever = true;
+                leverGO = other.gameObject;
+                break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
                 break;
@@ -117,6 +130,10 @@ public class PlayerInteraction : MonoBehaviour
             case "Water":
                 StopAllCoroutines();
                 StartCoroutine(SetInWater(false));
+                break;
+            case "Lever":
+                nearLever = false;
+                leverGO = null;
                 break;
         }
     }
