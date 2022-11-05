@@ -57,6 +57,13 @@ public class PlayerInteraction : MonoBehaviour
                 leverGO.GetComponent<Lever>().Toggle();
             }
         }
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            if (nearLever)
+            {
+                Camera.main.gameObject.GetComponent<CamMovement>().LookOnGates(leverGO.GetComponent<Lever>().gatesPosition1);
+            }
+        }
     }
 
     public void Drop()

@@ -6,7 +6,7 @@ public class Lever : MonoBehaviour
 {
     [SerializeField] private GameObject lever;
     [SerializeField] private GameObject gates;
-    private Vector3 gatesPosition1;
+    public Vector3 gatesPosition1;
     [SerializeField] private Vector3 gatesPosition2;
     private bool isOn = false;
 

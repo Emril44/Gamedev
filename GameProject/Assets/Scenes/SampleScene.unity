@@ -182,46 +182,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2577627231781293333, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.29
-      objectReference: {fileID: 0}
-    - target: {fileID: 2577627231781293333, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2577627231781293333, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2577627231781293333, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2577627231781293333, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2577627231781293333, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3019296498496002636, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_TagString
-      value: Lever
-      objectReference: {fileID: 0}
-    - target: {fileID: 5934053794140768065, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9396927
-      objectReference: {fileID: 0}
-    - target: {fileID: 5934053794140768065, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.3420201
-      objectReference: {fileID: 0}
-    - target: {fileID: 5934053794140768065, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -40
-      objectReference: {fileID: 0}
     - target: {fileID: 7127595194761092485, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
       propertyPath: m_Name
       value: World
