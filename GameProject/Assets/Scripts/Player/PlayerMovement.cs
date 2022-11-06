@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
         {
             float horizontalMove = Input.GetAxis("Horizontal");
             float verticalMove = rb.velocity.y;
-            if (Input.GetAxis("Jump") > 0 && feetCollider.IsTouchingLayers(groundLayer) && verticalMove == 0)
+            if (Input.GetAxis("Jump") > 0 && feetCollider.IsTouchingLayers(groundLayer) && verticalMove < 1e-9)
             {
                 verticalMove += jumpVelocity;
             }
