@@ -100,6 +100,7 @@ public class PlayerInteraction : MonoBehaviour
                 grabbedObject.GetComponent<Collider2D>().enabled = false;
                 grabbedObject.GetComponent<Rigidbody2D>().simulated = false;
                 grabbedObject.transform.localPosition = Vector3.zero;
+                collider.attachedRigidbody.velocity = Vector2.zero;
                 isGrabbing = true;
                 break;
             }
