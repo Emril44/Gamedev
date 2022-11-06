@@ -37,10 +37,6 @@ public class PlayerMovement : MonoBehaviour
         {
             float horizontalMove = Input.GetAxis("Horizontal");
             float verticalMove = Input.GetAxis("Vertical");
-            if (Input.GetAxis("Jump") > 0 && feetCollider.IsTouchingLayers(groundLayer) && verticalMove == 0)
-            {
-                verticalMove += jumpVelocity * environmentSpeed;
-            }
             rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove * movementSpeed);
             rb.velocity *= environmentSpeed;
         }

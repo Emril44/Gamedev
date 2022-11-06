@@ -134,7 +134,7 @@ Rigidbody2D:
   m_Material: {fileID: 6200000, guid: e263c8aef872004418648532807a2a8c, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 4
 --- !u!114 &3865006718311826974
 MonoBehaviour:
@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 14
   jumpVelocity: 14
+  outOfWaterMultiplier: 1.6
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -166,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2facd941027efe844a25d8bc4133831b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bodyCollider: {fileID: 0}
 --- !u!60 &1091786292623064606
 PolygonCollider2D:
   m_ObjectHideFlags: 0
