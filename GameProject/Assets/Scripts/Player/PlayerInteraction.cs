@@ -28,13 +28,13 @@ public class PlayerInteraction : MonoBehaviour
 
     void PutPrism(PrismShard prismShard)
     {
-        GameManager.Instance.SetNewColor(prismShard);
+        EnvironmentManager.Instance.SetNewColor(prismShard.getColor());
     }
 
-    void GetSparks(GameObject spark)
+    void AddSpark(GameObject spark)
     {
-        GameManager.Instance.AddSparks(1);
-        Destroy(spark.gameObject);
+        PlayerPrefs.SetInt("Sparks", PlayerPrefs.GetInt("Sparks") + 1);
+        Destroy(spark);
     }
 
     private void Update()
@@ -87,8 +87,10 @@ public class PlayerInteraction : MonoBehaviour
     private void Grab()
     {
         var colliders = new List<Collider2D>();
-        var filter = new ContactFilter2D();
-        filter.useTriggers = true;
+        var filter = new ContactFilter2D
+        {
+            useTriggers = true
+        };
         bodyCollider.OverlapCollider(filter, colliders);
         foreach (Collider2D collider in colliders)
         {
@@ -115,7 +117,7 @@ public class PlayerInteraction : MonoBehaviour
                 PutPrism(other.gameObject.GetComponent<PrismShard>());
                 break;
             case "Spark":
-                GetSparks(other.gameObject);
+                AddSpark(other.gameObject);
                 break;
             case "Water":
                 StopAllCoroutines();
