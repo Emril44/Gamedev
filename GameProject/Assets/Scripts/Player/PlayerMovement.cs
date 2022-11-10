@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private bool inWater = false;
     private float environmentSpeed = 1f;
+    private Quaternion rotationGoal;
 
     private void Awake()
     {
@@ -50,5 +51,27 @@ public class PlayerMovement : MonoBehaviour
             }
             rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
         }
+        float offset = 0.45f;
+        float rayLength = 1.25f;
+        RaycastHit2D left = Physics2D.Raycast(transform.position - new Vector3(offset, 0), -Vector2.up, rayLength, groundLayer);
+        RaycastHit2D right = Physics2D.Raycast(transform.position + new Vector3(offset, 0), -Vector2.up, rayLength, groundLayer);
+        Debug.DrawRay(transform.position - new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
+        Debug.DrawRay(transform.position + new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
+        if (left.collider != null && right.collider != null)
+        {
+            if (left.normal == right.normal)
+            {
+                rotationGoal = Quaternion.Euler(0, 0, Mathf.Atan2(left.normal.y, left.normal.x) * Mathf.Rad2Deg - 90);
+            }
+            else
+            {
+                rotationGoal = Quaternion.Euler(0, 0, 0);
+            }
+        }
+        else
+        {
+            rotationGoal = Quaternion.Euler(0, 0, 0);
+        }
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotationGoal, 0.3f);
     }
 }
