@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
@@ -12,6 +13,9 @@ public class PlayerInteraction : MonoBehaviour
     private Transform oldParent;
     private GameObject grabbedObject;
     //private Vector3 oldRelativePosition;
+    [SerializeField] private int health = 3;
+    [SerializeField] private float undamageableTime = 0.65f;
+    private bool damageable = true;
 
     public static PlayerInteraction Instance { get; private set; }
     private void Awake()
@@ -26,6 +30,14 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Damage"))) 
+        { 
+            GetDamaged();
+        }
+    }
+
     void PutPrism(PrismShard prismShard)
     {
         EnvironmentManager.Instance.SetNewColor(prismShard.getColor());
@@ -35,6 +47,32 @@ public class PlayerInteraction : MonoBehaviour
     {
         PlayerPrefs.SetInt("Sparks", PlayerPrefs.GetInt("Sparks") + 1);
         Destroy(spark);
+    }
+    
+    private void GetDamaged()
+    {
+        if (damageable)
+        {
+            damageable = false;
+            health--;
+            StartCoroutine(Undamageable());
+        }
+        if(health <= 0)
+        {
+            Die();
+        }
+    }
+
+    IEnumerator Undamageable()
+    {
+        yield return new WaitForSeconds(undamageableTime);
+        damageable = true;
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+        //SceneManager.LoadScene("Death");
     }
 
     private void Update()
@@ -121,6 +159,7 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             case "Water":
                 StopAllCoroutines();
+                damageable = true;
                 StartCoroutine(SetInWater(true));
                 break;
             case "Lever":
@@ -129,6 +168,9 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             case "SparkDoor":
                 other.gameObject.GetComponent<SparkDoor>().Open();
+                break;
+            case "DeadlyDamage":
+                Die();
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
