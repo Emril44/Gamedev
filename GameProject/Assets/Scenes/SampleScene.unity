@@ -182,17 +182,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2275396884958718796, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 2275396885840997322, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7127595194662315651, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 0
+      propertyPath: m_Name
+      value: grabbableObject 2
       objectReference: {fileID: 0}
     - target: {fileID: 7127595194761092485, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
       propertyPath: m_Name
@@ -242,9 +234,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8643587597818729816, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
+    - target: {fileID: 7817677866917370300, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: m_Name
+      value: Terrain 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 214d157c6f1662247961bdc89c11542b, type: 3}

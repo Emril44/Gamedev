@@ -12,6 +12,7 @@ TagManager:
   - Grabbable
   - Water
   - Lever
+  - SparkDoor
   layers:
   - Default
   - TransparentFX

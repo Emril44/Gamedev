@@ -127,6 +127,9 @@ public class PlayerInteraction : MonoBehaviour
                 nearLever = true;
                 leverGO = other.gameObject;
                 break;
+            case "SparkDoor":
+                other.gameObject.GetComponent<SparkDoor>().Open();
+                break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
                 break;
