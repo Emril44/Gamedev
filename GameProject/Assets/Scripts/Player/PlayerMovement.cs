@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PlayerMovement : MonoBehaviour
 {
+    public bool Controllable;
     [SerializeField] private float movementSpeed = 14f;
     [SerializeField] private float jumpVelocity = 14f;
     [SerializeField] private float outOfWaterMultiplier = 1.6f;
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        Controllable = true;
     }
 
     public void SetInWater(bool inWater)
@@ -34,22 +36,25 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (inWater)
+        if (Controllable)
         {
-            float horizontalMove = Input.GetAxis("Horizontal");
-            float verticalMove = Input.GetAxis("Vertical");
-            rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove * movementSpeed);
-            rb.velocity *= environmentSpeed;
-        }
-        else
-        {
-            float horizontalMove = Input.GetAxis("Horizontal");
-            float verticalMove = rb.velocity.y;
-            if (Input.GetAxis("Jump") > 0 && feetCollider.IsTouchingLayers(groundLayer) && verticalMove < 1e-9)
+            if (inWater)
             {
-                verticalMove += jumpVelocity;
+                float horizontalMove = Input.GetAxis("Horizontal");
+                float verticalMove = Input.GetAxis("Vertical");
+                rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove * movementSpeed);
+                rb.velocity *= environmentSpeed;
             }
-            rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
+            else
+            {
+                float horizontalMove = Input.GetAxis("Horizontal");
+                float verticalMove = rb.velocity.y;
+                if (Input.GetAxis("Jump") > 0 && feetCollider.IsTouchingLayers(groundLayer) && verticalMove < 1e-9)
+                {
+                    verticalMove += jumpVelocity;
+                }
+                rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
+            }
         }
         float offset = 0.45f;
         float rayLength = 1.25f;

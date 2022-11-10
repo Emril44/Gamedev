@@ -6,7 +6,8 @@ public class DialogueManager : MonoBehaviour
 {
     private GameObject player;
     private Dialogue dialogue;
-    
+    private DialogueNode firstNode;
+
     [SerializeField] private GameObject dialogueCanvas;
     
     [SerializeField] private TMP_Text dialogueText;
@@ -14,7 +15,6 @@ public class DialogueManager : MonoBehaviour
 
     private GameObject[] dialogOptions;
     private int phraseCounter;
-    private DialogueTrigger trigger;
 
     public static DialogueManager Instance { get; private set; }
     private void Awake()
@@ -40,12 +40,12 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
     }
     
-    public void GetTriggered(GameObject NPC, DialogueTrigger trigger, Dialogue dialogue)
+    public void GetTriggered(GameObject NPC, Dialogue dialogue)
     {
         phraseCounter = 0;
         dialogueCanvas.SetActive(true);
-        this.dialogue = Instantiate(dialogue);
-        this.trigger = trigger;
+        this.dialogue = dialogue;
+        firstNode = dialogue.GetCurrent();
         var node = dialogue.GetCurrent();
         if (node == null)
         {
@@ -78,9 +78,11 @@ public class DialogueManager : MonoBehaviour
         if (node == null)
         {
             dialogueCanvas.SetActive(false);
+            dialogue.Finish();
+            dialogue.SetCurrent(firstNode);
             dialogue = null;
+            firstNode = null;
             dialogueText.text = "";
-            trigger.OnDialogueFinished();
             return;
         }
         if (node.IsOption())

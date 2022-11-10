@@ -6,10 +6,13 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
 {
+    public bool Controllable;
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
     private bool nearLever = false;
+    private bool nearDialogue = false;
     private GameObject leverGO;
+    private GameObject dialogueGO;
     private Transform oldParent;
     private GameObject grabbedObject;
     //private Vector3 oldRelativePosition;
@@ -28,6 +31,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             Instance = this;
         }
+        Controllable = true;
     }
 
     void FixedUpdate()
@@ -77,29 +81,46 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Controllable)
         {
-            if (isGrabbing)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                Drop();
+                if (isGrabbing)
+                {
+                    Drop();
+                }
+                else
+                {
+                    Grab();
+                }
             }
-            else 
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                Grab();
+                if (nearLever)
+                {
+                    leverGO.GetComponent<Lever>().Toggle();
+                }
+                else if (nearDialogue)
+                {
+                    DialogueTrigger trigger = dialogueGO.GetComponent<DialogueTrigger>();
+                    Controllable = false;
+                    GetComponent<PlayerMovement>().Controllable = false;
+                    void reenable()
+                    {
+                        Controllable = true;
+                        GetComponent<PlayerMovement>().Controllable = true;
+                        trigger.Dialogue.onDialogueEnd -= reenable;
+                    };
+                    trigger.Dialogue.onDialogueEnd += reenable;
+                    trigger.TriggerDialogue(dialogueGO);
+                }
             }
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (nearLever)
+            if (Input.GetKeyDown(KeyCode.L))
             {
-                leverGO.GetComponent<Lever>().Toggle();
-            }
-        }
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            if (nearLever)
-            {
-                Camera.main.gameObject.GetComponent<CamMovement>().LookOnGates(leverGO.GetComponent<Lever>().gatesPosition1);
+                if (nearLever)
+                {
+                    Camera.main.gameObject.GetComponent<CamMovement>().LookOnGates(leverGO.GetComponent<Lever>().gatesPosition1);
+                }
             }
         }
     }
@@ -166,6 +187,10 @@ public class PlayerInteraction : MonoBehaviour
                 nearLever = true;
                 leverGO = other.gameObject;
                 break;
+            case "DialogueTrigger":
+                nearDialogue = true;
+                dialogueGO = other.gameObject;
+                break;
             case "SparkDoor":
                 other.gameObject.GetComponent<SparkDoor>().Open();
                 break;
@@ -189,6 +214,10 @@ public class PlayerInteraction : MonoBehaviour
             case "Lever":
                 nearLever = false;
                 leverGO = null;
+                break;
+            case "DialogueTrigger":
+                nearDialogue = false;
+                dialogueGO = null;
                 break;
         }
     }
