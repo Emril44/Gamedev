@@ -44,7 +44,7 @@ public class DialogueManager : MonoBehaviour
     {
         phraseCounter = 0;
         dialogueCanvas.SetActive(true);
-        this.dialogue = dialogue;
+        this.dialogue = Instantiate(dialogue);
         firstNode = dialogue.GetCurrent();
         var node = dialogue.GetCurrent();
         if (node == null)
@@ -79,7 +79,6 @@ public class DialogueManager : MonoBehaviour
         {
             dialogueCanvas.SetActive(false);
             dialogue.Finish();
-            dialogue.SetCurrent(firstNode);
             dialogue = null;
             firstNode = null;
             dialogueText.text = "";

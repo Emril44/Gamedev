@@ -271,7 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55c99fe352ae10948a25cff6f9a83d5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: {fileID: 11400000, guid: 5db51420b6569eb4aa346cf74d075269, type: 2}
+  <Dialogue>k__BackingField: {fileID: 11400000, guid: 5db51420b6569eb4aa346cf74d075269, type: 2}
 --- !u!114 &833318369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,6 +405,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2339653434873082121, guid: 8658b39657f460746841cf97b92d9951, type: 3}
+      propertyPath: bodyCollider
+      value: 
+      objectReference: {fileID: 1448890060}
     - target: {fileID: 3865006718311826969, guid: 8658b39657f460746841cf97b92d9951, type: 3}
       propertyPath: m_Name
       value: Player
@@ -467,6 +471,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8658b39657f460746841cf97b92d9951, type: 3}
+--- !u!61 &1448890060 stripped
+BoxCollider2D:
+  m_CorrespondingSourceObject: {fileID: 3865006718311826972, guid: 8658b39657f460746841cf97b92d9951, type: 3}
+  m_PrefabInstance: {fileID: 1166503216}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1836030851
 GameObject:
   m_ObjectHideFlags: 0
