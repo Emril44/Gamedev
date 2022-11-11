@@ -4,7 +4,7 @@ public abstract class Objective : ScriptableObject
 {
     public event Action onComplete;
 
-    [field: SerializeField] public string Message { get; private set; }
+    [SerializeField] protected string message;
 
     protected void Complete()
     {
@@ -13,4 +13,9 @@ public abstract class Objective : ScriptableObject
     }
 
     public abstract void SetActive(bool active);
+
+    public virtual string GetMessage()
+    {
+        return message;
+    }
 }
