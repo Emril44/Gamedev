@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2889305115314318440}
   - component: {fileID: 2889305115314318442}
   - component: {fileID: 2889305115314318441}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SparkDoor
   m_TagString: SparkDoor
   m_Icon: {fileID: 0}
