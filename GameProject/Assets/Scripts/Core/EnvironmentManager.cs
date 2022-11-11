@@ -27,14 +27,14 @@ public class EnvironmentManager : MonoBehaviour
 
     public void SetNewColor(PrismColor color)
     {
-        if (SavesManager.Instance.UnlockedColors >= (int)color)
+        if (DataManager.Instance.unlockedColors >= (int)color)
         {
             ChangeBackground(color);
             RepaintPool(color);
         }
         else
         {
-            Debug.Log("locked color; max unlock = "+SavesManager.Instance.UnlockedColors+"; color level = "+(int)color);
+            Debug.Log("locked color; max unlock = "+DataManager.Instance.unlockedColors+"; color level = "+(int)color);
         }
     }
 
@@ -43,7 +43,7 @@ public class EnvironmentManager : MonoBehaviour
         coloredObjectsPool = new Queue<ColoredObject>();
         foreach (ColoredObject obj in FindObjectsOfType<ColoredObject>())
         {
-            if(SavesManager.Instance.UnlockedColors >= (int)obj.getColor())
+            if(DataManager.Instance.unlockedColors >= (int)obj.getColor())
                 coloredObjectsPool.Enqueue(obj);
         }
     }

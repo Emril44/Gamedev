@@ -7,14 +7,14 @@ public class SparkDoor : MonoBehaviour
     [SerializeField] private int sparksToPass;
     public void Open()
     {
-        if (SavesManager.Instance.SparksAmount >= sparksToPass)
+        if (DataManager.Instance.sparksAmount >= sparksToPass)
         {
             GetComponent<BoxCollider2D>().enabled = false;
             StartCoroutine(OpenDoor());
         }
         else
         {
-            Debug.Log("Not enough sparks: " + SavesManager.Instance.sparksAmount + "/" + sparksToPass);
+            Debug.Log("Not enough sparks: " + DataManager.Instance.sparksAmount + "/" + sparksToPass);
         }
     }
 

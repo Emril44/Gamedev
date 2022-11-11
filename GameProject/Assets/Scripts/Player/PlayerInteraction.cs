@@ -48,7 +48,7 @@ public class PlayerInteraction : MonoBehaviour
 
     void AddSpark(GameObject spark)
     {
-        SavesManager.Instance.AddSpark();
+        DataManager.Instance.AddSpark();
         Destroy(spark);
     }
     
@@ -75,7 +75,7 @@ public class PlayerInteraction : MonoBehaviour
     private void Die()
     {
         Destroy(gameObject);
-        SavesManager.Instance.Die();
+        DataManager.Instance.Die();
     }
 
     private void Update()
