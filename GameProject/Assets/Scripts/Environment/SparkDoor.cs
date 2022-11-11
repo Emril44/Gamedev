@@ -14,7 +14,7 @@ public class SparkDoor : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not enough sparks: " + PlayerPrefs.GetInt("Sparks") + "/" + sparksToPass);
+            Debug.Log("Not enough sparks: " + SavesManager.Instance.sparksAmount + "/" + sparksToPass);
         }
     }
 
