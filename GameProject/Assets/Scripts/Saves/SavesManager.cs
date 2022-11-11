@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SavesManager : MonoBehaviour
 {
-    public int sparksAmount { get; private set; }
+    public int SparksAmount { get; private set; }
+    public int UnlockedColors { get; private set; }
     public static SavesManager Instance { get; private set; }
     private void Awake()
     {
@@ -20,7 +19,8 @@ public class SavesManager : MonoBehaviour
     
     public void Load()
     {
-        sparksAmount = 0;
+        SparksAmount = 0;
+        UnlockedColors = 0;
     }
 
     public void Save()
@@ -30,7 +30,17 @@ public class SavesManager : MonoBehaviour
 
     public void AddSpark()
     {
-        sparksAmount ++;
+        SparksAmount ++;
+        if(SparksAmount == 3)
+        {
+            UnlockColor();
+            SparksAmount = 0;
+        }
+    }
+
+    public void UnlockColor()
+    {
+        UnlockedColors ++;
     }
 
     public void Die()

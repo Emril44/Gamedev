@@ -7,7 +7,7 @@ public class SparkDoor : MonoBehaviour
     [SerializeField] private int sparksToPass;
     public void Open()
     {
-        if (SavesManager.Instance.sparksAmount >= sparksToPass)
+        if (SavesManager.Instance.SparksAmount >= sparksToPass)
         {
             GetComponent<BoxCollider2D>().enabled = false;
             StartCoroutine(OpenDoor());

@@ -27,8 +27,15 @@ public class EnvironmentManager : MonoBehaviour
 
     public void SetNewColor(PrismColor color)
     {
-        ChangeBackground(color);
-        RepaintPool(color);
+        if (SavesManager.Instance.UnlockedColors >= (int)color)
+        {
+            ChangeBackground(color);
+            RepaintPool(color);
+        }
+        else
+        {
+            Debug.Log("locked color; max unlock = "+SavesManager.Instance.UnlockedColors+"; color level = "+(int)color);
+        }
     }
 
     void FillPool()
@@ -36,7 +43,8 @@ public class EnvironmentManager : MonoBehaviour
         coloredObjectsPool = new Queue<ColoredObject>();
         foreach (ColoredObject obj in FindObjectsOfType<ColoredObject>())
         {
-            coloredObjectsPool.Enqueue(obj);
+            if(SavesManager.Instance.UnlockedColors >= (int)obj.getColor())
+                coloredObjectsPool.Enqueue(obj);
         }
     }
 
