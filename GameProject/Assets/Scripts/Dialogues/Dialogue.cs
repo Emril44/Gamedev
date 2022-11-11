@@ -6,29 +6,7 @@ public class Dialogue : ScriptableObject
 {
     public event Action onDialogueEnd;
 
-    [SerializeField] private DialogueNode currentNode;
-
-    public DialogueNode GetCurrent()
-    {
-        return currentNode;
-    }
-
-    public void SetCurrent(DialogueNode node)
-    {
-        currentNode = node;
-    }
-
-    public DialogueNode GetNext()
-    {
-        currentNode = currentNode.next;
-        return currentNode;
-    }
-
-    public DialogueNode GetNext(int i)
-    {
-        currentNode = currentNode.optionsBranches[i];
-        return currentNode;
-    }
+    [field: SerializeField] public DialogueNode firstNode { get; private set; }
 
     public void Finish()
     {

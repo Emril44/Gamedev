@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
@@ -34,6 +35,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    private bool CanJump()
+    {
+        var colliders = new List<Collider2D>();
+        var filter = new ContactFilter2D
+        {
+            useTriggers = false,
+            layerMask = groundLayer,
+        };
+        feetCollider.OverlapCollider(filter, colliders);
+        return colliders.Count > 1;
+    }
+
     void FixedUpdate()
     {
         if (Controllable)
@@ -49,9 +62,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 float horizontalMove = Input.GetAxis("Horizontal");
                 float verticalMove = rb.velocity.y;
-                if (Input.GetAxis("Jump") > 0 && feetCollider.IsTouchingLayers(groundLayer) && verticalMove < 1e-9)
+                if (Input.GetAxis("Jump") > 0 && verticalMove < 7 && CanJump())
                 {
-                    verticalMove += jumpVelocity;
+                    verticalMove = jumpVelocity;
                 }
                 rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
             }
