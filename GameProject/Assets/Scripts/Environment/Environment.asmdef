@@ -1,7 +1,9 @@
 {
     "name": "Environment",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:7d873bd277d9f8142a191a0d60457e1c"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
