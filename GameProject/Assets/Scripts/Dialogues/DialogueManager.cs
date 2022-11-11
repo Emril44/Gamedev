@@ -6,7 +6,8 @@ public class DialogueManager : MonoBehaviour
 {
     private GameObject player;
     private Dialogue dialogue;
-    
+    private DialogueNode currentNode;
+
     [SerializeField] private GameObject dialogueCanvas;
     
     [SerializeField] private TMP_Text dialogueText;
@@ -14,7 +15,6 @@ public class DialogueManager : MonoBehaviour
 
     private GameObject[] dialogOptions;
     private int phraseCounter;
-    private DialogueTrigger trigger;
 
     public static DialogueManager Instance { get; private set; }
     private void Awake()
@@ -40,24 +40,23 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
     }
     
-    public void GetTriggered(GameObject NPC, DialogueTrigger trigger, Dialogue dialogue)
+    public void GetTriggered(GameObject NPC, Dialogue dialogue)
     {
-        phraseCounter = 0;
-        dialogueCanvas.SetActive(true);
-        this.dialogue = Instantiate(dialogue);
-        this.trigger = trigger;
-        var node = dialogue.GetCurrent();
-        if (node == null)
+        this.dialogue = dialogue;
+        currentNode = dialogue.firstNode;
+        if (currentNode == null)
         {
             return;
         }
-        if (node.IsOption())
+        phraseCounter = 0;
+        dialogueCanvas.SetActive(true);
+        if (currentNode.IsOption())
         {
-            AddButtons(node.options);
+            AddButtons(currentNode.options);
         }
         else
         {
-            AddText(node.text[phraseCounter]);
+            AddText(currentNode.text[phraseCounter]);
         }
     }
 
@@ -65,7 +64,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (dialogueCanvas.activeSelf)
         {
-            if (Input.GetMouseButtonDown(0) && !dialogue.GetCurrent().IsOption())
+            if (Input.GetMouseButtonDown(0) && !currentNode.IsOption())
             {
                 GetNext();
             }
@@ -74,36 +73,34 @@ public class DialogueManager : MonoBehaviour
     
     private void GetNext()
     {
-        var node = dialogue.GetCurrent();
-        if (node == null)
+        if (currentNode == null)
         {
             dialogueCanvas.SetActive(false);
+            dialogue.Finish();
             dialogue = null;
+            currentNode = null;
             dialogueText.text = "";
-            trigger.OnDialogueFinished();
             return;
         }
-        if (node.IsOption())
+        if (currentNode.IsOption())
         {
             dialogueText.text = "";
-            AddButtons(node.options);
+            AddButtons(currentNode.options);
         }
         else
         {
-            if (phraseCounter < node.text.Length)
+            if (phraseCounter < currentNode.text.Length)
             {
-                AddText(node.text[phraseCounter]);
+                AddText(currentNode.text[phraseCounter]);
             }
             else
             {
-                dialogue.GetNext();
+                currentNode = currentNode.next;
                 phraseCounter = 0;
                 GetNext();
             }
         }
-    }
-
-    
+    }    
     
     public void AddText(string text)
     {
@@ -117,6 +114,7 @@ public class DialogueManager : MonoBehaviour
         {
             Debug.LogError("Too many options");
         }
+        dialogueText.enabled = false;
         for (int i = 0; i < options.Length; i++)
         {
             dialogOptions[i].SetActive(true);
@@ -129,6 +127,7 @@ public class DialogueManager : MonoBehaviour
     
     public void GetButtonRes(int i)
     {
+        dialogueText.enabled = true;
         foreach (var option in dialogOptions)
         {
             if (option != null)
@@ -136,13 +135,13 @@ public class DialogueManager : MonoBehaviour
                 option.SetActive(false);
             }
         }
-        if (!dialogue.GetCurrent().IsOption())
+        if (!currentNode.IsOption())
         {
             Debug.LogError("It should not be called as it is not an option");
         }
-        if (dialogue.GetCurrent().IsOption())
+        if (currentNode.IsOption())
         {
-            dialogue.GetNext(i);
+            currentNode = currentNode.optionsBranches[i];
             GetNext();
         } 
     }

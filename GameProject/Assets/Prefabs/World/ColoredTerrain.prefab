@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3380324095556917824}
   - component: {fileID: 3372653502624999399}
   - component: {fileID: 2707483530680010763}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ColoredTerrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}

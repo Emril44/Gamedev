@@ -7,10 +7,12 @@ TagManager:
   - Prism
   - Spark
   - Door
-  - Damage
   - DeadlyDamage
   - Grabbable
   - Water
+  - Lever
+  - SparkDoor
+  - DialogueTrigger
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
+  - Damage
   - 
   - 
   - 

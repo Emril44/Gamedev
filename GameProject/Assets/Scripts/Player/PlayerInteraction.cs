@@ -5,11 +5,19 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
 {
+    public bool Controllable;
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
+    private bool nearLever = false;
+    private bool nearDialogue = false;
+    private GameObject leverGO;
+    private GameObject dialogueGO;
     private Transform oldParent;
     private GameObject grabbedObject;
-    private Vector3 oldRelativePosition;
+    //private Vector3 oldRelativePosition;
+    [SerializeField] private int health = 3;
+    [SerializeField] private float undamageableTime = 0.65f;
+    private bool damageable = true;
 
     public static PlayerInteraction Instance { get; private set; }
     private void Awake()
@@ -22,30 +30,96 @@ public class PlayerInteraction : MonoBehaviour
         {
             Instance = this;
         }
+        Controllable = true;
+    }
+
+    void FixedUpdate()
+    {
+        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Damage"))) 
+        { 
+            GetDamaged();
+        }
     }
 
     void PutPrism(PrismShard prismShard)
     {
-        GameManager.Instance.SetNewColor(prismShard);
+        EnvironmentManager.Instance.SetNewColor(prismShard.getColor());
     }
 
-    void GetSparks(GameObject spark)
+    void AddSpark(GameObject spark)
     {
-        GameManager.Instance.AddSparks(1);
-        Destroy(spark.gameObject);
+        DataManager.Instance.AddSpark();
+        Destroy(spark);
+    }
+    
+    private void GetDamaged()
+    {
+        if (damageable)
+        {
+            damageable = false;
+            health--;
+            StartCoroutine(Undamageable());
+        }
+        if(health <= 0)
+        {
+            Die();
+        }
+    }
+
+    IEnumerator Undamageable()
+    {
+        yield return new WaitForSeconds(undamageableTime);
+        damageable = true;
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+        DataManager.Instance.Die();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Controllable)
         {
-            if (isGrabbing)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                Drop();
+                if (isGrabbing)
+                {
+                    Drop();
+                }
+                else
+                {
+                    Grab();
+                }
             }
-            else 
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                Grab();
+                if (nearLever)
+                {
+                    leverGO.GetComponent<Lever>().Toggle();
+                }
+                else if (nearDialogue)
+                {
+                    DialogueTrigger trigger = dialogueGO.GetComponent<DialogueTrigger>();
+                    Controllable = false;
+                    GetComponent<PlayerMovement>().Controllable = false;
+                    void reenable()
+                    {
+                        Controllable = true;
+                        GetComponent<PlayerMovement>().Controllable = true;
+                        trigger.Dialogue.onDialogueEnd -= reenable;
+                    };
+                    trigger.Dialogue.onDialogueEnd += reenable;
+                    trigger.TriggerDialogue(dialogueGO);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                if (nearLever)
+                {
+                    Camera.main.gameObject.GetComponent<CamMovement>().LookOnGates(leverGO.GetComponent<Lever>().gatesPosition1);
+                }
             }
         }
     }
@@ -71,8 +145,10 @@ public class PlayerInteraction : MonoBehaviour
     private void Grab()
     {
         var colliders = new List<Collider2D>();
-        var filter = new ContactFilter2D();
-        filter.useTriggers = true;
+        var filter = new ContactFilter2D
+        {
+            useTriggers = true
+        };
         bodyCollider.OverlapCollider(filter, colliders);
         foreach (Collider2D collider in colliders)
         {
@@ -84,6 +160,7 @@ public class PlayerInteraction : MonoBehaviour
                 grabbedObject.GetComponent<Collider2D>().enabled = false;
                 grabbedObject.GetComponent<Rigidbody2D>().simulated = false;
                 grabbedObject.transform.localPosition = Vector3.zero;
+                collider.attachedRigidbody.velocity = Vector2.zero;
                 isGrabbing = true;
                 break;
             }
@@ -98,11 +175,26 @@ public class PlayerInteraction : MonoBehaviour
                 PutPrism(other.gameObject.GetComponent<PrismShard>());
                 break;
             case "Spark":
-                GetSparks(other.gameObject);
+                AddSpark(other.gameObject);
                 break;
             case "Water":
                 StopAllCoroutines();
+                damageable = true;
                 StartCoroutine(SetInWater(true));
+                break;
+            case "Lever":
+                nearLever = true;
+                leverGO = other.gameObject;
+                break;
+            case "DialogueTrigger":
+                nearDialogue = true;
+                dialogueGO = other.gameObject;
+                break;
+            case "SparkDoor":
+                other.gameObject.GetComponent<SparkDoor>().Open();
+                break;
+            case "DeadlyDamage":
+                Die();
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
@@ -117,6 +209,14 @@ public class PlayerInteraction : MonoBehaviour
             case "Water":
                 StopAllCoroutines();
                 StartCoroutine(SetInWater(false));
+                break;
+            case "Lever":
+                nearLever = false;
+                leverGO = null;
+                break;
+            case "DialogueTrigger":
+                nearDialogue = false;
+                dialogueGO = null;
                 break;
         }
     }

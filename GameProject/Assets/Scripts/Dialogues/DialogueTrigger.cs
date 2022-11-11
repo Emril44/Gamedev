@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [SerializeField] private Dialogue dialogue; 
+    [field: SerializeField] public Dialogue Dialogue { get; private set; } 
     
     public void TriggerDialogue(GameObject NPC)
     {
-        DialogueManager.Instance.GetTriggered(NPC, this, dialogue);
-    }
-
-    public void OnDialogueFinished()
-    {
-        //...
+        DialogueManager.Instance.GetTriggered(NPC, Dialogue);
     }
 }

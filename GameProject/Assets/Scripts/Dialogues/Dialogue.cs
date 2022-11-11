@@ -1,24 +1,15 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Dialogue", menuName = "Dialogue")]
 public class Dialogue : ScriptableObject
 {
-    [SerializeField] private DialogueNode currentNode;
+    public event Action onDialogueEnd;
 
-    public DialogueNode GetCurrent()
-    {
-        return currentNode;
-    }
+    [field: SerializeField] public DialogueNode firstNode { get; private set; }
 
-    public DialogueNode GetNext()
+    public void Finish()
     {
-        currentNode = currentNode.next;
-        return currentNode;
-    }
-
-    public DialogueNode GetNext(int i)
-    {
-        currentNode = currentNode.optionsBranches[i];
-        return currentNode;
+        onDialogueEnd?.Invoke();
     }
 }
