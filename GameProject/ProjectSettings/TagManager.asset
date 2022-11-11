@@ -6,9 +6,12 @@ TagManager:
   tags:
   - Prism
   - Spark
-  - Enemy
   - Door
-  - Trap
+  - DeadlyDamage
+  - Grabbable
+  - Water
+  - Lever
+  - SparkDoor
   layers:
   - Default
   - TransparentFX
@@ -16,8 +19,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Ground
+  - Damage
   - 
   - 
   - 

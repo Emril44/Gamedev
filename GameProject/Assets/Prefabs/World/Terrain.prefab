@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7817677866403973099}
   - component: {fileID: 7817677866403973096}
   - component: {fileID: 7817677866403973097}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: e263c8aef872004418648532807a2a8c, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
