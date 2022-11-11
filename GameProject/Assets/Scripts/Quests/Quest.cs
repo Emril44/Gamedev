@@ -14,15 +14,15 @@ public abstract class Quest : MonoBehaviour
     void OnEnable()
     {
         if (currentObjective >= questData.Objectives.Count) return;
-        questData.Objectives[currentObjective].SetActive(true);
         questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
+        questData.Objectives[currentObjective].SetActive(true);
     }
 
     void OnDisable()
     {
         if (currentObjective >= questData.Objectives.Count) return;
-        questData.Objectives[currentObjective].SetActive(false);
         questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
+        questData.Objectives[currentObjective].SetActive(false);
     }
 
     public string GetTitle()
@@ -68,9 +68,9 @@ public abstract class Quest : MonoBehaviour
         }
         else
         {
-            questData.Objectives[currentObjective].SetActive(true);
             questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
             if (currentObjective == 1) onStart?.Invoke();
+            questData.Objectives[currentObjective].SetActive(true);
         }
     }
 
