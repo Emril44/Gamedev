@@ -73,8 +73,8 @@ public class PlayerMovement : MonoBehaviour
         float rayLength = 1.25f;
         RaycastHit2D left = Physics2D.Raycast(transform.position - new Vector3(offset, 0), -Vector2.up, rayLength, groundLayer);
         RaycastHit2D right = Physics2D.Raycast(transform.position + new Vector3(offset, 0), -Vector2.up, rayLength, groundLayer);
-        Debug.DrawRay(transform.position - new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
-        Debug.DrawRay(transform.position + new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
+        //Debug.DrawRay(transform.position - new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
+        //Debug.DrawRay(transform.position + new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
         if (left.collider != null && right.collider != null)
         {
             if (left.normal == right.normal)

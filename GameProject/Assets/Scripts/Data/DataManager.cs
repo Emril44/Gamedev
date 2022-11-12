@@ -38,7 +38,7 @@ public class DataManager : MonoBehaviour
 
     public void Die()
     {
-        //
+        //TODO: death screen
     }
 
     public void UnlockColor()
