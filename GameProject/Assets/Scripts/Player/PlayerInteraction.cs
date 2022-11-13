@@ -14,7 +14,6 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject dialogueGO;
     private Transform oldParent;
     private GameObject grabbedObject;
-    //private Vector3 oldRelativePosition;
     [SerializeField] private int health = 3;
     [SerializeField] private float undamageableTime = 0.65f;
     private bool damageable = true;

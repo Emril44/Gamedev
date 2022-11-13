@@ -7,6 +7,7 @@ public class Lever : MonoBehaviour
     [SerializeField] private GameObject gates;
     public Vector3 gatesPosition1;
     [SerializeField] private Vector3 gatesPosition2;
+    [SerializeField] private int resetDelay;
     private bool isOn = false;
 
     private Quaternion[] leverRotation =
@@ -26,6 +27,13 @@ public class Lever : MonoBehaviour
         isOn = !isOn;
         StartCoroutine(MoveGates());
         StartCoroutine(MoveLever());
+        if (isOn) StartCoroutine(ResetState());
+    }
+
+    IEnumerator ResetState()
+    {
+        yield return new WaitForSeconds(resetDelay);
+        Toggle();
     }
 
     IEnumerator MoveGates()

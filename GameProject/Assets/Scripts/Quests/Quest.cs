@@ -44,7 +44,7 @@ public abstract class Quest : MonoBehaviour
     {
         if (i < 0 || i >= questData.Objectives.Count)
         {
-            Debug.Log("Trying to get undefined objective " + i + " from quest " + questData.Title);
+            Debug.LogWarning("Trying to get undefined objective " + i + " from quest " + questData.Title);
             return null;
         }
         return questData.Objectives[i];
