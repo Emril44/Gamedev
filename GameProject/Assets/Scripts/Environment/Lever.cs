@@ -1,10 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using Cinemachine;
 
 public class Lever : MonoBehaviour
 {
     [SerializeField] private GameObject lever;
     [SerializeField] private GameObject gates;
+    [SerializeField] public CinemachineVirtualCamera vcam;
+
     public Vector3 gatesPosition1;
     [SerializeField] private Vector3 gatesPosition2;
     private bool isOn = false;
