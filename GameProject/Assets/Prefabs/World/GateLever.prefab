@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2624740840101535893}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.53, y: -0.1, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 0.5, y: 0.53, z: 0.59}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -109,7 +109,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4357040386685952680}
   m_LocalRotation: {x: 0, y: 0, z: -0.3420201, w: 0.9396927}
-  m_LocalPosition: {x: 2.53, y: -0.23, z: -0.018184032}
+  m_LocalPosition: {x: 0, y: -0.23, z: 0}
   m_LocalScale: {x: 0.67, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -178,9 +178,9 @@ GameObject:
   m_Component:
   - component: {fileID: 6902660431385543423}
   - component: {fileID: 5388868348618074714}
-  - component: {fileID: 1242619302173450676}
+  - component: {fileID: 7546059661039417910}
   m_Layer: 0
-  m_Name: Lever
+  m_Name: GateLever
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,7 +194,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6190212477276165542}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.27, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -216,7 +216,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 2.5289197, y: 0.30320686}
+  m_Offset: {x: 0, y: 0.30320686}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -229,7 +229,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4343717, y: 1.3550793}
   m_EdgeRadius: 0
---- !u!114 &1242619302173450676
+--- !u!114 &7546059661039417910
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -238,9 +238,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6190212477276165542}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d59245823783ee4c990a76f5224fc84, type: 3}
+  m_Script: {fileID: 11500000, guid: a19b011e3b91ea049a9908b0ced89bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lever: {fileID: 4357040386685952680}
+  resetDelay: 10
   gates: {fileID: 0}
-  gatesPosition2: {x: -4.8, y: 6.4, z: 0}
+  gatesShift: {x: 0, y: 10, z: 0}
+  moveDuration: 1
