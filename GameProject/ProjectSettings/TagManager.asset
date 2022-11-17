@@ -13,6 +13,7 @@ TagManager:
   - Lever
   - SparkDoor
   - DialogueTrigger
+  - Movable
   layers:
   - Default
   - TransparentFX

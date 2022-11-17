@@ -10,8 +10,10 @@ public class PlayerInteraction : MonoBehaviour
     private bool isGrabbing = false;
     private bool nearLever = false;
     private bool nearDialogue = false;
+    private bool nearMovable = false;
     private GameObject leverGO;
     private GameObject dialogueGO;
+    private GameObject movableGO;
     private Transform oldParent;
     private GameObject grabbedObject;
     [SerializeField] private int health = 3;
@@ -123,6 +125,12 @@ public class PlayerInteraction : MonoBehaviour
                     trigger.Dialogue.onDialogueEnd += reenable;
                     trigger.TriggerDialogue(dialogueGO);
                 }
+                else if (nearMovable)
+                {
+                    movableGO.GetComponent<MovableObject>().StartMove();
+                    nearMovable = false;
+                    movableGO = null;
+                }
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
@@ -147,6 +155,7 @@ public class PlayerInteraction : MonoBehaviour
             grabbedObject.transform.parent = oldParent;
             grabbedObject.GetComponent<Rigidbody2D>().simulated = true;
             grabbedObject.GetComponent<Collider2D>().enabled = true;
+            grabbedObject.GetComponent<MovableObject>().Grabbed = false;
             grabbedObject = null;
         }
     }
@@ -176,6 +185,7 @@ public class PlayerInteraction : MonoBehaviour
                 grabbedObject.transform.localPosition = Vector3.zero;
                 collider.attachedRigidbody.velocity = Vector2.zero;
                 isGrabbing = true;
+                grabbedObject.GetComponent<MovableObject>().Grabbed = true;
                 break;
             }
         }
@@ -197,12 +207,17 @@ public class PlayerInteraction : MonoBehaviour
                 StartCoroutine(SetInWater(true));
                 break;
             case "Lever":
+                Debug.Log("just why");
                 nearLever = true;
                 leverGO = other.gameObject;
                 break;
             case "DialogueTrigger":
                 nearDialogue = true;
                 dialogueGO = other.gameObject;
+                break;
+            case "Movable":
+                nearMovable = true;
+                movableGO = other.gameObject;
                 break;
             case "SparkDoor":
                 other.gameObject.GetComponent<SparkDoor>().Open();
@@ -231,6 +246,10 @@ public class PlayerInteraction : MonoBehaviour
             case "DialogueTrigger":
                 nearDialogue = false;
                 dialogueGO = null;
+                break;
+            case "Movable":
+                nearMovable = false;
+                movableGO = null;
                 break;
         }
     }
