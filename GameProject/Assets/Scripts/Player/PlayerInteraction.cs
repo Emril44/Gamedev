@@ -18,11 +18,6 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float undamageableTime = 0.65f;
     private bool damageable = true;
 
-    private Rigidbody2D rb;
-    private Animator animator;
-    private const string DAMAGE_NAME = "Player_Damage";
-    private const string DEATH_NAME = "Player_Death";
-
     public static PlayerInteraction Instance { get; private set; }
     private void Awake()
     {
@@ -35,8 +30,6 @@ public class PlayerInteraction : MonoBehaviour
             Instance = this;
         }
         Controllable = true;
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
     }
 
     void FixedUpdate()
@@ -64,12 +57,11 @@ public class PlayerInteraction : MonoBehaviour
         {
             damageable = false;
             health--;
-            animator.Play(DAMAGE_NAME);
             StartCoroutine(Undamageable());
         }
         if(health <= 0)
         {
-            StartCoroutine(Die());
+            Die();
         }
     }
 
@@ -79,11 +71,8 @@ public class PlayerInteraction : MonoBehaviour
         damageable = true;
     }
 
-    private IEnumerator Die()
+    private void Die()
     {
-        rb.bodyType = RigidbodyType2D.Static;
-        animator.Play(DEATH_NAME);
-        yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
         Destroy(gameObject);
         DataManager.Instance.Die();
     }
@@ -204,7 +193,7 @@ public class PlayerInteraction : MonoBehaviour
                 other.gameObject.GetComponent<SparkDoor>().Open();
                 break;
             case "DeadlyDamage":
-                StartCoroutine(Die());
+                Die();
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);

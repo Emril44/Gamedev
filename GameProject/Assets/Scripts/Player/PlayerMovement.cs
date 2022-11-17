@@ -15,15 +15,10 @@ public class PlayerMovement : MonoBehaviour
     private float environmentSpeed = 1f;
     private Quaternion rotationGoal;
 
-    private Animator animator;
-    private const string JUMP_NAME = "Player_Jump";
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         Controllable = true;
-
-        animator = GetComponent<Animator>();
     }
 
     public void SetInWater(bool inWater)
@@ -67,10 +62,9 @@ public class PlayerMovement : MonoBehaviour
             {
                 float horizontalMove = Input.GetAxis("Horizontal");
                 float verticalMove = rb.velocity.y;
-                if (Input.GetAxis("Jump") > 0 && CanJump())
+                if (Input.GetAxis("Jump") > 0 && verticalMove < 7 && CanJump())
                 {
                     verticalMove = jumpVelocity;
-                    animator.Play(JUMP_NAME);
                 }
                 rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
             }

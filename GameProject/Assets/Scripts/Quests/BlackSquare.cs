@@ -8,14 +8,6 @@ public class BlackSquare : MonoBehaviour
     [SerializeField] private float undamageableTime = 0.55f;
     [SerializeField] private Collider2D bodyCollider;
     private bool damageable = true;
-    private Animator animator;
-    private const string DAMAGE_NAME = "Enemy_Damage";
-    private const string DEATH_NAME = "Enemy_Death";
-
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
 
     void FixedUpdate()
     {
@@ -31,13 +23,11 @@ public class BlackSquare : MonoBehaviour
         {
             damageable = false;
             health--;
-            animator.Play(DAMAGE_NAME);
             StartCoroutine(Undamageable());
         }
         if (health <= 0)
         {
-            animator.SetTrigger("EnemyDeath");
-            StartCoroutine(Die());
+            Die();
         }
     }
 
@@ -47,10 +37,8 @@ public class BlackSquare : MonoBehaviour
         damageable = true;
     }
 
-    private IEnumerator Die()
+    private void Die()
     {
-        animator.Play(DEATH_NAME);
-        yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
         Destroy(gameObject);
     }
 }
