@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 4267583004867495241}
   m_Layer: 0
   m_Name: LiquidLever
-  m_TagString: Untagged
+  m_TagString: Lever
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lever: {fileID: 4357040386685952680}
   resetDelay: 10
+  supportsLookOn: 1
   liquid: {fileID: 0}
   defaultFilled: 0
-  moveDuration: 3
+  fillDuration: 2

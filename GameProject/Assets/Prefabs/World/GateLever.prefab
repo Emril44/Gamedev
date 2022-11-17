@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 7546059661039417910}
   m_Layer: 0
   m_Name: GateLever
-  m_TagString: Untagged
+  m_TagString: Lever
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -243,6 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lever: {fileID: 4357040386685952680}
   resetDelay: 10
+  supportsLookOn: 1
   gates: {fileID: 0}
   gatesShift: {x: 0, y: 10, z: 0}
   moveDuration: 1
