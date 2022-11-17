@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 6287442294822682078}
   - component: {fileID: 6287442294822682077}
   - component: {fileID: 6287442294822682079}
-  m_Layer: 0
+  - component: {fileID: 406457969}
+  m_Layer: 7
   m_Name: BlackSquare
-  m_TagString: DeadlyDamage
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -179,3 +180,23 @@ PolygonCollider2D:
       - {x: -0.52, y: -0.52}
       - {x: 0.52, y: -0.52}
       - {x: 0.52, y: 0.52}
+--- !u!95 &406457969
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6287442294822682076}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a52b60bdab80eae488defb9af37161f2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
