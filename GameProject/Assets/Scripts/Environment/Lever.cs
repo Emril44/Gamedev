@@ -1,14 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
-public class Lever : MonoBehaviour
+public abstract class Lever : MonoBehaviour
 {
     [SerializeField] private GameObject lever;
-    [SerializeField] private GameObject gates;
-    public Vector3 gatesPosition1;
-    [SerializeField] private Vector3 gatesPosition2;
-    [SerializeField] private int resetDelay;
-    private bool isOn = false;
+    [SerializeField] private float resetDelay;
+    [SerializeField] private bool supportsLookOn;
+    protected bool isOn = false;
+    protected bool isLocked = false;
+
+    public bool SupportsLookOn => supportsLookOn;
 
     private Quaternion[] leverRotation =
     {
@@ -16,16 +17,12 @@ public class Lever : MonoBehaviour
         Quaternion.Euler(0,0,-40)
     };
 
-    private void Awake()
-    {
-        gatesPosition1 = gates.transform.position;
-    }
-
     public void Toggle()
     {
+        if (isLocked) return;
         StopAllCoroutines();
         isOn = !isOn;
-        StartCoroutine(MoveGates());
+        StartCoroutine(DoAction());
         StartCoroutine(MoveLever());
         if (isOn) StartCoroutine(ResetState());
     }
@@ -36,31 +33,10 @@ public class Lever : MonoBehaviour
         Toggle();
     }
 
-    IEnumerator MoveGates()
-    {
-        float time = 0;
-        while (time < 1)
-        {
-            time += Time.deltaTime;
-            if (isOn)
-            {
-                gates.transform.position = Vector3.Lerp(gates.transform.position, gatesPosition2, time/50);
-            }
-            else 
-            { 
-                gates.transform.position = Vector3.Lerp(gates.transform.position, gatesPosition1, time/50);
-            }
-            yield return null;
-        }
-        if (isOn)
-        {
-            gates.transform.position = gatesPosition2;
-        }
-        else
-        {
-            gates.transform.position = gatesPosition1;
-        }
-    }
+    protected abstract IEnumerator DoAction();
+
+    public abstract Vector3 LookPosition();
+
 
     IEnumerator MoveLever()
     {
