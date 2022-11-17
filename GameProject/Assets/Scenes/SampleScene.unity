@@ -161,6 +161,14 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1492453030627079644, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: supportLookOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1492453030627079644, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: supportsLookOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1492453030627079644, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
       propertyPath: gatesPosition2.y
       value: 6
       objectReference: {fileID: 0}

@@ -117,7 +117,11 @@ public class PlayerInteraction : MonoBehaviour
             {
                 if (nearLever)
                 {
-                    Camera.main.gameObject.GetComponent<CamMovement>().LookOnGates(leverGO.GetComponent<Lever>().LookPosition());
+                    var lever = leverGO.GetComponent<Lever>();
+                    if (lever.SupportsLookOn)
+                    {
+                        Camera.main.gameObject.GetComponent<CamMovement>().LookOnGates(lever.LookPosition());
+                    }
                 }
             }
         }

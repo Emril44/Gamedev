@@ -5,8 +5,11 @@ public abstract class Lever : MonoBehaviour
 {
     [SerializeField] private GameObject lever;
     [SerializeField] private float resetDelay;
+    [SerializeField] private bool supportsLookOn;
     protected bool isOn = false;
     protected bool isLocked = false;
+
+    public bool SupportsLookOn => supportsLookOn;
 
     private Quaternion[] leverRotation =
     {
