@@ -141,6 +141,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalingSpeed: 0.1
+--- !u!1 &172681144 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7760608073319046457, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+  m_PrefabInstance: {fileID: 201261181}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &201261181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -148,6 +153,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1492453030627079644, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: gates
+      value: 
+      objectReference: {fileID: 172681144}
+    - target: {fileID: 1492453030627079644, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: supportsLookOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6240902663608989276, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: e263c8aef872004418648532807a2a8c, type: 2}
     - target: {fileID: 6372524101183561350, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -177,8 +194,16 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7127595194662315651, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: m_Interpolate
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127595194662315651, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
       propertyPath: m_CollisionDetection
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127595194662315652, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7127595194662315653, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
       propertyPath: m_Color.b
@@ -239,6 +264,10 @@ PrefabInstance:
     - target: {fileID: 7127595194761092486, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7760608073319046457, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
+      propertyPath: m_Name
+      value: Gates
       objectReference: {fileID: 0}
     - target: {fileID: 7760608073319046457, guid: 214d157c6f1662247961bdc89c11542b, type: 3}
       propertyPath: m_Layer

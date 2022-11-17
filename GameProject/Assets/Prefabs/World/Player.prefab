@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3865006718311826974}
   - component: {fileID: 2339653434873082121}
   - component: {fileID: 1091786292623064606}
+  - component: {fileID: 132063274524645060}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -169,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controllable: 0
-  bodyCollider: {fileID: 3865006718311826972}
+  bodyCollider: {fileID: 132063274524645060}
   health: 3
   undamageableTime: 0.65
 --- !u!60 &1091786292623064606
@@ -200,3 +201,19 @@ PolygonCollider2D:
     - - {x: 0, y: -0.49}
       - {x: -0.47, y: -0.5}
       - {x: 0.47, y: -0.5}
+--- !u!70 &132063274524645060
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3865006718311826969}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -0.00036372244}
+  m_Size: {x: 1, y: 1.0007274}
+  m_Direction: 0

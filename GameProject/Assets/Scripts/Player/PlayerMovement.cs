@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 float horizontalMove = Input.GetAxis("Horizontal");
                 float verticalMove = rb.velocity.y;
-                if (Input.GetAxis("Jump") > 0 && CanJump())
+                if (Input.GetAxis("Jump") > 0 && CanJump() && !animator.GetCurrentAnimatorStateInfo(0).IsName(JUMP_NAME))
                 {
                     verticalMove = jumpVelocity;
                     animator.Play(JUMP_NAME);

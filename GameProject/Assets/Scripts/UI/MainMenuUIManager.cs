@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuUIManager : MonoBehaviour
 {   
@@ -17,7 +18,7 @@ public class MainMenuUIManager : MonoBehaviour
     
     public void ShowNewGameScreen() //SavesNew Canvas
     {
-        //...
+        SceneManager.LoadScene("SampleScene");
     }
 
     public void ShowLoadScreen() //SavesLoad Canvas
@@ -35,19 +36,8 @@ public class MainMenuUIManager : MonoBehaviour
         //...
     }
 
-    public void ShowQuitScreen()
-    {
-        //...
-    }
-
-    
     public void ExitGame()
     {
-        //...
-    }
-
-    public void StartGame()
-    {
-        //...
+        Application.Quit();
     }
 }

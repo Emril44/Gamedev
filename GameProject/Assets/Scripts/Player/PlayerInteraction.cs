@@ -42,7 +42,7 @@ public class PlayerInteraction : MonoBehaviour
     void FixedUpdate()
     {
         if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Damage"))) 
-        { 
+        {
             GetDamaged();
         }
     }
