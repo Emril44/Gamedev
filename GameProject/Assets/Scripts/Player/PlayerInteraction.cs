@@ -207,7 +207,6 @@ public class PlayerInteraction : MonoBehaviour
                 StartCoroutine(SetInWater(true));
                 break;
             case "Lever":
-                Debug.Log("just why");
                 nearLever = true;
                 leverGO = other.gameObject;
                 break;
