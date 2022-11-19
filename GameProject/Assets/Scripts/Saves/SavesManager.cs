@@ -14,6 +14,11 @@ public class SavesManager : MonoBehaviour
             Instance = this;
         }
     }
+
+    public int SavesAmount()
+    {
+        return 0;
+    }
     
     public void Load()
     {

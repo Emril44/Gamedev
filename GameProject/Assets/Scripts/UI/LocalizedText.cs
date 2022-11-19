@@ -7,7 +7,7 @@ public class LocalizedText : MonoBehaviour
     [SerializeField] private char separator = '|';
     [SerializeField] private TextMeshProUGUI textMesh;
 
-    private void Awake()
+    public void Awake()
     {
         if (!PlayerPrefs.HasKey("Language"))
         {
