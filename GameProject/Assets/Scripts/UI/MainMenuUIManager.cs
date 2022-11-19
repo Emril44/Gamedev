@@ -13,7 +13,15 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private Button loadButton;
     [SerializeField] private GameObject languageSettings;
     private const int LANGUAGES = 2;
-    
+    [Header("Saves")]
+    [SerializeField] private GameObject line;
+    [SerializeField] private GameObject save;
+    [SerializeField] private GameObject newSave;
+    [Header("SavesLocalization")]
+    [SerializeField] private string autosaveString;
+    [SerializeField] private string saveString;
+    [SerializeField] private string dayString;
+
     public static MainMenuUIManager Instance { get; private set; }
     private void Awake()
     {
@@ -103,12 +111,62 @@ public class MainMenuUIManager : MonoBehaviour
         }
     }
     
-    public void ShowNewGameScreen() //SavesNew Canvas
+    public void ShowNewGameScreen() 
     {
-        SceneManager.LoadScene("SampleScene");
+        if (blockInstance.transform.GetChild(1).childCount > 1)
+        {
+            Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
+        }
+        GameObject s = new GameObject();
+        s.transform.SetParent(blockInstance.transform.GetChild(1), false);
+        s.transform.localPosition = new Vector3(4.8f, 31.6f, -14);
+        s.transform.localScale = new Vector3(0.06f, 0.06f, 0.06f);
+        var save = SavesManager.Instance.Autosave();
+        if(save != null)
+        {
+            var card = SaveCard(autosaveString, save, s.transform);
+            card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log("autosave"); }); //load
+            card.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => { Debug.Log("X"); }); //yesNo delete
+        }
+        var l = Instantiate(line, s.transform);
+        l.transform.localPosition = l.transform.localPosition + new Vector3(0, -375);
+        int i = SavesManager.Instance.Saves().Length;
+        for(int j = 0; j < i; j++)
+        {
+            var card = SaveCard(saveString, SavesManager.Instance.Saves()[j], s.transform);
+            card.transform.localPosition = card.transform.localPosition + new Vector3(0, -338* (j+1));
+            if(j == 0)
+            {
+                card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
+            }
+            card.GetComponent<Button>().onClick.AddListener(() => { });
+        }
+        if(i < 3)
+        {
+            var card = Instantiate(newSave, s.transform);
+            card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338*(i-1) - 240);
+            card.GetComponent<Button>().onClick.AddListener(() => { });
+        }
+
+        ShowBlock();
     }
 
-    public void ShowLoadScreen() //SavesLoad Canvas
+    public GameObject SaveCard(string title, Save saveInfo, Transform parent)
+    {
+        GameObject save = Instantiate(this.save, parent.transform);
+        string t = title.Split('+')[PlayerPrefs.GetInt("Language")];
+        save.GetComponent<SaveTexts>().saveNum.text = t;
+
+        string day = dayString.Split('+')[PlayerPrefs.GetInt("Language")];
+        save.GetComponent<SaveTexts>().day.text = day + ": " + saveInfo.day;
+
+        save.GetComponent<SaveTexts>().sparksAmount.text = saveInfo.sparks.ToString();
+        save.GetComponent<SaveTexts>().time.text = saveInfo.time / 60 + ":" + (((saveInfo.time % 60) < 10) ? "0" + saveInfo.time % 60 : saveInfo.time % 60);
+
+        return save;
+    }
+
+    public void ShowLoadScreen() 
     {
         //...
     }

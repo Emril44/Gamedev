@@ -536,6 +536,14 @@ PrefabInstance:
       value: MainMenuUIManager
       objectReference: {fileID: 0}
     - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: line
+      value: 
+      objectReference: {fileID: 4284224099094180583, guid: f46e32e1c54a91a4a86eb41fff4be11c, type: 3}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: save
+      value: 
+      objectReference: {fileID: 978211294157135205, guid: 284ef4abc54c5f5448254eeace29d1ea, type: 3}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
       propertyPath: block
       value: 
       objectReference: {fileID: 3565471699107707055, guid: ede18b7b11c9a7b4aa1cb145cbc359de, type: 3}
@@ -544,9 +552,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1563263310}
     - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: newSave
+      value: 
+      objectReference: {fileID: 1162446643829224496, guid: 4e21343c14fb0b946ad6df9ab2775f88, type: 3}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: dayString
+      value: "Day+\u0414\u0435\u043D\u044C"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
       propertyPath: loadButton
       value: 
       objectReference: {fileID: 1910599096}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: saveString
+      value: "Save+\u0417\u0431\u0435\u0440\u0435\u0436\u0435\u043D\u043D\u044F"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: autosaveString
+      value: "Autosave+\u0410\u0432\u0442\u043E\u0437\u0431\u0435\u0440\u0435\u0436\u0435\u043D\u043D\u044F"
+      objectReference: {fileID: 0}
     - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
       propertyPath: languageSettings
       value: 
