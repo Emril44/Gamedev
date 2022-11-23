@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class MainMenuUIManager : MonoBehaviour
@@ -38,16 +39,20 @@ public class MainMenuUIManager : MonoBehaviour
         blockInstance.transform.SetParent(canvas.transform, false);
         var x = blockInstance.transform.GetChild(1).GetChild(0).gameObject;
         x.GetComponent<Button>().onClick.AddListener(() => { RemoveBlock(); });
-        if(SavesManager.Instance.SavesAmount() == 0)
-        {
-            loadButton.interactable = false;
-        }
-        else
+        if(SavesManager.Instance.HasSaves())
         {
             loadButton.interactable = true;
         }
-        //yesNoInstance = Instantiate(yesNo);
-        //yesNoInstance.SetActive(false);
+        else
+        {
+            loadButton.interactable = false;
+        }
+        yesNoInstance = Instantiate(yesNo);
+        yesNoInstance.SetActive(false);
+        yesNoInstance.transform.SetParent(canvas.transform, false);
+        var no = yesNoInstance.transform.GetChild(1).GetChild(2).gameObject;
+        Debug.Log(no.name);
+        no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });
     }
 
     public void ChangeLanguage()
@@ -124,7 +129,7 @@ public class MainMenuUIManager : MonoBehaviour
         var save = SavesManager.Instance.Autosave();
         if(save != null)
         {
-            var card = SaveCard(autosaveString, save, s.transform);
+            var card = SaveCard(autosaveString, save, s.transform, 0);
             card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log("autosave"); }); //load
             card.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => { Debug.Log("X"); }); //yesNo delete
         }
@@ -133,29 +138,31 @@ public class MainMenuUIManager : MonoBehaviour
         int i = SavesManager.Instance.Saves().Length;
         for(int j = 0; j < i; j++)
         {
-            var card = SaveCard(saveString, SavesManager.Instance.Saves()[j], s.transform);
-            card.transform.localPosition = card.transform.localPosition + new Vector3(0, -338* (j+1));
-            if(j == 0)
+            if(SavesManager.Instance.Saves()[j] != null)
             {
-                card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
+                var card = SaveCard(saveString, SavesManager.Instance.Saves()[j], s.transform, j + 1);
+                card.transform.localPosition = card.transform.localPosition + new Vector3(0, -338 * (j + 1));
+                if (j == 0)
+                {
+                    card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
+                }
+                card.GetComponent<Button>().onClick.AddListener(() => { });
             }
-            card.GetComponent<Button>().onClick.AddListener(() => { });
+            else
+            {
+                var card = Instantiate(newSave, s.transform);
+                card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338 * (j+1) + 415);
+                card.GetComponent<Button>().onClick.AddListener(() => { });
+            }
         }
-        if(i < 3)
-        {
-            var card = Instantiate(newSave, s.transform);
-            card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338*(i-1) - 240);
-            card.GetComponent<Button>().onClick.AddListener(() => { });
-        }
-
         ShowBlock();
     }
 
-    public GameObject SaveCard(string title, Save saveInfo, Transform parent)
+    public GameObject SaveCard(string title, Save saveInfo, Transform parent, int n)
     {
         GameObject save = Instantiate(this.save, parent.transform);
         string t = title.Split('+')[PlayerPrefs.GetInt("Language")];
-        save.GetComponent<SaveTexts>().saveNum.text = t;
+        save.GetComponent<SaveTexts>().saveNum.text = t + (n > 0 ? " #" + n : "");
 
         string day = dayString.Split('+')[PlayerPrefs.GetInt("Language")];
         save.GetComponent<SaveTexts>().day.text = day + ": " + saveInfo.day;
@@ -163,7 +170,18 @@ public class MainMenuUIManager : MonoBehaviour
         save.GetComponent<SaveTexts>().sparksAmount.text = saveInfo.sparks.ToString();
         save.GetComponent<SaveTexts>().time.text = saveInfo.time / 60 + ":" + (((saveInfo.time % 60) < 10) ? "0" + saveInfo.time % 60 : saveInfo.time % 60);
 
+        save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Overwrite this save", () => { SavesManager.Instance.Load(n); }) ; });
+        var x = save.transform.GetChild(1).gameObject;
+        x.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Delete this save", () => { SavesManager.Instance.RemoveSave(n); }); });
         return save;
+    }
+
+    public void SetYesNo(string message, UnityEngine.Events.UnityAction onYes)
+    {
+        blockInstance.transform.GetChild(0).gameObject.SetActive(false);
+        yesNoInstance.SetActive(true);
+        yesNoInstance.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
+        yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(onYes);
     }
 
     public void ShowLoadScreen() 
@@ -192,6 +210,12 @@ public class MainMenuUIManager : MonoBehaviour
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
         }
         ShowBlock();
+    }
+
+    private void RemoveYesNo()
+    {
+        blockInstance.transform.GetChild(0).gameObject.SetActive(true);
+        yesNoInstance.SetActive(false);
     }
 
     public void ExitGame()

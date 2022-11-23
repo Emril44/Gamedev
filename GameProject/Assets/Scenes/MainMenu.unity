@@ -299,6 +299,22 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7840597627502491118, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
+      propertyPath: m_Colors.m_ColorMultiplier
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7840597627502491118, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.b
+      value: 0.16981131
+      objectReference: {fileID: 0}
+    - target: {fileID: 7840597627502491118, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.g
+      value: 0.028646156
+      objectReference: {fileID: 0}
+    - target: {fileID: 7840597627502491118, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
+      propertyPath: m_Colors.m_DisabledColor.r
+      value: 0.024830898
+      objectReference: {fileID: 0}
+    - target: {fileID: 7840597627502491118, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1664652490}
@@ -547,6 +563,10 @@ PrefabInstance:
       propertyPath: block
       value: 
       objectReference: {fileID: 3565471699107707055, guid: ede18b7b11c9a7b4aa1cb145cbc359de, type: 3}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: yesNo
+      value: 
+      objectReference: {fileID: 8800904965019823820, guid: 1c4d832d26dfb774a9b2d26477ee66ba, type: 3}
     - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
       propertyPath: canvas
       value: 

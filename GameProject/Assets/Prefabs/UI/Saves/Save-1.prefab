@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 5000378827575185918}
   - component: {fileID: 4797603634420631596}
   - component: {fileID: 6064701793597619041}
+  - component: {fileID: 8045341630589495742}
   m_Layer: 0
   m_Name: Save-1
   m_TagString: Untagged
@@ -228,8 +229,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_HighlightedColor: {r: 0.92941177, g: 0.9372549, b: 0.9490196, a: 1}
+    m_PressedColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -266,6 +267,21 @@ MonoBehaviour:
   day: {fileID: 6139205359469361442}
   sparksAmount: {fileID: 8291124356507032359}
   time: {fileID: 3473529609484113916}
+--- !u!114 &8045341630589495742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978211294157135205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.18431373}
+  m_EffectDistance: {x: 21.93, y: -24.19}
+  m_UseGraphicAlpha: 1
 --- !u!1 &3046357969465290913
 GameObject:
   m_ObjectHideFlags: 0
