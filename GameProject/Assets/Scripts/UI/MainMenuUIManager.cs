@@ -51,7 +51,6 @@ public class MainMenuUIManager : MonoBehaviour
         yesNoInstance.SetActive(false);
         yesNoInstance.transform.SetParent(canvas.transform, false);
         var no = yesNoInstance.transform.GetChild(1).GetChild(2).gameObject;
-        Debug.Log(no.name);
         no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });
     }
 
@@ -66,7 +65,7 @@ public class MainMenuUIManager : MonoBehaviour
         PlayerPrefs.SetInt("Language", current);
         foreach (LocalizedText localizedText in canvas.transform.GetComponentsInChildren<LocalizedText>())
         {
-            localizedText.Awake();
+            localizedText.OnEnable();
         }
     }
 
@@ -122,16 +121,16 @@ public class MainMenuUIManager : MonoBehaviour
         {
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
         }
-        GameObject s = new GameObject();
+        GameObject s = new GameObject("Saves Block");
         s.transform.SetParent(blockInstance.transform.GetChild(1), false);
         s.transform.localPosition = new Vector3(4.8f, 31.6f, -14);
         s.transform.localScale = new Vector3(0.06f, 0.06f, 0.06f);
-        var save = SavesManager.Instance.Autosave();
+        var autosave = SavesManager.Instance.Autosave();
         if(save != null)
         {
-            var card = SaveCard(autosaveString, save, s.transform, 0);
-            card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log("autosave"); }); //load
-            card.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => { Debug.Log("X"); }); //yesNo delete
+            var card = SaveCard(autosaveString, autosave, s.transform, 0);
+            card.GetComponent<Button>().onClick.RemoveAllListeners();
+            card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log("you don't overwrite autosave to start a new game"); }); //load
         }
         var l = Instantiate(line, s.transform);
         l.transform.localPosition = l.transform.localPosition + new Vector3(0, -375);
@@ -146,13 +145,13 @@ public class MainMenuUIManager : MonoBehaviour
                 {
                     card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
                 }
-                card.GetComponent<Button>().onClick.AddListener(() => { });
             }
             else
             {
                 var card = Instantiate(newSave, s.transform);
                 card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338 * (j+1) + 415);
-                card.GetComponent<Button>().onClick.AddListener(() => { });
+                int n = j + 1;
+                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.NewGame(n); });
             }
         }
         ShowBlock();
@@ -170,7 +169,7 @@ public class MainMenuUIManager : MonoBehaviour
         save.GetComponent<SaveTexts>().sparksAmount.text = saveInfo.sparks.ToString();
         save.GetComponent<SaveTexts>().time.text = saveInfo.time / 60 + ":" + (((saveInfo.time % 60) < 10) ? "0" + saveInfo.time % 60 : saveInfo.time % 60);
 
-        save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Overwrite this save", () => { SavesManager.Instance.Load(n); }) ; });
+        save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Overwrite this save", () => { SavesManager.Instance.NewGame(n); }) ; });
         var x = save.transform.GetChild(1).gameObject;
         x.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Delete this save", () => { SavesManager.Instance.RemoveSave(n); }); });
         return save;

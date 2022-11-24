@@ -43,17 +43,17 @@ public class SavesManager : MonoBehaviour
 
     public void NewGame(int i)
     {
-        
+        Debug.Log("New game on slot #" + i);
     }
 
     public void RemoveSave(int i)
     {
-        
+        Debug.Log("Removing save #" + i);
     }
 
     public void Load(int i)
     {
-        // ...
+        Debug.Log("Loading save #" + i);
     }
 
     public void Save()

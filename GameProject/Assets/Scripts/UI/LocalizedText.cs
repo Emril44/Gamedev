@@ -6,16 +6,6 @@ public class LocalizedText : MonoBehaviour
     [SerializeField] private string text;
     [SerializeField] private char separator = '|';
     [SerializeField] private TextMeshProUGUI textMesh;
-
-    public void Awake()
-    {
-        if (!PlayerPrefs.HasKey("Language"))
-        {
-            Debug.LogWarning("Language not set");
-            PlayerPrefs.SetInt("Language", 0);
-        }
-        textMesh.text = Pick();
-    }
     
     private string Pick()
     {
@@ -30,5 +20,15 @@ public class LocalizedText : MonoBehaviour
         {
             return variations[n];
         }
+    }
+
+    public void OnEnable()
+    {
+        if (!PlayerPrefs.HasKey("Language"))
+        {
+            Debug.LogWarning("Language not set");
+            PlayerPrefs.SetInt("Language", 0);
+        }
+        textMesh.text = Pick();
     }
 }
