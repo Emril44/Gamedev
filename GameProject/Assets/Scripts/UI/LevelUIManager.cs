@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -26,6 +27,12 @@ public class LevelUIManager : MonoBehaviour
     [Header("HUDs")]
     [SerializeField] private GameObject leverLook;
     private GameObject leverLookInstance;
+    [SerializeField] private GameObject questTitle;
+    [SerializeField] private GameObject questLine;
+    [SerializeField] private GameObject objectiveMassage;
+    [SerializeField] private GameObject questPoint;
+
+    private List<Quest> activeQuests;
 
     private void Start()
     {
@@ -84,6 +91,39 @@ public class LevelUIManager : MonoBehaviour
             instance.transform.position = Vector3.Lerp(instance.transform.position, position, Time.deltaTime * 2.15f);
             yield return null;
         }
+    }
+
+    public void AddQuestCard(Quest quest)
+    {
+        activeQuests.Add(quest);
+        quest.onComplete += () => { RemoveQuestCard(quest); };
+        var title = quest.GetTitle();
+        var objectives = quest.GetObjectives().ToArray();
+        string[] messages = new string[objectives.Length];
+        TextMeshProUGUI[] objectiveTexts = new TextMeshProUGUI[objectives.Length];
+        for (int i = 0; i < objectives.Length; i++)
+        {
+            objectiveTexts[i].text = objectives[i].GetMessage();
+            objectives[i].onComplete += () => { objectiveTexts[i].text = "<s>" + objectiveTexts[i].text + "</s>"; };
+        }
+    }
+    
+    public float QuestCardHeight(Quest quest)
+    {
+        //base height
+        float height = 9999;
+        foreach (var objective in quest.GetObjectives())
+        {
+            //objective height
+            height += 22222;
+        }
+        return height;
+    }
+
+    public void RemoveQuestCard(Quest quest)
+    {
+        activeQuests.Remove(quest);
+        
     }
 
     public void ShowPauseScreen() //aka Menu Options
