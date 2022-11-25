@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665c6de3c26ef3b42952a86db67d8db8, type: 3}
   m_Name: 2-!Options
   m_EditorClassIdentifier: 
+  separator: 47
   options:
-  - A
-  - B
-  optionsBranches:
-  - {fileID: 11400000, guid: 91fe026f28e99ca42b6f8052bf235f31, type: 2}
-  - {fileID: 11400000, guid: 4366deeeda787c74c8eb88bc191b4e26, type: 2}
+  - option: "\u0410/\u0410"
+    optionBranch: {fileID: 11400000, guid: 91fe026f28e99ca42b6f8052bf235f31, type: 2}
+  - option: "\u0412/\u0411"
+    optionBranch: {fileID: 11400000, guid: 4366deeeda787c74c8eb88bc191b4e26, type: 2}
   text: []
   next: {fileID: 0}

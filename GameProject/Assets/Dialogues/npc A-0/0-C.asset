@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665c6de3c26ef3b42952a86db67d8db8, type: 3}
   m_Name: 0-C
   m_EditorClassIdentifier: 
+  separator: 45
   options: []
-  optionsBranches: []
   text:
-  - c1
-  - c2
+  - c1-67
+  - c2-68
   next: {fileID: 11400000, guid: c215883ae465f9d449013537fe72c4c2, type: 2}

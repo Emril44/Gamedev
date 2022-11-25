@@ -52,11 +52,11 @@ public class DialogueManager : MonoBehaviour
         dialogueCanvas.SetActive(true);
         if (currentNode.IsOption())
         {
-            AddButtons(currentNode.options);
+            AddButtons(GetLocalizedOptions(currentNode.options, currentNode.separator));
         }
         else
         {
-            AddText(currentNode.text[phraseCounter]);
+            AddText(GetLocalizedText(currentNode.text[phraseCounter], currentNode.separator));
         }
     }
 
@@ -85,13 +85,13 @@ public class DialogueManager : MonoBehaviour
         if (currentNode.IsOption())
         {
             dialogueText.text = "";
-            AddButtons(currentNode.options);
+            AddButtons(GetLocalizedOptions(currentNode.options, currentNode.separator));
         }
         else
         {
             if (phraseCounter < currentNode.text.Length)
             {
-                AddText(currentNode.text[phraseCounter]);
+                AddText(GetLocalizedText(currentNode.text[phraseCounter], currentNode.separator));
             }
             else
             {
@@ -101,7 +101,31 @@ public class DialogueManager : MonoBehaviour
             }
         }
     }    
-    
+
+    private string GetLocalizedText(string text, char separator)
+    {
+        if (separator == ' ' || separator == 0)
+        {
+            separator = '+';
+        }
+        string[] texts = text.Split(separator);
+        return texts[PlayerPrefs.GetInt("Language")];
+    }
+
+    private string[] GetLocalizedOptions(DialogueNode.Option[] options, char separator)
+    {
+        if (separator == ' ')
+        {
+            separator = '+';
+        }
+        string[] localizedOptions = new string[options.Length];
+        for (int i = 0; i < options.Length; i++)
+        {
+            localizedOptions[i] = GetLocalizedText(options[i].option, separator);
+        }
+        return localizedOptions;
+    }
+
     public void AddText(string text)
     {
         phraseCounter++;
@@ -141,7 +165,7 @@ public class DialogueManager : MonoBehaviour
         }
         if (currentNode.IsOption())
         {
-            currentNode = currentNode.optionsBranches[i];
+            currentNode = currentNode.options[i].optionBranch;
             GetNext();
         } 
     }

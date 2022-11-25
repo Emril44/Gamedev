@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665c6de3c26ef3b42952a86db67d8db8, type: 3}
   m_Name: 3-End
   m_EditorClassIdentifier: 
+  separator: 43
   options: []
-  optionsBranches: []
   text:
-  - End
+  - "End+\u041A\u0456\u043D\u0435\u0446\u044C"
   next: {fileID: 0}

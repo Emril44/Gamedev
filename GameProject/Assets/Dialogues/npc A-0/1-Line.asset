@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665c6de3c26ef3b42952a86db67d8db8, type: 3}
   m_Name: 1-Line
   m_EditorClassIdentifier: 
+  separator: 43
   options: []
-  optionsBranches: []
   text:
-  - m
-  - n
-  - b
-  - v
+  - "m+\u0419"
+  - "n+\u0426"
+  - "b+\u0423"
+  - "v+\u041A"
   next: {fileID: 11400000, guid: cbb7aabbf88784b4ba589516ba063d13, type: 2}

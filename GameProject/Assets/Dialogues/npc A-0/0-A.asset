@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665c6de3c26ef3b42952a86db67d8db8, type: 3}
   m_Name: 0-A
   m_EditorClassIdentifier: 
+  separator: 43
   options: []
-  optionsBranches: []
   text:
-  - a1
-  - a2
-  - a3
-  - a4
+  - "a1+\u0410\u0406"
+  - "a2+\u0410\u04062"
+  - "a3+\u0410\u04063"
+  - "a4+\u0410\u04064"
   next: {fileID: 11400000, guid: c215883ae465f9d449013537fe72c4c2, type: 2}

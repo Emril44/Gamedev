@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 665c6de3c26ef3b42952a86db67d8db8, type: 3}
   m_Name: 0-B
   m_EditorClassIdentifier: 
+  separator: 43
   options: []
-  optionsBranches: []
   text:
-  - b1
-  - b2
-  - b3
-  - b4
-  - b5
-  - b6
+  - b1+4
+  - b2+5
+  - b3+6
+  - b4+7
+  - b5+8
+  - b6+9
   next: {fileID: 11400000, guid: c215883ae465f9d449013537fe72c4c2, type: 2}

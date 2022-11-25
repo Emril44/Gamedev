@@ -4,6 +4,7 @@ public abstract class Objective : ScriptableObject
 {
     public event Action onComplete;
 
+    [TextArea(1, 5)]
     [SerializeField] protected string message;
 
     protected void Complete()

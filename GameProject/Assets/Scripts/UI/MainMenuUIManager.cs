@@ -19,8 +19,11 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private GameObject save;
     [SerializeField] private GameObject newSave;
     [Header("SavesLocalization")]
+    [TextArea(1, 5)]
     [SerializeField] private string autosaveString;
+    [TextArea(1, 5)]
     [SerializeField] private string saveString;
+    [TextArea(1, 5)]
     [SerializeField] private string dayString;
 
     public static MainMenuUIManager Instance { get; private set; }

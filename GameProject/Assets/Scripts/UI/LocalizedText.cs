@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class LocalizedText : MonoBehaviour
 {
+    [TextArea(1, 5)]
     [SerializeField] private string text;
     [SerializeField] private char separator = '|';
     [SerializeField] private TextMeshProUGUI textMesh;
