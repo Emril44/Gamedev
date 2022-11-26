@@ -11,6 +11,6 @@ public class NPC : MonoBehaviour
     IEnumerator DialogueTrigger()
     {
         yield return new WaitForSeconds(1.2f);
-        GetComponent<DialogueTrigger>().TriggerDialogue(gameObject);
+        GetComponent<DialogueTrigger>().TriggerDialogue();
     }
 }

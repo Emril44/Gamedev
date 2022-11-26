@@ -40,7 +40,7 @@ public class DialogueManager : MonoBehaviour
         dialogueText.text = "";
     }
     
-    public void GetTriggered(GameObject NPC, Dialogue dialogue)
+    public void GetTriggered(Dialogue dialogue)
     {
         this.dialogue = dialogue;
         currentNode = dialogue.firstNode;
@@ -52,11 +52,11 @@ public class DialogueManager : MonoBehaviour
         dialogueCanvas.SetActive(true);
         if (currentNode.IsOption())
         {
-            AddButtons(GetLocalizedOptions(currentNode.options, currentNode.separator));
+            AddButtons(GetLocalizedOptions(((DialogueOption)currentNode).options, currentNode.separator));
         }
         else
         {
-            AddText(GetLocalizedText(currentNode.text[phraseCounter], currentNode.separator));
+            AddText(GetLocalizedText(((DialogueText)currentNode).text[phraseCounter], currentNode.separator));
         }
     }
 
@@ -85,17 +85,18 @@ public class DialogueManager : MonoBehaviour
         if (currentNode.IsOption())
         {
             dialogueText.text = "";
-            AddButtons(GetLocalizedOptions(currentNode.options, currentNode.separator));
+            AddButtons(GetLocalizedOptions(((DialogueOption)currentNode).options, currentNode.separator));
         }
         else
         {
-            if (phraseCounter < currentNode.text.Length)
+            DialogueText textNode = (DialogueText)currentNode;
+            if (phraseCounter < textNode.text.Length)
             {
-                AddText(GetLocalizedText(currentNode.text[phraseCounter], currentNode.separator));
+                AddText(GetLocalizedText(textNode.text[phraseCounter], currentNode.separator));
             }
             else
             {
-                currentNode = currentNode.next;
+                currentNode = textNode.next;
                 phraseCounter = 0;
                 GetNext();
             }
@@ -112,7 +113,7 @@ public class DialogueManager : MonoBehaviour
         return texts[PlayerPrefs.GetInt("Language")];
     }
 
-    private string[] GetLocalizedOptions(DialogueNode.Option[] options, char separator)
+    private string[] GetLocalizedOptions(DialogueOption.Option[] options, char separator)
     {
         if (separator == ' ')
         {
@@ -165,7 +166,7 @@ public class DialogueManager : MonoBehaviour
         }
         if (currentNode.IsOption())
         {
-            currentNode = currentNode.options[i].optionBranch;
+            currentNode = ((DialogueOption)currentNode).options[i].optionBranch;
             GetNext();
         } 
     }

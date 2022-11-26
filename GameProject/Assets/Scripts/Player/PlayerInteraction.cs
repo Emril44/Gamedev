@@ -114,16 +114,22 @@ public class PlayerInteraction : MonoBehaviour
                 else if (nearDialogue)
                 {
                     DialogueTrigger trigger = dialogueGO.GetComponent<DialogueTrigger>();
+                    Dialogue dialogue = trigger.GetCurrentDialogue();
                     Controllable = false;
                     GetComponent<PlayerMovement>().Controllable = false;
                     void reenable()
                     {
                         Controllable = true;
                         GetComponent<PlayerMovement>().Controllable = true;
-                        trigger.Dialogue.onDialogueEnd -= reenable;
+                        dialogue.onDialogueEnd -= reenable;
+                        if (trigger.tag != "DialogueTrigger") // for the rare case when further dialogue is impossible, i.e. finishing last main sequence and having no fallback dialogue
+                        {
+                            nearDialogue = false;
+                            dialogueGO = null;
+                        }
                     };
-                    trigger.Dialogue.onDialogueEnd += reenable;
-                    trigger.TriggerDialogue(dialogueGO);
+                    dialogue.onDialogueEnd += reenable;
+                    trigger.TriggerDialogue();
                 }
                 else if (nearMovable)
                 {
