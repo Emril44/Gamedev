@@ -42,6 +42,7 @@ public class LevelUIManager : MonoBehaviour
 
     private List<Quest> activeQuests = new List<Quest>();
     private Queue<IEnumerator> questCoroutines = new Queue<IEnumerator>();
+    private int cardsMoving = 0;
     private bool isCoroutineRunning = false;
     private GameObject quests;
 
@@ -55,10 +56,12 @@ public class LevelUIManager : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         AddQuestCard(sampleQuest.GetComponent<Quest>());
         AddQuestCard(sampleQuest2.GetComponent<Quest>());
-        AddQuestCard(sampleQuest3.GetComponent<Quest>());
-        AddQuestCard(sampleQuest4.GetComponent<Quest>());
-        yield return new WaitForSeconds(8f);
         RemoveQuestCard(activeQuests[1]);
+        AddQuestCard(sampleQuest3.GetComponent<Quest>());
+        RemoveQuestCard(activeQuests[0]);
+        AddQuestCard(sampleQuest4.GetComponent<Quest>());
+        RemoveQuestCard(activeQuests[2]);
+        RemoveQuestCard(activeQuests[3]);
     }
 
     /*
@@ -78,7 +81,7 @@ public class LevelUIManager : MonoBehaviour
         StopCoroutine("ShowLeverLook");
         StartCoroutine(FadeOut(leverLookInstance, image, 0.57f, text, leverLookInstance.transform.position + new Vector3(0, -2.6f)));
     }
-    */
+    
     
     IEnumerator FadeOut(GameObject instance, Image image, float imageBaseA, TextMeshProUGUI text, Vector3 position)
     {
@@ -103,7 +106,8 @@ public class LevelUIManager : MonoBehaviour
         }
         yield return null;
     }
-
+    */
+    
     IEnumerator FadeIn(GameObject instance, Image image, float imageTargetA, TextMeshProUGUI text, Vector3 position, float duration)
     {
         instance.SetActive(true);
@@ -117,9 +121,10 @@ public class LevelUIManager : MonoBehaviour
             instance.transform.localPosition = Vector3.Lerp(instance.transform.localPosition, position, Time.deltaTime * 2.15f);
             yield return null;
         }
+        questCoroutines.Dequeue();
         if (questCoroutines.Count > 0)
         {
-            StartCoroutine(questCoroutines.Dequeue());
+            StartCoroutine(questCoroutines.Peek());
         }
         else
         {
@@ -158,9 +163,10 @@ public class LevelUIManager : MonoBehaviour
         }
         line.fillAmount = 1;
         text.color = new Color(text.color.r, text.color.g, text.color.b, 1);
+        questCoroutines.Dequeue();
         if (questCoroutines.Count > 0)
         {
-            StartCoroutine(questCoroutines.Dequeue());
+            StartCoroutine(questCoroutines.Peek());
         }
         else
         {
@@ -212,7 +218,7 @@ public class LevelUIManager : MonoBehaviour
         
         if (!isCoroutineRunning)
         {
-            StartCoroutine(questCoroutines.Dequeue());
+            StartCoroutine(questCoroutines.Peek());
         }      
         activeQuests.Add(quest);
         quest.onComplete += () => { RemoveQuestCard(quest); };
@@ -232,11 +238,17 @@ public class LevelUIManager : MonoBehaviour
 
     public void RemoveQuestCard(Quest quest)
     {
-        StartCoroutine(RemoveQuestCardCoroutine(quest, quests.transform.GetChild(activeQuests.IndexOf(quest)).gameObject, activeQuests.IndexOf(quest), QuestCardHeight(quest)));
+        questCoroutines.Enqueue(RemoveQuestCardCoroutine(quest, QuestCardHeight(quest)));
+        if (questCoroutines.Count < 2 && !isCoroutineRunning)
+        {
+            StartCoroutine(questCoroutines.Peek());
+        }
     }
 
-    IEnumerator RemoveQuestCardCoroutine(Quest quest, GameObject card, int i, float height)
+    IEnumerator RemoveQuestCardCoroutine(Quest quest, float height)
     {
+        var card = quests.transform.GetChild(activeQuests.IndexOf(quest)).gameObject;
+        int i = activeQuests.IndexOf(quest);
         activeQuests.Remove(quest);
         float duration = 1.1f;
         float time = 0;
@@ -264,6 +276,7 @@ public class LevelUIManager : MonoBehaviour
         }
         Destroy(card);
         yield return null;
+        questCoroutines.Dequeue();
         StartCoroutine(MoveQuestCards(i, height));
     }
 
@@ -272,21 +285,44 @@ public class LevelUIManager : MonoBehaviour
         for (int i = n; i < activeQuests.Count; i++)
         {
             var card = quests.transform.GetChild(i).gameObject;
-            StartCoroutine(MoveCard(card, new Vector3(0, height * 275)));
+            StartCoroutine(MoveCard(card, new Vector3(0, height * 265)));
             yield return null;
+        }
+        if (cardsMoving == 0)
+        {
+            if (questCoroutines.Count > 0)
+            {
+                StartCoroutine(questCoroutines.Peek());
+            }
         }
     }
 
     IEnumerator MoveCard(GameObject card, Vector3 delta)
     {
+        cardsMoving++;
         float speed = 1;
         Vector3 goal = card.transform.localPosition + delta;
-        while ((card.transform.localPosition - goal).magnitude > 0.0001f)
+        while ((card.transform.localPosition - goal).magnitude > 1f)
         {
-            card.transform.localPosition = Vector3.Lerp(card.transform.localPosition, goal, Time.deltaTime * speed);
+            if((card.transform.localPosition - goal).magnitude < 6f)
+            {
+                card.transform.localPosition = Vector3.Lerp(card.transform.localPosition, goal, Time.deltaTime * speed * 2);
+            }
+            else
+            {
+                card.transform.localPosition = Vector3.Lerp(card.transform.localPosition, goal, Time.deltaTime * speed);
+            }
             yield return null;
         }
-        card.transform.position = goal;
+        card.transform.localPosition = goal;
+        cardsMoving--;
+        if(cardsMoving == 0)
+        {
+            if (questCoroutines.Count > 0)
+            {
+                StartCoroutine(questCoroutines.Peek());
+            }
+        }
     }
 
     
