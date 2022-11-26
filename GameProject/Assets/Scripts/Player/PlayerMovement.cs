@@ -8,10 +8,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float movementSpeed = 14f;
     [SerializeField] private float jumpVelocity = 14f;
     [SerializeField] private float outOfWaterMultiplier = 1.6f;
+    [SerializeField] private float outOfLavaMultiplier = 1.4f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Collider2D feetCollider;
     private Rigidbody2D rb;
     private bool inWater = false;
+    private bool inLava = false;
     private float environmentSpeed = 1f;
     private Quaternion rotationGoal;
 
@@ -37,6 +39,20 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             environmentSpeed = 0.4f;
+        }
+    }
+
+    public void SetInLava(bool inLava)
+    {
+        this.inLava = inLava;
+        if (!inLava)
+        {
+            environmentSpeed = 1f;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * outOfLavaMultiplier);
+        }
+        else
+        {
+            environmentSpeed = 0.3f;
         }
     }
 

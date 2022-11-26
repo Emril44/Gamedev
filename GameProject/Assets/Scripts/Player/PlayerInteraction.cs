@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
 {
-    public bool Controllable;
+    public bool Controllable = true;
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
     private bool nearLever = false;
@@ -18,6 +18,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject grabbedObject;
     [SerializeField] private int health = 3;
     [SerializeField] private float undamageableTime = 0.65f;
+    private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
 
     private Rigidbody2D rb;
@@ -92,6 +93,11 @@ public class PlayerInteraction : MonoBehaviour
 
     private void Update()
     {
+        if (IsFireproof())
+        {
+            fireproofTime -= Time.deltaTime;
+            if (fireproofTime < 0) fireproofTime = 0;
+        }
         if (Controllable)
         {
             if (Input.GetKeyDown(KeyCode.E))
@@ -212,6 +218,11 @@ public class PlayerInteraction : MonoBehaviour
                 damageable = true;
                 StartCoroutine(SetInWater(true));
                 break;
+            case "Lava":
+                StopAllCoroutines();
+                damageable = true;
+                StartCoroutine(SetInLava(true));
+                break;
             case "Lever":
                 nearLever = true;
                 leverGO = other.gameObject;
@@ -236,6 +247,14 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Lava") && !IsFireproof())
+        {
+            GetDamaged();
+        }
+    }
+
     void OnTriggerExit2D(Collider2D other)
     {
         switch (other.gameObject.tag)
@@ -243,6 +262,10 @@ public class PlayerInteraction : MonoBehaviour
             case "Water":
                 StopAllCoroutines();
                 StartCoroutine(SetInWater(false));
+                break;
+            case "Lava":
+                StopAllCoroutines();
+                StartCoroutine(SetInLava(false));
                 break;
             case "Lever":
                 nearLever = false;
@@ -259,9 +282,25 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
+    public void ApplyFireproof(float seconds)
+    {
+        fireproofTime = seconds;
+    }
+
+    public bool IsFireproof()
+    {
+        return fireproofTime > 0;
+    }
+
     IEnumerator SetInWater(bool isInWater)
     {
         yield return new WaitForSeconds(0.1f);
         gameObject.GetComponent<PlayerMovement>().SetInWater(isInWater);
+    }
+
+    IEnumerator SetInLava(bool isInLava)
+    {
+        yield return new WaitForSeconds(0.1f);
+        gameObject.GetComponent<PlayerMovement>().SetInWater(isInLava);
     }
 }
