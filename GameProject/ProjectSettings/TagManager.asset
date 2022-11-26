@@ -15,6 +15,7 @@ TagManager:
   - DialogueTrigger
   - Movable
   - Lava
+  - Damage
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - Damage
+  - 
   - 
   - 
   - 

@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 6287442294822682077}
   - component: {fileID: 6287442294822682079}
   - component: {fileID: 406457969}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BlackSquare
-  m_TagString: Untagged
+  m_TagString: Damage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

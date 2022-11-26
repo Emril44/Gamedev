@@ -42,14 +42,6 @@ public class PlayerInteraction : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void FixedUpdate()
-    {
-        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Damage"))) 
-        {
-            GetDamaged();
-        }
-    }
-
     void PutPrism(PrismShard prismShard)
     {
         EnvironmentManager.Instance.SetNewColor(prismShard.getColor());
@@ -249,9 +241,14 @@ public class PlayerInteraction : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Lava") && !IsFireproof())
+        switch (other.gameObject.tag)
         {
-            GetDamaged();
+            case "Lava":
+                if (!IsFireproof()) GetDamaged();
+                break;
+            case "Damage":
+                GetDamaged();
+                break;
         }
     }
 
