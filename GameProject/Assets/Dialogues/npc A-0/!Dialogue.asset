@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0562645db54ef2e4c959daf10fc40472, type: 3}
   m_Name: '!Dialogue'
   m_EditorClassIdentifier: 
-  <firstNode>k__BackingField: {fileID: 11400000, guid: 787d72979f7013e4aa0938ed725ca6c9, type: 2}
+  <firstNode>k__BackingField: {fileID: 11400000, guid: bbf3ff91a42ea084a8c2c665405f0ea5, type: 2}
