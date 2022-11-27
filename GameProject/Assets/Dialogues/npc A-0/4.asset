@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 4
   m_EditorClassIdentifier: 
   separator: 0
-  characterName: 
+  character: -1
   text:
   - "He never knew whether the Circle joked or not.+\u0412\u0456\u043D \u043D\u0456\u043A\u043E\u043B\u0438
     \u043D\u0435 \u0434\u0456\u0437\u043D\u0430\u0432\u0441\u044F, \u0447\u0438 \u041A\u043E\u043B\u043E

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 0
   m_EditorClassIdentifier: 
   separator: 0
-  characterName: "Circle+\u041A\u043E\u043B\u043E"
+  character: 1
   text:
   - "Hello.+\u041F\u0440\u0438\u0432\u0456\u0442."
   - "Do you prefer apples or bananas?+\u0422\u043E\u0431\u0456 \u0431\u0456\u043B\u044C\u0448\u0435

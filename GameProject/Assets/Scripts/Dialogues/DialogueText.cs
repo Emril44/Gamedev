@@ -5,7 +5,7 @@ using UnityEngine;
 public class DialogueText : DialogueNode
 {
     [Header("Phrase sequence")]
-    public string characterName;
+    public CharacterName.Character character;
     [TextArea(1, 5)]
     public string[] text;
     public DialogueNode next;

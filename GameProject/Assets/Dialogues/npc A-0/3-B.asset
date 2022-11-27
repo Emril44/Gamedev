@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 3-B
   m_EditorClassIdentifier: 
   separator: 0
-  characterName: "Circle+\u041A\u043E\u043B\u043E"
+  character: 1
   text:
   - "The Party is proud of you.+\u041F\u0430\u0440\u0442\u0456\u044F \u043F\u0438\u0448\u0430\u0454\u0442\u044C\u0441\u044F
     \u0442\u043E\u0431\u043E\u044E."
