@@ -34,20 +34,23 @@ public class LevelUIManager : MonoBehaviour
     [SerializeField] private GameObject questTitle;
     [SerializeField] private GameObject questLine;
     [SerializeField] private GameObject objectiveGO;
+    //TO remove
     [SerializeField] private GameObject sampleQuest;
     [SerializeField] private GameObject sampleQuest2;
     [SerializeField] private GameObject sampleQuest3;
     [SerializeField] private GameObject sampleQuest4;
+    //TO remove end
     [SerializeField] private Transform player;
     [SerializeField] private AnimationCurve cardMoveCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
 
     private List<Quest> activeQuests = new List<Quest>();
     private Queue<IEnumerator> questCoroutines = new Queue<IEnumerator>();
-    private int cardsMoving = 0;
     private bool isCoroutineRunning = false;
     private GameObject quests;
+    private int cardsMoving = 0;
 
+    //TO remove
     private void Start()
     {
         StartCoroutine(Test());
@@ -58,15 +61,18 @@ public class LevelUIManager : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         AddQuestCard(sampleQuest.GetComponent<Quest>());
         AddQuestCard(sampleQuest2.GetComponent<Quest>());
+        RemoveQuestCard(activeQuests[1]);
         AddQuestCard(sampleQuest4.GetComponent<Quest>());
         AddQuestCard(sampleQuest3.GetComponent<Quest>());
-        RemoveQuestCard(activeQuests[1]);
-        
         RemoveQuestCard(activeQuests[0]);
-        
         RemoveQuestCard(activeQuests[2]);
         RemoveQuestCard(activeQuests[3]);
+        AddQuestCard(sampleQuest.GetComponent<Quest>());
+        AddQuestCard(sampleQuest3.GetComponent<Quest>());
+        RemoveQuestCard(activeQuests[0]);
+        RemoveQuestCard(activeQuests[3]);
     }
+    //TO remove end
 
     /*
     public void ShowLeverLook(Vector3 position)
@@ -114,8 +120,8 @@ public class LevelUIManager : MonoBehaviour
     
     IEnumerator FadeIn(GameObject instance, Image image, float imageTargetA, TextMeshProUGUI text, Vector3 position, float duration)
     {
-        instance.SetActive(true);
         isCoroutineRunning = true;
+        instance.SetActive(true);
         float time = 0;
         while (time < duration)
         {
@@ -126,21 +132,17 @@ public class LevelUIManager : MonoBehaviour
             yield return null;
         }
         questCoroutines.Dequeue();
-        if (questCoroutines.Count > 0)
-        {
-            StartCoroutine(questCoroutines.Peek());
-        }
-        else
-        {
-            isCoroutineRunning = false;
-        }
+        isCoroutineRunning = false;
+        TryMoveQueue();
     }
     
-    IEnumerator StrikeText(TextMeshProUGUI text, float durationOne)
+    IEnumerator StrikeText(TextMeshProUGUI text)
     {
-        int symbols = text.text.Length;
+        isCoroutineRunning = true;
         float time = 0;
         string originalText = text.text;
+        float durationOne = 0.017f;
+        int symbols = text.text.Length;
         float duration = durationOne * symbols;
         while (time < duration)
         {
@@ -148,13 +150,16 @@ public class LevelUIManager : MonoBehaviour
             text.text = "<s>" + originalText.Substring(0, (int)(symbols * (time / duration))) + "</s>" + originalText.Substring((int)(symbols * (time / duration)));
             yield return null;
         }
+        questCoroutines.Dequeue();
+        isCoroutineRunning = false;
+        TryMoveQueue();
     }
 
     IEnumerator FadeInQuestTitle(GameObject title, Image line)
     {
+        float duration = 0.8f;
         isCoroutineRunning = true;
         var text = title.GetComponent<TextMeshProUGUI>();
-        float duration = 0.8f;
         text.color = new Color(text.color.r, text.color.g, text.color.b, 0);
         title.SetActive(true);
         float time = 0;
@@ -168,67 +173,57 @@ public class LevelUIManager : MonoBehaviour
         line.fillAmount = 1;
         text.color = new Color(text.color.r, text.color.g, text.color.b, 1);
         questCoroutines.Dequeue();
-        if (questCoroutines.Count > 0)
-        {
-            StartCoroutine(questCoroutines.Peek());
-        }
-        else
-        {
-            isCoroutineRunning = false;
-        }
+        isCoroutineRunning = false;
+        TryMoveQueue();
     }
 
     public void AddQuestCard(Quest quest)
     {
-        float baseY = 4.02f + player.localPosition.y + 3.2108f;
+        float y = 4.02f + player.localPosition.y + 3.2108f;
         foreach (Quest q in activeQuests)
         {
-            baseY -= QuestCardHeight(q);
+            y -= QuestCardHeight(q);
         }
-        GameObject questGO = new GameObject("Quest");
+        
+        GameObject questGO = new("Quest");
         questGO.transform.SetParent(canvasHUD.transform.GetChild(0), false);
 
         var titleGO = Instantiate(questTitle, questGO.transform);
         titleGO.GetComponent<TextMeshProUGUI>().text = quest.GetTitle();
-        titleGO.transform.position = new Vector2(titleGO.transform.position.x, baseY);
+        titleGO.transform.position = new Vector2(titleGO.transform.position.x, y);
+        titleGO.SetActive(false);
 
-        baseY -= 0.29f;
+        y -= 0.29f;
         var line = Instantiate(questLine, questGO.transform);
-        line.transform.position = new Vector2(line.transform.position.x, baseY);
-        baseY += 0.05f;
+        line.transform.position = new Vector2(line.transform.position.x, y);
+        y += 0.05f;
+
+        line.GetComponent<Image>().fillAmount = 0;
+        questCoroutines.Enqueue(FadeInQuestTitle(titleGO, line.GetComponent<Image>()));
+        TryMoveQueue();
 
         var objectives = quest.GetObjectives().ToArray();
-        
-        line.GetComponent<Image>().fillAmount = 0;
-        titleGO.SetActive(false);
-        questCoroutines.Enqueue(FadeInQuestTitle(titleGO, line.GetComponent<Image>()));
         var objectiveGOs = new GameObject[objectives.Length];
-        TextMeshProUGUI[] objectiveTexts = new TextMeshProUGUI[objectives.Length];
+        TextMeshProUGUI[] objectiveTMPs = new TextMeshProUGUI[objectives.Length];
         for (int i = 0; i < objectives.Length; i++)
         {
             objectiveGOs[i] = Instantiate(objectiveGO, questGO.transform);
-            objectiveTexts[i] = objectiveGOs[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
-            objectiveGOs[i].transform.position = new Vector2(objectiveGOs[i].transform.position.x, baseY - 0.38f * i);
+            objectiveTMPs[i] = objectiveGOs[i].transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            objectiveGOs[i].transform.position = new Vector2(objectiveGOs[i].transform.position.x, y - 0.38f * i);
         }
-        string[] messages = new string[objectives.Length];
         for (int i = 0; i < objectives.Length; i++)
         {
-            objectiveTexts[i].text = objectives[i].GetMessage();
+            objectiveTMPs[i].text = objectives[i].GetMessage();
             objectiveGOs[i].transform.localPosition = objectiveGOs[i].transform.localPosition + new Vector3(0, -90);
             objectiveGOs[i].SetActive(false);
-            questCoroutines.Enqueue(FadeIn(objectiveGOs[i], objectiveGOs[i].transform.GetChild(0).GetComponent<Image>(), 1, objectiveTexts[i], objectiveGOs[i].transform.localPosition + new Vector3(0, 90), 0.7f));
-            objectives[i].onComplete += () => { StartCoroutine(StrikeText(objectiveTexts[i], 0.017f)); };
+            questCoroutines.Enqueue(FadeIn(objectiveGOs[i], objectiveGOs[i].transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMPs[i], objectiveGOs[i].transform.localPosition + new Vector3(0, 90), 0.7f));
+            objectives[i].onComplete += () => { questCoroutines.Enqueue(StrikeText(objectiveTMPs[i])); TryMoveQueue(); };
         }
-        
-        if (!isCoroutineRunning)
-        {
-            StartCoroutine(questCoroutines.Peek());
-        }      
         activeQuests.Add(quest);
         quest.onComplete += () => { RemoveQuestCard(quest); };
     }
     
-    public float QuestCardHeight(Quest quest)
+    private float QuestCardHeight(Quest quest)
     {
         //base height
         float height = 0.59f + 0.07f;
@@ -239,31 +234,33 @@ public class LevelUIManager : MonoBehaviour
         }
         return height;
     }
-
-    public void RemoveQuestCard(Quest quest)
+    
+    private void RemoveQuestCard(Quest quest)
     {
         questCoroutines.Enqueue(RemoveQuestCardCoroutine(quest, QuestCardHeight(quest)));
-        if (questCoroutines.Count < 2 && !isCoroutineRunning)
-        {
-            StartCoroutine(questCoroutines.Peek());
-        }
+        TryMoveQueue();
     }
 
     IEnumerator RemoveQuestCardCoroutine(Quest quest, float height)
     {
+        isCoroutineRunning = true;
         var card = quests.transform.GetChild(activeQuests.IndexOf(quest)).gameObject;
         int i = activeQuests.IndexOf(quest);
         activeQuests.Remove(quest);
-        float time = 0;
-        List<Image> images = new List<Image>();
-        List<TextMeshProUGUI> texts = new List<TextMeshProUGUI>();
-        texts.Add(card.transform.GetChild(0).GetComponent<TextMeshProUGUI>());
-        images.Add(card.transform.GetChild(1).GetComponent<Image>());
+        List<Image> images = new()
+        {
+            card.transform.GetChild(1).GetComponent<Image>()
+        };
+        List<TextMeshProUGUI> texts = new()
+        {
+            card.transform.GetChild(0).GetComponent<TextMeshProUGUI>()
+        };
         for (int k = 2; k < card.transform.childCount; k++)
         {
             images.Add(card.transform.GetChild(k).GetChild(0).GetComponent<Image>());
             texts.Add(card.transform.GetChild(k).GetChild(1).GetComponent<TextMeshProUGUI>());
         }
+        float time = 0;
         while (images[0].color.a > 0)
         {
             time += Time.deltaTime;
@@ -283,84 +280,44 @@ public class LevelUIManager : MonoBehaviour
         questCoroutines.Dequeue();
         StartCoroutine(MoveQuestCards(i, height));
     }
-
-    IEnumerator MoveQuestCards(int n, float height)
+    
+    IEnumerator MoveQuestCards(int n, float distance)
     {
         for (int i = n; i < activeQuests.Count; i++)
         {
             var card = quests.transform.GetChild(i).gameObject;
-            StartCoroutine(MoveCard(card, new Vector3(0, height * 265)));
+            StartCoroutine(MoveCard(card, new Vector3(0, distance * 270)));
             yield return null;
         }
-        if (cardsMoving == 0)
-        {
-            if (questCoroutines.Count > 0)
-            {
-                StartCoroutine(questCoroutines.Peek());
-            }
-        }
+        isCoroutineRunning = false;
+        TryMoveQueue();
     }
 
     IEnumerator MoveCard(GameObject card, Vector3 delta)
     {
         cardsMoving++;
-        float speed = 0.2f;
-        Vector3 pos = card.transform.localPosition;
+        Vector3 start = card.transform.localPosition;
         Vector3 goal = card.transform.localPosition + delta;
+        float speed = 0.2f;
         float time = 0;
-        while ((card.transform.localPosition - goal).magnitude > 0.6f)
+        while ((card.transform.localPosition - goal).magnitude > 0.5f)
         {
             time += (Time.smoothDeltaTime * speed);
             speed = 0.2f + cardMoveCurve.Evaluate(time);
-            card.transform.localPosition = Vector3.Lerp(pos, goal, time);
+            card.transform.localPosition = Vector3.Lerp(start, goal, time);
             yield return null;
         }
         card.transform.localPosition = goal;
         cardsMoving--;
-        if(cardsMoving == 0)
+        TryMoveQueue();
+    }
+    
+    private void TryMoveQueue()
+    {
+        if (questCoroutines.Count >= 1 && cardsMoving <= 0 && !isCoroutineRunning)
         {
-            if (questCoroutines.Count > 0)
-            {
-                StartCoroutine(questCoroutines.Peek());
-            }
+            StartCoroutine(questCoroutines.Peek());
         }
     }
-
     
-    public void ShowPauseScreen() //aka Menu Options
-    {
-        //...
-    }
-
-    public void ShowSaveScreen() //SavesNew Canvas
-    {
-        //...
-    }
-
-    public void ShowLoadScreen() //SavesLoad Canvas
-    {
-        //...
-    }
-
-    public void ShowSettingsScreen()
-    {
-        //...
-    }
-
-    public void ShowAlbumScreen()
-    {
-        //...
-    }
-
-    public void ShowQuestsScreen()
-    { 
-        //...
-    }
-
-    public void ShowQuitScreen()
-    {
-        //...
-    }
-
-    //HUD stuff
 }
