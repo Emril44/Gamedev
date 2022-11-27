@@ -2038,37 +2038,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 290416505}
     - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
-      propertyPath: questLine
-      value: 
-      objectReference: {fileID: 281946533739989736, guid: 33d7f1d38ad82144fb2dda540205c312, type: 3}
-    - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
-      propertyPath: questTitle
-      value: 
-      objectReference: {fileID: 8193821678361483614, guid: 0b9e6c4274426b246b647e2c38d38f2e, type: 3}
-    - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
       propertyPath: canvasWorld
       value: 
       objectReference: {fileID: 1570898328}
-    - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
-      propertyPath: objectiveGO
-      value: 
-      objectReference: {fileID: 6921480054408786421, guid: 19b81c0f6a7d6734fb5cc072d31f3abb, type: 3}
-    - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
-      propertyPath: sampleQuest
-      value: 
-      objectReference: {fileID: 8416689935592241413, guid: fb0513f3b314dfc48b9026e1534f2a03, type: 3}
-    - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
-      propertyPath: sampleQuest2
-      value: 
-      objectReference: {fileID: 8416689935592241413, guid: cdcbe641fe9b4e246bd9d2ab4e46ed96, type: 3}
-    - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
-      propertyPath: sampleQuest3
-      value: 
-      objectReference: {fileID: 8416689935592241413, guid: 71b5754297978364e872fc199425f73f, type: 3}
-    - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
-      propertyPath: sampleQuest4
-      value: 
-      objectReference: {fileID: 8416689935592241413, guid: b09051f1647595749a6a6af093903ebc, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
 --- !u!1001 &3583609863825038943

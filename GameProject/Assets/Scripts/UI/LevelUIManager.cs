@@ -39,6 +39,8 @@ public class LevelUIManager : MonoBehaviour
     [SerializeField] private GameObject sampleQuest3;
     [SerializeField] private GameObject sampleQuest4;
     [SerializeField] private Transform player;
+    [SerializeField] private AnimationCurve cardMoveCurve;
+    [SerializeField] private AnimationCurve fadeOutCurve;
 
     private List<Quest> activeQuests = new List<Quest>();
     private Queue<IEnumerator> questCoroutines = new Queue<IEnumerator>();
@@ -56,10 +58,12 @@ public class LevelUIManager : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         AddQuestCard(sampleQuest.GetComponent<Quest>());
         AddQuestCard(sampleQuest2.GetComponent<Quest>());
-        RemoveQuestCard(activeQuests[1]);
-        AddQuestCard(sampleQuest3.GetComponent<Quest>());
-        RemoveQuestCard(activeQuests[0]);
         AddQuestCard(sampleQuest4.GetComponent<Quest>());
+        AddQuestCard(sampleQuest3.GetComponent<Quest>());
+        RemoveQuestCard(activeQuests[1]);
+        
+        RemoveQuestCard(activeQuests[0]);
+        
         RemoveQuestCard(activeQuests[2]);
         RemoveQuestCard(activeQuests[3]);
     }
@@ -250,7 +254,6 @@ public class LevelUIManager : MonoBehaviour
         var card = quests.transform.GetChild(activeQuests.IndexOf(quest)).gameObject;
         int i = activeQuests.IndexOf(quest);
         activeQuests.Remove(quest);
-        float duration = 1.1f;
         float time = 0;
         List<Image> images = new List<Image>();
         List<TextMeshProUGUI> texts = new List<TextMeshProUGUI>();
@@ -261,16 +264,17 @@ public class LevelUIManager : MonoBehaviour
             images.Add(card.transform.GetChild(k).GetChild(0).GetComponent<Image>());
             texts.Add(card.transform.GetChild(k).GetChild(1).GetComponent<TextMeshProUGUI>());
         }
-        while (time < duration)
+        while (images[0].color.a > 0)
         {
             time += Time.deltaTime;
-            foreach(Image image in images)
+            float speed = fadeOutCurve.Evaluate(time);
+            foreach (Image image in images)
             {
-                image.color = new Color(image.color.r, image.color.g, image.color.b, 1 - time/duration);
+                image.color = new Color(image.color.r, image.color.g, image.color.b, image.color.a - Time.deltaTime*speed);
             }
             foreach (TextMeshProUGUI text in texts)
             {
-                text.color = new Color(text.color.r, text.color.g, text.color.b, 1 - time/duration);
+                text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a - Time.deltaTime * speed);
             }
             yield return null;
         }
@@ -300,18 +304,15 @@ public class LevelUIManager : MonoBehaviour
     IEnumerator MoveCard(GameObject card, Vector3 delta)
     {
         cardsMoving++;
-        float speed = 1;
+        float speed = 0.2f;
+        Vector3 pos = card.transform.localPosition;
         Vector3 goal = card.transform.localPosition + delta;
-        while ((card.transform.localPosition - goal).magnitude > 1f)
+        float time = 0;
+        while ((card.transform.localPosition - goal).magnitude > 0.6f)
         {
-            if((card.transform.localPosition - goal).magnitude < 6f)
-            {
-                card.transform.localPosition = Vector3.Lerp(card.transform.localPosition, goal, Time.deltaTime * speed * 2);
-            }
-            else
-            {
-                card.transform.localPosition = Vector3.Lerp(card.transform.localPosition, goal, Time.deltaTime * speed);
-            }
+            time += (Time.smoothDeltaTime * speed);
+            speed = 0.2f + cardMoveCurve.Evaluate(time);
+            card.transform.localPosition = Vector3.Lerp(pos, goal, time);
             yield return null;
         }
         card.transform.localPosition = goal;

@@ -47,3 +47,95 @@ MonoBehaviour:
   canvasHUD: {fileID: 0}
   canvasWorld: {fileID: 0}
   leverLook: {fileID: 4971031529057441870, guid: 33517b7a7a23371429965a7c1b1b06d3, type: 3}
+  questTitle: {fileID: 8193821678361483614, guid: 0b9e6c4274426b246b647e2c38d38f2e, type: 3}
+  questLine: {fileID: 281946533739989736, guid: 33d7f1d38ad82144fb2dda540205c312, type: 3}
+  objectiveGO: {fileID: 6921480054408786421, guid: 19b81c0f6a7d6734fb5cc072d31f3abb, type: 3}
+  sampleQuest: {fileID: 8416689935592241413, guid: fb0513f3b314dfc48b9026e1534f2a03, type: 3}
+  sampleQuest2: {fileID: 8416689935592241413, guid: cdcbe641fe9b4e246bd9d2ab4e46ed96, type: 3}
+  sampleQuest3: {fileID: 8416689935592241413, guid: 71b5754297978364e872fc199425f73f, type: 3}
+  sampleQuest4: {fileID: 8416689935592241413, guid: b09051f1647595749a6a6af093903ebc, type: 3}
+  player: {fileID: 0}
+  cardMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.00019724108
+      value: 0.2888804
+      inSlope: 1.4316499
+      outSlope: 1.4316499
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.4744254
+    - serializedVersion: 3
+      time: 0.60345477
+      value: 0.4848908
+      inSlope: -0.67310625
+      outSlope: -0.67310625
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.109260514
+      outWeight: 0.32744834
+    - serializedVersion: 3
+      time: 0.81002545
+      value: 0.19154978
+      inSlope: -2.579122
+      outSlope: -2.579122
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1255767
+      outWeight: 0.13099572
+    - serializedVersion: 3
+      time: 1.022136
+      value: -0.16846141
+      inSlope: 0.10421799
+      outSlope: 0.10421799
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.42493474
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0016923153
+      value: 0.684458
+      inSlope: 0.021735124
+      outSlope: 0.021735124
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.83543366
+    - serializedVersion: 3
+      time: 0.2766654
+      value: 0.74597573
+      inSlope: 1.0187323
+      outSlope: 1.0187323
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.0841215
+    - serializedVersion: 3
+      time: 0.747775
+      value: 0.8600154
+      inSlope: 0.772448
+      outSlope: 0.772448
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.06608758
+      outWeight: 0.09232659
+    - serializedVersion: 3
+      time: 1.001709
+      value: 0.9386793
+      inSlope: -1.052073
+      outSlope: -1.052073
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.29723313
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
