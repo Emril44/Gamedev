@@ -1663,6 +1663,11 @@ PolygonCollider2D:
       - {x: 0.4814814, y: -0.9999999}
       - {x: -0.48148155, y: -1}
       - {x: -1, y: -1}
+--- !u!1 &1918171551 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1918171551, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+  m_PrefabInstance: {fileID: 1050653402}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1945504545 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3865006718311826970, guid: 8658b39657f460746841cf97b92d9951, type: 3}
@@ -2033,6 +2038,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1945504545}
+    - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
+      propertyPath: quests
+      value: 
+      objectReference: {fileID: 1918171551}
     - target: {fileID: 977479914671008191, guid: 84d6ee185aa58e644b1803cdfeceb8f2, type: 3}
       propertyPath: canvasHUD
       value: 

@@ -19,15 +19,12 @@ public class LevelUIManager : MonoBehaviour
         }
         leverLookInstance = Instantiate(leverLook, canvasWorld.transform);
         leverLookInstance.SetActive(false);
-        quests = new GameObject("Quests");
-        quests.transform.SetParent(canvasHUD.transform);
-        quests.transform.localScale = Vector3.one;
-        quests.transform.localPosition = new Vector3(1021,0,0);
     }
 
     [SerializeField] private Canvas canvasHUD;
     [SerializeField] private Canvas canvasWorld;
-
+    [SerializeField] private GameObject quests;
+    
     [Header("HUDs")]
     [SerializeField] private GameObject leverLook;
     private GameObject leverLookInstance;
@@ -47,7 +44,7 @@ public class LevelUIManager : MonoBehaviour
     private List<Quest> activeQuests = new List<Quest>();
     private Queue<IEnumerator> questCoroutines = new Queue<IEnumerator>();
     private bool isCoroutineRunning = false;
-    private GameObject quests;
+    
     private int cardsMoving = 0;
 
     //TO remove

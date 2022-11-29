@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasHUD: {fileID: 0}
   canvasWorld: {fileID: 0}
+  quests: {fileID: 0}
   leverLook: {fileID: 4971031529057441870, guid: 33517b7a7a23371429965a7c1b1b06d3, type: 3}
   questTitle: {fileID: 8193821678361483614, guid: 0b9e6c4274426b246b647e2c38d38f2e, type: 3}
   questLine: {fileID: 281946533739989736, guid: 33d7f1d38ad82144fb2dda540205c312, type: 3}
