@@ -1,10 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class MainMenuUIManager : MonoBehaviour
+public class MenuUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject block;
     private GameObject blockInstance;
@@ -25,8 +25,10 @@ public class MainMenuUIManager : MonoBehaviour
     [SerializeField] private string saveString;
     [TextArea(1, 5)]
     [SerializeField] private string dayString;
+    private bool paused = false;
+    private Vector3[] baseButtonPos;
 
-    public static MainMenuUIManager Instance { get; private set; }
+    public static MenuUIManager Instance { get; private set; }
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -55,8 +57,136 @@ public class MainMenuUIManager : MonoBehaviour
         yesNoInstance.transform.SetParent(canvas.transform, false);
         var no = yesNoInstance.transform.GetChild(1).GetChild(2).gameObject;
         no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });
+        try
+        {
+            baseButtonPos = new Vector3[]
+            {
+                canvas.transform.GetChild(1).GetChild(3).gameObject.transform.localPosition,
+                canvas.transform.GetChild(1).GetChild(4).gameObject.transform.localPosition,
+                canvas.transform.GetChild(1).GetChild(5).gameObject.transform.localPosition,
+                canvas.transform.GetChild(1).GetChild(6).gameObject.transform.localPosition
+            };
+        }
+        catch { }
+    }
+    
+
+    public void Pause()
+    {
+        if (!paused)
+        {
+            paused = true;
+            StopAllCoroutines();
+            StartCoroutine(SlowDownFadeIn());
+            StartCoroutine(ShowPauseButtons());
+        }
+        else
+        {
+            paused = false;
+            StopAllCoroutines();
+            StartCoroutine(AccelerateFadeOut());
+            StartCoroutine(HidePauseButtons());
+        }
     }
 
+    IEnumerator SlowDownFadeIn()
+    {
+        canvas.transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+        var blackout = canvas.transform.GetChild(1).GetChild(0).gameObject.GetComponent<Image>();
+        blackout.color = new Color(blackout.color.r, blackout.color.r, blackout.color.r, 0);
+        float time = 0;
+        float speed = 1f;
+        while(time < 1)
+        {
+            time += Time.unscaledDeltaTime * speed;
+            if(time < 1)
+            {
+                Time.timeScale = 1 - time;
+            }
+            blackout.color = new Color(0, 0, 0, time / 3);
+            yield return null;
+        }
+        Time.timeScale = 0;
+        yield return null;
+    }
+    IEnumerator AccelerateFadeOut()
+    {
+        var blackout = canvas.transform.GetChild(1).GetChild(0).gameObject.GetComponent<Image>();
+        float time = Time.timeScale;
+        float speed = 1f;
+        while (time < 1)
+        {
+            time += Time.unscaledDeltaTime * speed;
+            Time.timeScale = time;
+            blackout.color = new Color(0, 0, 0, blackout.color.a - Time.unscaledDeltaTime * speed/3);
+            yield return null;
+        }
+        Time.timeScale = 1;
+        canvas.transform.GetChild(1).GetChild(0).gameObject.SetActive(false);
+        yield return null;
+    }
+    IEnumerator ShowPauseButtons()
+    {
+        var buttons = new GameObject[] 
+        {
+            canvas.transform.GetChild(1).GetChild(3).gameObject,
+            canvas.transform.GetChild(1).GetChild(4).gameObject,
+            canvas.transform.GetChild(1).GetChild(5).gameObject,
+            canvas.transform.GetChild(1).GetChild(6).gameObject
+        };
+        float time = 0;
+        Vector3 deltaPos = new(915, 0, 0);
+        var goalPositions = new Vector3[]
+        {
+            baseButtonPos[0] - deltaPos,
+            baseButtonPos[1] - deltaPos,
+            baseButtonPos[2] - deltaPos,
+            baseButtonPos[3] - deltaPos
+        };
+        float speed = 0.004f;
+        while (time < 1)
+        {
+            time += Time.unscaledDeltaTime * speed;
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i].transform.localPosition = Vector3.Lerp(buttons[i].transform.localPosition, goalPositions[i], time);
+            }
+            yield return null;
+        }
+        yield return null;
+    }
+    
+    IEnumerator HidePauseButtons()
+    {
+        var buttons = new GameObject[]
+        {
+            canvas.transform.GetChild(1).GetChild(3).gameObject,
+            canvas.transform.GetChild(1).GetChild(4).gameObject,
+            canvas.transform.GetChild(1).GetChild(5).gameObject,
+            canvas.transform.GetChild(1).GetChild(6).gameObject
+        };
+        float time = 0;
+        float speed = 0.004f;
+        while (time < 1)
+        {
+            time += Time.unscaledDeltaTime * speed;
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                buttons[i].transform.localPosition = Vector3.Lerp(buttons[i].transform.localPosition, baseButtonPos[i], time);
+            }
+            yield return null;
+        }
+        yield return null;
+    }
+
+    public void GoToMenu()
+    {
+        SetYesNo("Are you sure you want to go to the menu?+Вийти до головного меню?", () => { SceneManager.LoadScene("MainMenu"); });
+    }
+    
+    /*
+     * Main menu oriented
+     */
     public void ChangeLanguage()
     {
         int current = PlayerPrefs.GetInt("Language");
@@ -85,9 +215,15 @@ public class MainMenuUIManager : MonoBehaviour
         StopAllCoroutines();
         var blackout = blockInstance.transform.GetChild(0).gameObject;
         var block = blockInstance.transform.GetChild(1).gameObject;
-        block.transform.position = new Vector3(-1.65f, 9);
+        block.transform.localPosition = new Vector3(-4.3f, 9);
+        float y = 0.3f;
+        if (paused)
+        {
+            block.transform.localPosition = new Vector3(-4.1f, 10);
+            y = 0.4f;
+        }
         blockInstance.SetActive(true);
-        StartCoroutine(FadeIn(blackout, block));
+        StartCoroutine(FadeIn(blackout, block,y));
     }
     
     IEnumerator FadeOut(GameObject blackout, GameObject block)
@@ -95,25 +231,25 @@ public class MainMenuUIManager : MonoBehaviour
         float time = 0;
         while (time < 0.6f)
         {
-            time += Time.deltaTime;
-            blackout.GetComponent<Image>().color = new Color(0, 0, 0, blackout.GetComponent<Image>().color.a - Time.deltaTime);
+            time += Time.unscaledDeltaTime;
+            blackout.GetComponent<Image>().color = new Color(0, 0, 0, blackout.GetComponent<Image>().color.a - Time.unscaledDeltaTime);
 
-            block.transform.position = Vector3.Lerp(block.transform.position, new Vector2(block.transform.position.x, -30), Time.deltaTime);
+            block.transform.position = Vector3.Lerp(block.transform.position, new Vector2(block.transform.position.x, -30), Time.unscaledDeltaTime);
             yield return null;
         }
         blockInstance.SetActive(false);
         yield return null;
     }
 
-    IEnumerator FadeIn(GameObject blackout, GameObject block)
+    IEnumerator FadeIn(GameObject blackout, GameObject block, float y)
     {
         float time = 0;
         while (time < 2)
         {
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             blackout.GetComponent<Image>().color = new Color(0, 0, 0, time/6);
 
-            block.transform.position = Vector3.Lerp(block.transform.position, new Vector2(block.transform.position.x, -0.06f), Time.deltaTime*2.15f);
+            block.transform.localPosition = Vector3.Lerp(block.transform.localPosition, new Vector2(block.transform.localPosition.x, y), Time.unscaledDeltaTime * 2.15f);
             yield return null;
         }
     }
@@ -164,25 +300,36 @@ public class MainMenuUIManager : MonoBehaviour
     {
         GameObject save = Instantiate(this.save, parent.transform);
         string t = title.Split('+')[PlayerPrefs.GetInt("Language")];
-        save.GetComponent<SaveTexts>().saveNum.text = t + (n > 0 ? " #" + n : "");
+        string num = n > 0 ? " #" + n : "";
+        save.GetComponent<SaveTexts>().saveNum.text = t + num;
 
         string day = dayString.Split('+')[PlayerPrefs.GetInt("Language")];
         save.GetComponent<SaveTexts>().day.text = day + ": " + saveInfo.day;
 
         save.GetComponent<SaveTexts>().sparksAmount.text = saveInfo.sparks.ToString();
-        save.GetComponent<SaveTexts>().time.text = saveInfo.time / 60 + ":" + (((saveInfo.time % 60) < 10) ? "0" + saveInfo.time % 60 : saveInfo.time % 60);
+        save.GetComponent<SaveTexts>().time.text = TimeString(saveInfo.time);
 
-        save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Overwrite this save", () => { SavesManager.Instance.NewGame(n); }) ; });
+        save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save{num}+Перезаписати збереження{num}", () => { SavesManager.Instance.NewGame(n); }) ; });
         var x = save.transform.GetChild(1).gameObject;
-        x.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Delete this save", () => { SavesManager.Instance.RemoveSave(n); }); });
+        x.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Delete save{num}+Видалити збереження{num}", () => { SavesManager.Instance.RemoveSave(n); }); });
         return save;
+    }
+
+    public string TimeString(int seconds)
+    {
+        int hours = seconds / 3600;
+        string h = hours > 0 ? hours + ":" : "";
+        int minutes = (seconds - hours*3600)/ 60;
+        string m = minutes >= 10 ? minutes.ToString() : 0 + minutes.ToString();
+        seconds = seconds - hours * 3600 - minutes * 60;
+        return $"{h}{m}:{seconds}";
     }
 
     public void SetYesNo(string message, UnityEngine.Events.UnityAction onYes)
     {
         blockInstance.transform.GetChild(0).gameObject.SetActive(false);
         yesNoInstance.SetActive(true);
-        yesNoInstance.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = message;
+        yesNoInstance.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = message.Split('+')[PlayerPrefs.GetInt("Language")];
         yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(onYes);
     }
 

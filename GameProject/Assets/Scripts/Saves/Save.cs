@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Save : ScriptableObject
 {
+    //time in seconds
     public int time;
     public int day;
     public int sparks;

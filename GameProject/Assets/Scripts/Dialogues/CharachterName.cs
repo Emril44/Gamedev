@@ -11,7 +11,7 @@ public class CharacterName
         Druid = 3
     }
 
-    private static List<string> Name = new List<string>
+    private static readonly List<string> names = new()
     {
         "Rectangle+Прямокутник",
         "Circle+Коло",
@@ -25,7 +25,7 @@ public class CharacterName
         {
             return null;
         }        
-        return Name[((int)character)].Split('+')[PlayerPrefs.GetInt("Language")];
+        return names[((int)character)].Split('+')[PlayerPrefs.GetInt("Language")];
     }
 }
 
