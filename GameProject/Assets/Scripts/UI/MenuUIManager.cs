@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 public class MenuUIManager : MonoBehaviour
 {
@@ -12,7 +15,7 @@ public class MenuUIManager : MonoBehaviour
     private GameObject yesNoInstance;
     [SerializeField] private Canvas canvas;
     [SerializeField] private Button loadButton;
-    [SerializeField] private GameObject languageSettings;
+    [SerializeField] private GameObject settings;
     private const int LANGUAGES = 2;
     [Header("Saves")]
     [SerializeField] private GameObject line;
@@ -67,7 +70,7 @@ public class MenuUIManager : MonoBehaviour
                 canvas.transform.GetChild(1).GetChild(6).gameObject.transform.localPosition
             };
         }
-        catch { }
+        catch { }            
     }
     
 
@@ -143,7 +146,7 @@ public class MenuUIManager : MonoBehaviour
             baseButtonPos[2] - deltaPos,
             baseButtonPos[3] - deltaPos
         };
-        float speed = 0.004f;
+        float speed = 0.01f;
         while (time < 1)
         {
             time += Time.unscaledDeltaTime * speed;
@@ -166,7 +169,7 @@ public class MenuUIManager : MonoBehaviour
             canvas.transform.GetChild(1).GetChild(6).gameObject
         };
         float time = 0;
-        float speed = 0.004f;
+        float speed = 0.01f;
         while (time < 1)
         {
             time += Time.unscaledDeltaTime * speed;
@@ -223,7 +226,7 @@ public class MenuUIManager : MonoBehaviour
             y = 0.4f;
         }
         blockInstance.SetActive(true);
-        StartCoroutine(FadeIn(blackout, block,y));
+        StartCoroutine(FadeIn(blackout, block, y));
     }
     
     IEnumerator FadeOut(GameObject blackout, GameObject block)
@@ -344,12 +347,107 @@ public class MenuUIManager : MonoBehaviour
         {
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
         }
-        var lengSettings = Instantiate(languageSettings);
-        lengSettings.transform.SetParent(blockInstance.transform.GetChild(1), false);
-        lengSettings.transform.localPosition = new Vector3(21.5f, 21, 446.5f);
-        lengSettings.transform.localScale = new Vector3(0.05725f, 0.05725f, 0.05725f);
-        lengSettings.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => { ChangeLanguage(); });
+        var settings = Instantiate(this.settings);
+        settings.transform.SetParent(blockInstance.transform.GetChild(1), false);
+        settings.transform.localPosition = new Vector3(21.5f, 21, 446.5f);
+        settings.transform.localScale = new Vector3(0.05725f, 0.05725f, 0.05725f);
+        settings.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => { ChangeLanguage(); });
+
+        
+        var resolutionsDropdown = settings.transform.GetChild(3).GetComponent<TMP_Dropdown>();
+        resolutionsDropdown.ClearOptions();
+        resolutionsDropdown.AddOptions(Resolutions());
+        //TODO:works every second time
+        resolutionsDropdown.value = resolutionsDropdown.options.Select(option => option.text).ToList().IndexOf(Screen.currentResolution.ToString().Split('@')[0]);
+        resolutionsDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionsDropdown.options[resolutionsDropdown.value].text); });
+
+        var refreshRate = settings.transform.GetChild(5).GetComponent<TMP_InputField>();
+        if(Application.targetFrameRate < 0)
+        {
+            Application.targetFrameRate = 60;
+        }
+        refreshRate.text = Application.targetFrameRate.ToString();
+        refreshRate.gameObject.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = Application.targetFrameRate.ToString();
+        refreshRate.onEndEdit.AddListener(delegate { ChangeRefreshRate(int.Parse(refreshRate.text), refreshRate); });
+
+        var fullscreen = settings.transform.GetChild(7).GetComponent<TMP_Dropdown>();
+        fullscreen.ClearOptions();
+        fullscreen.AddOptions(ScreenModes());
+        //TODO:works every second time
+        fullscreen.value = fullscreen.options.Select(option => option.text).ToList().IndexOf(Screen.fullScreenMode.ToString());
+        fullscreen.onValueChanged.AddListener(delegate { ChangeFullscreen(fullscreen.options[fullscreen.value].text); });
+
+        var volume = settings.transform.GetChild(9).GetComponent<Slider>();
+        try
+        {
+            volume.value = PlayerPrefs.GetFloat("Volume");
+        }
+        catch
+        {
+            volume.value = 1;
+        }
+        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); });
         ShowBlock();
+    }
+
+    private void ChangeFullscreen(string text)
+    {
+        var fullScreen = text switch
+        {
+            "Windowed" => FullScreenMode.Windowed,
+            "FullScreenWindow" => FullScreenMode.FullScreenWindow,
+            "ExclusiveFullScreen" => FullScreenMode.ExclusiveFullScreen,
+            _ => FullScreenMode.MaximizedWindow,
+        };
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, fullScreen);
+    }
+
+    private void ChangeRefreshRate(int refreshRate, TMP_InputField input)
+    {
+        if(refreshRate < 10)
+        {
+            refreshRate = 60;
+        }
+        Application.targetFrameRate = refreshRate;
+        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreenMode, refreshRate);
+        input.text = refreshRate.ToString();
+    }
+
+    private List<string> Resolutions()
+    {
+        var res = new List<string>();
+        foreach (var resolution in Screen.resolutions)
+        {
+            res.Add(resolution.ToString().Split('@')[0]);
+        }
+        for (int i = 0; i < res.Count; i++)
+        {
+            for (int j = i + 1; j < res.Count; j++)
+            {
+                if (res[i] == res[j])
+                {
+                    res.RemoveAt(j);
+                    j--;
+                }
+            }
+        }
+        return res;
+    }
+
+    private List<string> ScreenModes()
+    {
+        var modes = new List<string>();
+        foreach (var mode in Enum.GetNames(typeof(FullScreenMode)))
+        {
+            modes.Add(mode);
+        }
+        return modes;
+    }
+
+    private void ChangeResolution(string value)
+    {
+        var values = value.Split('x');
+        Screen.SetResolution(int.Parse(values[0]), int.Parse(values[1]), Screen.fullScreenMode, 60);
     }
 
     public void ShowAboutScreen()

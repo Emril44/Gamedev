@@ -326,6 +326,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1664652490}
+    - target: {fileID: 8921745820612510039, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -781
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
 --- !u!223 &1563263310 stripped
@@ -575,6 +579,10 @@ PrefabInstance:
       propertyPath: newSave
       value: 
       objectReference: {fileID: 1162446643829224496, guid: 4e21343c14fb0b946ad6df9ab2775f88, type: 3}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: settings
+      value: 
+      objectReference: {fileID: 3736442905107392365, guid: f6af07b515a55974d80838142fcf4d5e, type: 3}
     - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
       propertyPath: dayString
       value: "Day+\u0414\u0435\u043D\u044C"
