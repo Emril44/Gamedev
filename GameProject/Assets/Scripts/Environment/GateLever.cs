@@ -6,13 +6,13 @@ public class GateLever : Lever
     [SerializeField] private GameObject gates;
     private Vector3 gatesPosition1;
     private Vector3 gatesPosition2;
-    [SerializeField] private Vector3 gatesShift;
+    [SerializeField] private Vector2 gatesShift;
     [SerializeField] private float moveDuration;
 
     private void Awake()
     {
         gatesPosition1 = gates.transform.position;
-        gatesPosition2 = gates.transform.position + gatesShift;
+        gatesPosition2 = gates.transform.position + new Vector3(gatesShift.x, gatesShift.y, 0);
     }
 
     public override Vector3 LookPosition()
