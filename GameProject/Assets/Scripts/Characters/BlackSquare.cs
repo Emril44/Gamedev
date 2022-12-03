@@ -51,6 +51,19 @@ public class BlackSquare : MonoBehaviour
     {
         animator.Play(DEATH_NAME);
         yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+        DataManager.Instance.AddSpark();
         Destroy(gameObject);
+    }
+    void OnTriggerStay2D(Collider2D other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "Lava":
+                GetDamaged();
+                break;
+            case "Damage":
+                GetDamaged();
+                break;
+        }
     }
 }
