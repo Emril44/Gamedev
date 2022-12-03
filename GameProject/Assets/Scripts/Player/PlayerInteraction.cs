@@ -11,6 +11,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool nearLever = false;
     private bool nearDialogue = false;
     private bool nearMovable = false;
+    private bool nearWaypoint = false;
     private GameObject leverGO;
     private GameObject dialogueGO;
     private GameObject movableGO;
@@ -20,6 +21,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float undamageableTime = 0.65f;
     private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
+    [SerializeField] private Vector2 spawnLocation;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -40,6 +42,8 @@ public class PlayerInteraction : MonoBehaviour
         Controllable = true;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // spawn at spawn location
+        Debug.Log("spawn");
     }
 
     void PutPrism(PrismShard prismShard)
@@ -135,6 +139,12 @@ public class PlayerInteraction : MonoBehaviour
                     nearMovable = false;
                     movableGO = null;
                 }
+                else if (nearWaypoint)
+                {
+                    nearWaypoint = false;
+                    transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // teleport to spawn (i.e. to Monochrome)
+                    EnvironmentManager.Instance.SetNewColor(PrismColor.Neutral); // reset color to avoid cheesing
+                }
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
@@ -227,6 +237,9 @@ public class PlayerInteraction : MonoBehaviour
                 nearMovable = true;
                 movableGO = other.gameObject;
                 break;
+            case "Waypoint":
+                nearWaypoint = true;
+                break;
             case "SparkDoor":
                 other.gameObject.GetComponent<SparkDoor>().Open();
                 break;
@@ -275,6 +288,9 @@ public class PlayerInteraction : MonoBehaviour
             case "Movable":
                 nearMovable = false;
                 movableGO = null;
+                break;
+            case "Waypoint":
+                nearWaypoint = false;
                 break;
         }
     }
