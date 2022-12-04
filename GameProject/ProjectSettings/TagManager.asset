@@ -17,6 +17,7 @@ TagManager:
   - Lava
   - Damage
   - Waypoint
+  - Moving
   layers:
   - Default
   - TransparentFX

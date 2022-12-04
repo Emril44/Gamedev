@@ -26,7 +26,7 @@ public class GateLever : Lever
         isLocked = true;
         while (time < moveDuration)
         {
-            time += Time.deltaTime;
+            time += Time.fixedDeltaTime;
             if (isOn)
             {
                 gates.transform.position = Vector3.Lerp(gatesPosition1, gatesPosition2, time/moveDuration);
@@ -35,7 +35,7 @@ public class GateLever : Lever
             { 
                 gates.transform.position = Vector3.Lerp(gatesPosition2, gatesPosition1, time/moveDuration);
             }
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
         if (isOn)
         {

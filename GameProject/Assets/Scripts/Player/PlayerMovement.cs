@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float outOfLavaMultiplier = 1.4f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Collider2D feetCollider;
+    private Transform baseParent; // default parent when player is not moving synchronously with some other object, e.g. a moving platform
     private Rigidbody2D rb;
     private bool inWater = false;
     private bool inLava = false;
@@ -24,6 +25,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         Controllable = true;
+        baseParent = transform.parent;
 
         animator = GetComponent<Animator>();
     }
@@ -72,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Controllable)
         {
-            if (inWater)
+            if (inWater || inLava)
             {
                 float horizontalMove = Input.GetAxis("Horizontal");
                 float verticalMove = Input.GetAxis("Vertical");
@@ -85,6 +87,7 @@ public class PlayerMovement : MonoBehaviour
                 float verticalMove = rb.velocity.y;
                 if (Input.GetAxis("Jump") > 0 && CanJump() && !animator.GetCurrentAnimatorStateInfo(0).IsName(JUMP_NAME))
                 {
+                    //transform.parent = baseParent;
                     verticalMove = jumpVelocity;
                     animator.Play(JUMP_NAME);
                 }
@@ -114,4 +117,26 @@ public class PlayerMovement : MonoBehaviour
         }
         transform.rotation = Quaternion.Lerp(transform.rotation, rotationGoal, 0.3f);
     }
+
+    public void ResetParent()
+    {
+        transform.parent = baseParent;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving"))
+        {
+            transform.parent = collision.transform;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving"))
+        {
+            ResetParent();
+        }
+    }
+
 }

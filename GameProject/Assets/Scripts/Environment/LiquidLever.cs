@@ -40,7 +40,7 @@ public class LiquidLever : Lever
         isLocked = true;
         while (time < fillDuration)
         {
-            time += Time.deltaTime;
+            time += Time.fixedDeltaTime;
             if (isOn)
             {
                 liquid.transform.position = Vector3.Lerp(liquidPosition1, liquidPosition2, time/fillDuration);
@@ -51,7 +51,7 @@ public class LiquidLever : Lever
                 liquid.transform.position = Vector3.Lerp(liquidPosition2, liquidPosition1, time / fillDuration);
                 liquid.transform.localScale = Vector3.Lerp(liquidScale2, liquidScale1, time / fillDuration);
             }
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
         if (isOn)
         {

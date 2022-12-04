@@ -8,6 +8,7 @@ public class MovableObject : MonoBehaviour
     [NonSerialized] public bool Grabbed;
     [SerializeField] private float resetDelay;
     [SerializeField] private bool grabbable;
+    private Transform baseParent;
     private Vector3 defPosition; // position by default
     private Vector3 defScale; // scale by default
     private Quaternion defRotation; // rotation by default
@@ -17,6 +18,7 @@ public class MovableObject : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Static;
+        baseParent = transform.parent;
         defPosition = transform.position;
         defScale = transform.localScale;
         defRotation = transform.rotation;
@@ -24,7 +26,7 @@ public class MovableObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Water"))
+        if (other.CompareTag("Water") || other.CompareTag("Lava"))
         {
             rb.gravityScale = 0.1f;
         }
@@ -32,7 +34,7 @@ public class MovableObject : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Water"))
+        if (other.CompareTag("Water") || other.CompareTag("Lava"))
         {
             rb.gravityScale = 1f;
         }
@@ -61,5 +63,21 @@ public class MovableObject : MonoBehaviour
         if (grabbable) gameObject.tag = "Grabbable";
         else gameObject.tag = "Untagged";
         rb.bodyType = RigidbodyType2D.Dynamic;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving"))
+        {
+            transform.parent = collision.transform;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving"))
+        {
+            transform.parent = baseParent;
+        }
     }
 }

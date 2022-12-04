@@ -22,6 +22,7 @@ public class PlayerInteraction : MonoBehaviour
     private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
     [SerializeField] private Vector2 spawnLocation;
+    private PlayerMovement movement;
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -42,6 +43,7 @@ public class PlayerInteraction : MonoBehaviour
         Controllable = true;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        movement = GetComponent<PlayerMovement>();
         transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // spawn at spawn location
         Debug.Log("spawn");
     }
@@ -118,11 +120,11 @@ public class PlayerInteraction : MonoBehaviour
                     DialogueTrigger trigger = dialogueGO.GetComponent<DialogueTrigger>();
                     Dialogue dialogue = trigger.GetCurrentDialogue();
                     Controllable = false;
-                    GetComponent<PlayerMovement>().Controllable = false;
+                    movement.Controllable = false;
                     void reenable()
                     {
                         Controllable = true;
-                        GetComponent<PlayerMovement>().Controllable = true;
+                        movement.Controllable = true;
                         dialogue.onDialogueEnd -= reenable;
                         if (trigger.tag != "DialogueTrigger") // for the rare case when further dialogue is impossible, i.e. finishing last main sequence and having no fallback dialogue
                         {
@@ -142,6 +144,7 @@ public class PlayerInteraction : MonoBehaviour
                 else if (nearWaypoint)
                 {
                     nearWaypoint = false;
+                    movement.ResetParent();
                     transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // teleport to spawn (i.e. to Monochrome)
                     EnvironmentManager.Instance.SetNewColor(PrismColor.Neutral); // reset color to avoid cheesing
                 }
@@ -308,12 +311,12 @@ public class PlayerInteraction : MonoBehaviour
     IEnumerator SetInWater(bool isInWater)
     {
         yield return new WaitForSeconds(0.1f);
-        gameObject.GetComponent<PlayerMovement>().SetInWater(isInWater);
+        movement.SetInWater(isInWater);
     }
 
     IEnumerator SetInLava(bool isInLava)
     {
         yield return new WaitForSeconds(0.1f);
-        gameObject.GetComponent<PlayerMovement>().SetInWater(isInLava);
+        movement.SetInWater(isInLava);
     }
 }

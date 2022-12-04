@@ -7,6 +7,7 @@ public class BlackSquare : MonoBehaviour
     [SerializeField] private int health = 2;
     [SerializeField] private float undamageableTime = 0.55f;
     [SerializeField] private Collider2D bodyCollider;
+    private Transform baseParent;
     private bool damageable = true;
     private Animator animator;
     private const string DAMAGE_NAME = "Enemy_Damage";
@@ -15,6 +16,7 @@ public class BlackSquare : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        baseParent = transform.parent;
     }
 
     void FixedUpdate()
@@ -64,6 +66,22 @@ public class BlackSquare : MonoBehaviour
             case "Damage":
                 GetDamaged();
                 break;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving"))
+        {
+            transform.parent = collision.transform;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving"))
+        {
+            transform.parent = baseParent;
         }
     }
 }
