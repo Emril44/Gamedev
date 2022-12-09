@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class LevelUIManager : MonoBehaviour
 {
@@ -41,8 +42,8 @@ public class LevelUIManager : MonoBehaviour
     [SerializeField] private AnimationCurve cardMoveCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
 
-    private List<Quest> activeQuests = new List<Quest>();
-    private Queue<IEnumerator> questCoroutines = new Queue<IEnumerator>();
+    private List<Quest> activeQuests = new();
+    private Queue<IEnumerator> questCoroutines = new();
     private bool isCoroutineRunning = false;
     
     private int cardsMoving = 0;
@@ -55,7 +56,7 @@ public class LevelUIManager : MonoBehaviour
 
     IEnumerator Test()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(4f);
         AddQuestCard(sampleQuest.GetComponent<Quest>());
         AddQuestCard(sampleQuest2.GetComponent<Quest>());
         RemoveQuestCard(activeQuests[1]);
@@ -176,6 +177,11 @@ public class LevelUIManager : MonoBehaviour
 
     public void AddQuestCard(Quest quest)
     {
+        if (Camera.main.orthographicSize > 4.0001 || !CamMovement.Instance.onPlayer)
+        {
+            StartCoroutine(AddQuestCardCoroutine(quest));
+            return;
+        }
         float y = 4.02f + player.localPosition.y + 3.2108f;
         foreach (Quest q in activeQuests)
         {
@@ -219,7 +225,16 @@ public class LevelUIManager : MonoBehaviour
         activeQuests.Add(quest);
         quest.onComplete += () => { RemoveQuestCard(quest); };
     }
-    
+
+    private IEnumerator AddQuestCardCoroutine(Quest quest)
+    {
+        isCoroutineRunning = true;
+        yield return new WaitUntil(() => Camera.main.orthographicSize < 4.0001);
+        yield return new WaitUntil(() => CamMovement.Instance.onPlayer);
+        isCoroutineRunning = false;
+        AddQuestCard(quest);
+    }
+
     private float QuestCardHeight(Quest quest)
     {
         //base height

@@ -47,19 +47,15 @@ public class MenuUIManager : MonoBehaviour
         blockInstance.transform.SetParent(canvas.transform, false);
         var x = blockInstance.transform.GetChild(1).GetChild(0).gameObject;
         x.GetComponent<Button>().onClick.AddListener(() => { RemoveBlock(); });
-        if(SavesManager.Instance.HasSaves())
-        {
-            loadButton.interactable = true;
-        }
-        else
-        {
-            loadButton.interactable = false;
-        }
         yesNoInstance = Instantiate(yesNo);
         yesNoInstance.SetActive(false);
         yesNoInstance.transform.SetParent(canvas.transform, false);
         var no = yesNoInstance.transform.GetChild(1).GetChild(2).gameObject;
-        no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });
+        no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });      
+    }
+
+    private void Start()
+    {
         try
         {
             baseButtonPos = new Vector3[]
@@ -70,9 +66,17 @@ public class MenuUIManager : MonoBehaviour
                 canvas.transform.GetChild(1).GetChild(6).gameObject.transform.localPosition
             };
         }
-        catch { }            
+        catch { }
+        if (SavesManager.Instance.HasSaves())
+        {
+            loadButton.interactable = true;
+        }
+        else
+        {
+            loadButton.interactable = false;
+        }
     }
-    
+
 
     public void Pause()
     {
@@ -187,9 +191,9 @@ public class MenuUIManager : MonoBehaviour
         SetYesNo("Are you sure you want to go to the menu?+Вийти до головного меню?", () => { SceneManager.LoadScene("MainMenu"); });
     }
     
-    /*
-     * Main menu oriented
-     */
+
+
+    
     public void ChangeLanguage()
     {
         int current = PlayerPrefs.GetInt("Language");
@@ -336,11 +340,6 @@ public class MenuUIManager : MonoBehaviour
         yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(onYes);
     }
 
-    public void ShowLoadScreen() 
-    {
-        //...
-    }
-
     public void ShowSettingsScreen()
     {
         if (blockInstance.transform.GetChild(1).childCount > 1)
@@ -357,7 +356,7 @@ public class MenuUIManager : MonoBehaviour
         var resolutionsDropdown = settings.transform.GetChild(3).GetComponent<TMP_Dropdown>();
         resolutionsDropdown.ClearOptions();
         resolutionsDropdown.AddOptions(Resolutions());
-        //TODO:works every second time
+        
         resolutionsDropdown.value = resolutionsDropdown.options.Select(option => option.text).ToList().IndexOf(Screen.currentResolution.ToString().Split('@')[0]);
         resolutionsDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionsDropdown.options[resolutionsDropdown.value].text); });
 
@@ -373,7 +372,6 @@ public class MenuUIManager : MonoBehaviour
         var fullscreen = settings.transform.GetChild(7).GetComponent<TMP_Dropdown>();
         fullscreen.ClearOptions();
         fullscreen.AddOptions(ScreenModes());
-        //TODO:works every second time
         fullscreen.value = fullscreen.options.Select(option => option.text).ToList().IndexOf(Screen.fullScreenMode.ToString());
         fullscreen.onValueChanged.AddListener(delegate { ChangeFullscreen(fullscreen.options[fullscreen.value].text); });
 
@@ -467,7 +465,6 @@ public class MenuUIManager : MonoBehaviour
 
     public void ExitGame()
     {
-        //ShowYesNo
-        Application.Quit();
+        SetYesNo("Exit the game+Вийти з гри", () => { Application.Quit(); });
     }
 }

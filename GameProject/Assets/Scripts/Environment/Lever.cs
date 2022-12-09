@@ -41,7 +41,8 @@ public abstract class Lever : MonoBehaviour
     IEnumerator MoveLever()
     {
         float time = 0;
-        while(time < 1)
+
+        while (isOn ? Quaternion.Angle(lever.transform.localRotation, leverRotation[0]) > 0.1f : Quaternion.Angle(lever.transform.localRotation, leverRotation[1]) > 0.1f)
         {
             time += Time.deltaTime;
             if (isOn)
