@@ -17,6 +17,10 @@ public class EnvironmentManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+    
+    private void Start()
+    {
         FillPool();
     }
 
@@ -34,18 +38,27 @@ public class EnvironmentManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("locked color; max unlock = "+DataManager.Instance.unlockedColors+"; color level = "+(int)color);
+            Debug.LogWarning("The prism color (" + (int)color + ") is locked; max unlocked = " + DataManager.Instance.unlockedColors);
         }
     }
 
     void FillPool()
     {
+        /*
         coloredObjectsPool = new Queue<ColoredObject>();
         foreach (ColoredObject obj in FindObjectsOfType<ColoredObject>())
         {
-            if(DataManager.Instance.unlockedColors >= (int)obj.getColor())
+            if (DataManager.Instance.unlockedColors >= (int)obj.getColor())
+            {
                 coloredObjectsPool.Enqueue(obj);
+            }
+            else
+            {
+                obj.GetComponent<SpriteRenderer>().color = Color.gray;
+                //TODO: disable?
+            }
         }
+        */
     }
 
     private void RepaintPool(PrismColor color)

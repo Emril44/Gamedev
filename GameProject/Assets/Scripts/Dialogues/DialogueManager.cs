@@ -4,13 +4,15 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-    private GameObject player;
     private Dialogue dialogue;
     private DialogueNode currentNode;
 
-    [SerializeField] private GameObject dialogueCanvas;
-    
-    [SerializeField] private TMP_Text dialogueText;
+    [SerializeField] private GameObject dialogueBox;
+    [SerializeField] private GameObject textWithName;
+        private TextMeshProUGUI nameText;
+        private TextMeshProUGUI dialogueText;
+    [SerializeField] private GameObject textWithoutName;
+        private TextMeshProUGUI onlyText;
     [SerializeField] private GameObject dialogueOption;
 
     private GameObject[] dialogOptions;
@@ -27,20 +29,19 @@ public class DialogueManager : MonoBehaviour
         {
             Instance = this;
         }
-        player = GameObject.FindGameObjectWithTag("Player");
-
-        dialogueCanvas.SetActive(false);
         dialogOptions = new GameObject[5];
         for (int i = 0; i < 5; i++)
         {
-            dialogOptions[i] = Instantiate(dialogueOption, dialogueCanvas.transform);
+            dialogOptions[i] = Instantiate(dialogueOption, dialogueBox.transform);
             dialogOptions[i].SetActive(false);
-            dialogOptions[i].transform.localPosition += new Vector3(0, -50 * i);
         }
+        nameText = textWithName.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+        dialogueText = textWithName.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        onlyText = textWithoutName.GetComponent<TextMeshProUGUI>();
         dialogueText.text = "";
     }
     
-    public void GetTriggered(GameObject NPC, Dialogue dialogue)
+    public void GetTriggered(Dialogue dialogue)
     {
         this.dialogue = dialogue;
         currentNode = dialogue.firstNode;
@@ -49,20 +50,13 @@ public class DialogueManager : MonoBehaviour
             return;
         }
         phraseCounter = 0;
-        dialogueCanvas.SetActive(true);
-        if (currentNode.IsOption())
-        {
-            AddButtons(currentNode.options);
-        }
-        else
-        {
-            AddText(currentNode.text[phraseCounter]);
-        }
+        dialogueBox.SetActive(true);
+        GetNext();
     }
 
     void Update()
     {
-        if (dialogueCanvas.activeSelf)
+        if (dialogueBox.activeSelf)
         {
             if (Input.GetMouseButtonDown(0) && !currentNode.IsOption())
             {
@@ -75,7 +69,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentNode == null)
         {
-            dialogueCanvas.SetActive(false);
+            dialogueBox.SetActive(false);
             dialogue.Finish();
             dialogue = null;
             currentNode = null;
@@ -85,27 +79,72 @@ public class DialogueManager : MonoBehaviour
         if (currentNode.IsOption())
         {
             dialogueText.text = "";
-            AddButtons(currentNode.options);
+            textWithoutName.SetActive(false);
+            textWithName.SetActive(false);
+            AddButtons(GetLocalizedOptions(((DialogueOption)currentNode).options, currentNode.separator));
         }
         else
         {
-            if (phraseCounter < currentNode.text.Length)
+            DialogueText textNode = (DialogueText)currentNode;
+            if (phraseCounter < textNode.text.Length)
             {
-                AddText(currentNode.text[phraseCounter]);
+                if((int)textNode.character == -1)
+                {
+                    textWithoutName.SetActive(true);
+                    textWithName.SetActive(false);
+                    AddOnlyText(GetLocalizedText(textNode.text[phraseCounter], currentNode.separator));
+                }
+                else
+                {
+                    textWithoutName.SetActive(false);
+                    textWithName.SetActive(true);
+                    AddTextWithName(textNode, GetLocalizedText(textNode.text[phraseCounter], currentNode.separator));
+                }
             }
             else
             {
-                currentNode = currentNode.next;
+                currentNode = textNode.next;
                 phraseCounter = 0;
                 GetNext();
             }
         }
-    }    
-    
-    public void AddText(string text)
+    }
+
+    private void AddTextWithName(DialogueText node, string text)
     {
         phraseCounter++;
-        dialogueText.text = text;
+        nameText.text = CharacterName.GetLocalizedCharachterName(node.character);
+        dialogueText.text = text; 
+    }
+
+    private string GetLocalizedText(string text, char separator)
+    {
+        if (separator == ' ' || separator == 0)
+        {
+            separator = '+';
+        }
+        string[] texts = text.Split(separator);
+        return texts[PlayerPrefs.GetInt("Language")];
+    }
+
+    private string[] GetLocalizedOptions(DialogueOption.Option[] options, char separator)
+    {
+        if (separator == ' ')
+        {
+            separator = '+';
+        }
+        string[] localizedOptions = new string[options.Length];
+        for (int i = 0; i < options.Length; i++)
+        {
+            localizedOptions[i] = GetLocalizedText(options[i].option, separator);
+        }
+        return localizedOptions;
+    }
+
+    public void AddOnlyText(string text)
+    {
+        phraseCounter++;
+        onlyText.text = text;
     }
 
     public void AddButtons(string[] options)
@@ -115,6 +154,7 @@ public class DialogueManager : MonoBehaviour
             Debug.LogError("Too many options");
         }
         dialogueText.enabled = false;
+        SetOptionsPosition(options.Length);
         for (int i = 0; i < options.Length; i++)
         {
             dialogOptions[i].SetActive(true);
@@ -122,6 +162,25 @@ public class DialogueManager : MonoBehaviour
             int j = i;
             dialogOptions[i].GetComponent<Button>().onClick.RemoveAllListeners();
             dialogOptions[i].GetComponent<Button>().onClick.AddListener(() => GetButtonRes(j));
+        }
+    }
+
+    public void SetOptionsPosition(int amount)
+    {
+        int offset = 225;
+        if(amount%2 == 0)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                dialogOptions[i].transform.localPosition = new Vector3(dialogOptions[i].transform.localPosition.x, -(float)offset/2 - (amount/2 - 1)*offset + i*offset, dialogOptions[i].transform.localPosition.z);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                dialogOptions[i].transform.localPosition = new Vector3(dialogOptions[i].transform.localPosition.x, -amount/2*offset + offset*i, dialogOptions[i].transform.localPosition.z);
+            }
         }
     }
     
@@ -141,7 +200,7 @@ public class DialogueManager : MonoBehaviour
         }
         if (currentNode.IsOption())
         {
-            currentNode = currentNode.optionsBranches[i];
+            currentNode = ((DialogueOption)currentNode).options[i].optionBranch;
             GetNext();
         } 
     }

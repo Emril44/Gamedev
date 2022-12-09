@@ -8,17 +8,26 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float movementSpeed = 14f;
     [SerializeField] private float jumpVelocity = 14f;
     [SerializeField] private float outOfWaterMultiplier = 1.6f;
+    [SerializeField] private float outOfLavaMultiplier = 1.4f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Collider2D feetCollider;
+    private Transform baseParent; // default parent when player is not moving synchronously with some other object, e.g. a moving platform
     private Rigidbody2D rb;
     private bool inWater = false;
+    private bool inLava = false;
     private float environmentSpeed = 1f;
     private Quaternion rotationGoal;
+
+    private Animator animator;
+    private const string JUMP_NAME = "Player_Jump";
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         Controllable = true;
+        baseParent = transform.parent;
+
+        animator = GetComponent<Animator>();
     }
 
     public void SetInWater(bool inWater)
@@ -32,6 +41,20 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             environmentSpeed = 0.4f;
+        }
+    }
+
+    public void SetInLava(bool inLava)
+    {
+        this.inLava = inLava;
+        if (!inLava)
+        {
+            environmentSpeed = 1f;
+            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * outOfLavaMultiplier);
+        }
+        else
+        {
+            environmentSpeed = 0.3f;
         }
     }
 
@@ -51,7 +74,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Controllable)
         {
-            if (inWater)
+            if (inWater || inLava)
             {
                 float horizontalMove = Input.GetAxis("Horizontal");
                 float verticalMove = Input.GetAxis("Vertical");
@@ -62,9 +85,11 @@ public class PlayerMovement : MonoBehaviour
             {
                 float horizontalMove = Input.GetAxis("Horizontal");
                 float verticalMove = rb.velocity.y;
-                if (Input.GetAxis("Jump") > 0 && verticalMove < 7 && CanJump())
+                if (Input.GetAxis("Jump") > 0 && CanJump() && !animator.GetCurrentAnimatorStateInfo(0).IsName(JUMP_NAME))
                 {
+                    //transform.parent = baseParent;
                     verticalMove = jumpVelocity;
+                    animator.Play(JUMP_NAME);
                 }
                 rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
             }
@@ -73,8 +98,8 @@ public class PlayerMovement : MonoBehaviour
         float rayLength = 1.25f;
         RaycastHit2D left = Physics2D.Raycast(transform.position - new Vector3(offset, 0), -Vector2.up, rayLength, groundLayer);
         RaycastHit2D right = Physics2D.Raycast(transform.position + new Vector3(offset, 0), -Vector2.up, rayLength, groundLayer);
-        Debug.DrawRay(transform.position - new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
-        Debug.DrawRay(transform.position + new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
+        //Debug.DrawRay(transform.position - new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
+        //Debug.DrawRay(transform.position + new Vector3(offset, 0), -Vector2.up * rayLength, Color.red);
         if (left.collider != null && right.collider != null)
         {
             if (left.normal == right.normal)
@@ -92,4 +117,26 @@ public class PlayerMovement : MonoBehaviour
         }
         transform.rotation = Quaternion.Lerp(transform.rotation, rotationGoal, 0.3f);
     }
+
+    public void ResetParent()
+    {
+        transform.parent = baseParent;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving"))
+        {
+            transform.parent = collision.transform;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Moving"))
+        {
+            ResetParent();
+        }
+    }
+
 }

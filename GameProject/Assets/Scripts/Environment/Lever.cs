@@ -1,13 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
-public class Lever : MonoBehaviour
+public abstract class Lever : MonoBehaviour
 {
     [SerializeField] private GameObject lever;
-    [SerializeField] private GameObject gates;
-    public Vector3 gatesPosition1;
-    [SerializeField] private Vector3 gatesPosition2;
-    private bool isOn = false;
+    [SerializeField] private float resetDelay;
+    [SerializeField] private bool supportsLookOn;
+    protected bool isOn = false;
+    protected bool isLocked = false;
+
+    public bool SupportsLookOn => supportsLookOn;
 
     private Quaternion[] leverRotation =
     {
@@ -15,49 +17,32 @@ public class Lever : MonoBehaviour
         Quaternion.Euler(0,0,-40)
     };
 
-    private void Awake()
-    {
-        gatesPosition1 = gates.transform.position;
-    }
-
     public void Toggle()
     {
+        if (isLocked) return;
         StopAllCoroutines();
         isOn = !isOn;
-        StartCoroutine(MoveGates());
+        StartCoroutine(DoAction());
         StartCoroutine(MoveLever());
+        if (isOn) StartCoroutine(ResetState());
     }
 
-    IEnumerator MoveGates()
+    IEnumerator ResetState()
     {
-        float time = 0;
-        while (time < 1)
-        {
-            time += Time.deltaTime;
-            if (isOn)
-            {
-                gates.transform.position = Vector3.Lerp(gates.transform.position, gatesPosition2, time/50);
-            }
-            else 
-            { 
-                gates.transform.position = Vector3.Lerp(gates.transform.position, gatesPosition1, time/50);
-            }
-            yield return null;
-        }
-        if (isOn)
-        {
-            gates.transform.position = gatesPosition2;
-        }
-        else
-        {
-            gates.transform.position = gatesPosition1;
-        }
+        yield return new WaitForSeconds(resetDelay);
+        Toggle();
     }
+
+    protected abstract IEnumerator DoAction();
+
+    public abstract Vector3 LookPosition();
+
 
     IEnumerator MoveLever()
     {
         float time = 0;
-        while(time < 1)
+
+        while (isOn ? Quaternion.Angle(lever.transform.localRotation, leverRotation[0]) > 0.1f : Quaternion.Angle(lever.transform.localRotation, leverRotation[1]) > 0.1f)
         {
             time += Time.deltaTime;
             if (isOn)

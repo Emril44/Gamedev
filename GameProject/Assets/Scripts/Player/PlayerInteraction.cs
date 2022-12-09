@@ -5,19 +5,29 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
 {
-    public bool Controllable;
+    public bool Controllable = true;
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
     private bool nearLever = false;
     private bool nearDialogue = false;
+    private bool nearMovable = false;
+    private bool nearWaypoint = false;
     private GameObject leverGO;
     private GameObject dialogueGO;
+    private GameObject movableGO;
     private Transform oldParent;
     private GameObject grabbedObject;
-    //private Vector3 oldRelativePosition;
     [SerializeField] private int health = 3;
     [SerializeField] private float undamageableTime = 0.65f;
+    private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
+    [SerializeField] private Vector2 spawnLocation;
+    private PlayerMovement movement;
+
+    private Rigidbody2D rb;
+    private Animator animator;
+    private const string DAMAGE_NAME = "Player_Damage";
+    private const string DEATH_NAME = "Player_Death";
 
     public static PlayerInteraction Instance { get; private set; }
     private void Awake()
@@ -31,14 +41,11 @@ public class PlayerInteraction : MonoBehaviour
             Instance = this;
         }
         Controllable = true;
-    }
-
-    void FixedUpdate()
-    {
-        if (bodyCollider.IsTouchingLayers(LayerMask.GetMask("Damage"))) 
-        { 
-            GetDamaged();
-        }
+        animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
+        movement = GetComponent<PlayerMovement>();
+        transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // spawn at spawn location
+        Debug.Log("spawn");
     }
 
     void PutPrism(PrismShard prismShard)
@@ -58,11 +65,12 @@ public class PlayerInteraction : MonoBehaviour
         {
             damageable = false;
             health--;
+            animator.Play(DAMAGE_NAME);
             StartCoroutine(Undamageable());
         }
         if(health <= 0)
         {
-            Die();
+            StartCoroutine(Die());
         }
     }
 
@@ -72,14 +80,22 @@ public class PlayerInteraction : MonoBehaviour
         damageable = true;
     }
 
-    private void Die()
+    private IEnumerator Die()
     {
+        rb.bodyType = RigidbodyType2D.Static;
+        animator.Play(DEATH_NAME);
+        yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
         Destroy(gameObject);
         DataManager.Instance.Die();
     }
 
     private void Update()
     {
+        if (IsFireproof())
+        {
+            fireproofTime -= Time.deltaTime;
+            if (fireproofTime < 0) fireproofTime = 0;
+        }
         if (Controllable)
         {
             if (Input.GetKeyDown(KeyCode.E))
@@ -102,23 +118,46 @@ public class PlayerInteraction : MonoBehaviour
                 else if (nearDialogue)
                 {
                     DialogueTrigger trigger = dialogueGO.GetComponent<DialogueTrigger>();
+                    Dialogue dialogue = trigger.GetCurrentDialogue();
                     Controllable = false;
-                    GetComponent<PlayerMovement>().Controllable = false;
+                    movement.Controllable = false;
                     void reenable()
                     {
                         Controllable = true;
-                        GetComponent<PlayerMovement>().Controllable = true;
-                        trigger.Dialogue.onDialogueEnd -= reenable;
+                        movement.Controllable = true;
+                        dialogue.onDialogueEnd -= reenable;
+                        if (trigger.tag != "DialogueTrigger") // for the rare case when further dialogue is impossible, i.e. finishing last main sequence and having no fallback dialogue
+                        {
+                            nearDialogue = false;
+                            dialogueGO = null;
+                        }
                     };
-                    trigger.Dialogue.onDialogueEnd += reenable;
-                    trigger.TriggerDialogue(dialogueGO);
+                    dialogue.onDialogueEnd += reenable;
+                    trigger.TriggerDialogue();
+                }
+                else if (nearMovable)
+                {
+                    movableGO.GetComponent<MovableObject>().StartMove();
+                    nearMovable = false;
+                    movableGO = null;
+                }
+                else if (nearWaypoint)
+                {
+                    nearWaypoint = false;
+                    movement.ResetParent();
+                    transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // teleport to spawn (i.e. to Monochrome)
+                    EnvironmentManager.Instance.SetNewColor(PrismColor.Neutral); // reset color to avoid cheesing
                 }
             }
             if (Input.GetKeyDown(KeyCode.L))
             {
                 if (nearLever)
                 {
-                    Camera.main.gameObject.GetComponent<CamMovement>().LookOnGates(leverGO.GetComponent<Lever>().gatesPosition1);
+                    var lever = leverGO.GetComponent<Lever>();
+                    if (lever.SupportsLookOn)
+                    {
+                        Camera.main.gameObject.GetComponent<CamMovement>().LookOnGates(lever.LookPosition());
+                    }
                 }
             }
         }
@@ -133,6 +172,7 @@ public class PlayerInteraction : MonoBehaviour
             grabbedObject.transform.parent = oldParent;
             grabbedObject.GetComponent<Rigidbody2D>().simulated = true;
             grabbedObject.GetComponent<Collider2D>().enabled = true;
+            grabbedObject.GetComponent<MovableObject>().Grabbed = false;
             grabbedObject = null;
         }
     }
@@ -162,6 +202,7 @@ public class PlayerInteraction : MonoBehaviour
                 grabbedObject.transform.localPosition = Vector3.zero;
                 collider.attachedRigidbody.velocity = Vector2.zero;
                 isGrabbing = true;
+                grabbedObject.GetComponent<MovableObject>().Grabbed = true;
                 break;
             }
         }
@@ -182,6 +223,11 @@ public class PlayerInteraction : MonoBehaviour
                 damageable = true;
                 StartCoroutine(SetInWater(true));
                 break;
+            case "Lava":
+                StopAllCoroutines();
+                damageable = true;
+                StartCoroutine(SetInLava(true));
+                break;
             case "Lever":
                 nearLever = true;
                 leverGO = other.gameObject;
@@ -190,14 +236,34 @@ public class PlayerInteraction : MonoBehaviour
                 nearDialogue = true;
                 dialogueGO = other.gameObject;
                 break;
+            case "Movable":
+                nearMovable = true;
+                movableGO = other.gameObject;
+                break;
+            case "Waypoint":
+                nearWaypoint = true;
+                break;
             case "SparkDoor":
                 other.gameObject.GetComponent<SparkDoor>().Open();
                 break;
             case "DeadlyDamage":
-                Die();
+                StartCoroutine(Die());
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
+                break;
+        }
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        switch (other.gameObject.tag)
+        {
+            case "Lava":
+                if (!IsFireproof()) GetDamaged();
+                break;
+            case "Damage":
+                GetDamaged();
                 break;
         }
     }
@@ -210,6 +276,10 @@ public class PlayerInteraction : MonoBehaviour
                 StopAllCoroutines();
                 StartCoroutine(SetInWater(false));
                 break;
+            case "Lava":
+                StopAllCoroutines();
+                StartCoroutine(SetInLava(false));
+                break;
             case "Lever":
                 nearLever = false;
                 leverGO = null;
@@ -218,12 +288,35 @@ public class PlayerInteraction : MonoBehaviour
                 nearDialogue = false;
                 dialogueGO = null;
                 break;
+            case "Movable":
+                nearMovable = false;
+                movableGO = null;
+                break;
+            case "Waypoint":
+                nearWaypoint = false;
+                break;
         }
+    }
+
+    public void ApplyFireproof(float seconds)
+    {
+        fireproofTime = seconds;
+    }
+
+    public bool IsFireproof()
+    {
+        return fireproofTime > 0;
     }
 
     IEnumerator SetInWater(bool isInWater)
     {
         yield return new WaitForSeconds(0.1f);
-        gameObject.GetComponent<PlayerMovement>().SetInWater(isInWater);
+        movement.SetInWater(isInWater);
+    }
+
+    IEnumerator SetInLava(bool isInLava)
+    {
+        yield return new WaitForSeconds(0.1f);
+        movement.SetInWater(isInLava);
     }
 }

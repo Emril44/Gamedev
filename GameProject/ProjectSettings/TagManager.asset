@@ -13,6 +13,11 @@ TagManager:
   - Lever
   - SparkDoor
   - DialogueTrigger
+  - Movable
+  - Lava
+  - Damage
+  - Waypoint
+  - Moving
   layers:
   - Default
   - TransparentFX
@@ -21,7 +26,7 @@ TagManager:
   - Water
   - UI
   - Ground
-  - Damage
+  - 
   - 
   - 
   - 

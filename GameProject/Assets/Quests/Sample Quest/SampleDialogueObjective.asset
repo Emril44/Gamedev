@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05648aab54f8643499ab797884ce6a5c, type: 3}
   m_Name: SampleDialogueObjective
   m_EditorClassIdentifier: 
-  <Message>k__BackingField: Talk to the Blue Circle
+  message: 
   dialogue: {fileID: 11400000, guid: 5db51420b6569eb4aa346cf74d075269, type: 2}
