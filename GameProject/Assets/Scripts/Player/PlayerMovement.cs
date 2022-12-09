@@ -87,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
                 float verticalMove = rb.velocity.y;
                 if (Input.GetAxis("Jump") > 0 && CanJump() && !animator.GetCurrentAnimatorStateInfo(0).IsName(JUMP_NAME))
                 {
-                    //transform.parent = baseParent;
+                    ResetParent();
                     verticalMove = jumpVelocity;
                     animator.Play(JUMP_NAME);
                 }
@@ -120,14 +120,14 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetParent()
     {
-        transform.parent = baseParent;
+        transform.SetParent(baseParent, true);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Moving"))
         {
-            transform.parent = collision.transform;
+            transform.SetParent(collision.transform, true);
         }
     }
 

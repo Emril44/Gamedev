@@ -73,7 +73,7 @@ public class BlackSquare : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Moving"))
         {
-            transform.parent = collision.transform;
+            transform.SetParent(collision.transform, true);
         }
     }
 
@@ -81,7 +81,7 @@ public class BlackSquare : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Moving"))
         {
-            transform.parent = baseParent;
+            transform.SetParent(baseParent, true);
         }
     }
 }
