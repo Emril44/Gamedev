@@ -5,7 +5,7 @@ using UnityEngine;
 // Class for logical grouping of objectives and processing their completion
 public abstract class Quest : MonoBehaviour
 {
-    public event Action onStart, onComplete;
+    public event Action onStart, onComplete, onUpdate;
 
     [SerializeField] private QuestData questData;
 
@@ -23,6 +23,23 @@ public abstract class Quest : MonoBehaviour
         if (currentObjective >= questData.Objectives.Count) return;
         questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
         questData.Objectives[currentObjective].SetActive(false);
+    }
+
+    public void ResetEvents()
+    {
+        onStart = null;
+        onComplete = null;
+        onUpdate = null;
+    }
+
+    public bool IsActive()
+    {
+        return currentObjective > 0 && currentObjective < questData.Objectives.Count;
+    }
+
+    public QuestData GetData()
+    {
+        return questData;
     }
 
     public string GetTitle()
@@ -59,18 +76,21 @@ public abstract class Quest : MonoBehaviour
     private void CompleteCurrentObjective()
     {
         questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
+        questData.Objectives[currentObjective].SetActive(false); // only deactivate an objective when its parent quest registered completion
         ActOnObjective(currentObjective);
         currentObjective++;
         if (currentObjective >= questData.Objectives.Count)
         {
+            onUpdate?.Invoke();
             onComplete?.Invoke();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else
         {
             questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
-            if (currentObjective == 1) onStart?.Invoke();
             questData.Objectives[currentObjective].SetActive(true);
+            if (currentObjective == 1) onStart?.Invoke();
+            onUpdate?.Invoke();
         }
     }
 
