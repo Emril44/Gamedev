@@ -151,7 +151,7 @@ public class MenuUIManager : MonoBehaviour
             baseButtonPos[3] - deltaPos
         };
         float speed = 0.01f;
-        while (time < 1)
+        while (Mathf.Abs(buttons[2].transform.position.x - goalPositions[2].x) > 0.01f)
         {
             time += Time.unscaledDeltaTime * speed;
             for (int i = 0; i < buttons.Length; i++)
@@ -159,6 +159,10 @@ public class MenuUIManager : MonoBehaviour
                 buttons[i].transform.localPosition = Vector3.Lerp(buttons[i].transform.localPosition, goalPositions[i], time);
             }
             yield return null;
+        }
+        foreach (var button in buttons)
+        {
+            button.transform.localPosition = goalPositions[Array.IndexOf(buttons, button)];
         }
         yield return null;
     }
@@ -172,9 +176,9 @@ public class MenuUIManager : MonoBehaviour
             canvas.transform.GetChild(1).GetChild(5).gameObject,
             canvas.transform.GetChild(1).GetChild(6).gameObject
         };
-        float time = 0;
+        float time = 0;        
         float speed = 0.01f;
-        while (time < 1)
+        while (Mathf.Abs(buttons[2].transform.position.x - baseButtonPos[2].x) > 0.01f)
         {
             time += Time.unscaledDeltaTime * speed;
             for (int i = 0; i < buttons.Length; i++)
@@ -190,9 +194,6 @@ public class MenuUIManager : MonoBehaviour
     {
         SetYesNo("Are you sure you want to go to the menu?+Вийти до головного меню?", () => { SceneManager.LoadScene("MainMenu"); });
     }
-    
-
-
     
     public void ChangeLanguage()
     {
@@ -222,7 +223,7 @@ public class MenuUIManager : MonoBehaviour
         StopAllCoroutines();
         var blackout = blockInstance.transform.GetChild(0).gameObject;
         var block = blockInstance.transform.GetChild(1).gameObject;
-        block.transform.localPosition = new Vector3(-4.3f, 9);
+        block.transform.localPosition = new Vector3(-4.3f, 9, 47);
         float y = 0.3f;
         if (paused)
         {
