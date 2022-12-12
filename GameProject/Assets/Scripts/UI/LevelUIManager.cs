@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System;
 
 public class LevelUIManager : MonoBehaviour
 {
@@ -219,11 +218,22 @@ public class LevelUIManager : MonoBehaviour
             objectiveTMPs[i].text = objectives[i].GetMessage();
             objectiveGOs[i].transform.localPosition = objectiveGOs[i].transform.localPosition + new Vector3(0, -90);
             objectiveGOs[i].SetActive(false);
-            questCoroutines.Enqueue(FadeIn(objectiveGOs[i], objectiveGOs[i].transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMPs[i], objectiveGOs[i].transform.localPosition + new Vector3(0, 90), 0.7f));
-            objectives[i].onComplete += () => { questCoroutines.Enqueue(StrikeText(objectiveTMPs[i])); TryMoveQueue(); };
+            int j = i;
+            questCoroutines.Enqueue(FadeIn(objectiveGOs[j], objectiveGOs[j].transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMPs[j], objectiveGOs[j].transform.localPosition + new Vector3(0, 90), 0.7f));
+            objectives[j].onComplete += () => { questCoroutines.Enqueue(StrikeText(objectiveTMPs[j])); TryMoveQueue(); };
         }
         activeQuests.Add(quest);
+        quest.onUpdate += () => { UpdateQuestTexts(quest, objectiveTMPs); };
         quest.onComplete += () => { RemoveQuestCard(quest); };
+    }
+
+    private void UpdateQuestTexts(Quest quest, TextMeshProUGUI[] objectiveTMPs)
+    {
+        var objectives = quest.GetObjectives().ToArray();
+        for (int i = 0; i < objectives.Length; i++)
+        {
+            objectiveTMPs[i].text = objectives[i].GetMessage();
+        }
     }
 
     private IEnumerator AddQuestCardCoroutine(Quest quest)

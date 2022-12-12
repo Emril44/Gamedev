@@ -16,6 +16,9 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private Canvas canvas;
     [SerializeField] private Button loadButton;
     [SerializeField] private GameObject settings;
+    [SerializeField] private GameObject playerSkin;
+    [SerializeField] private Sprite v;
+    [SerializeField] private Sprite[] playerSprites;
     private const int LANGUAGES = 2;
     [Header("Saves")]
     [SerializeField] private GameObject line;
@@ -30,6 +33,7 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private string dayString;
     private bool paused = false;
     private Vector3[] baseButtonPos;
+    private GameObject V;
 
     public static MenuUIManager Instance { get; private set; }
     private void Awake()
@@ -151,7 +155,7 @@ public class MenuUIManager : MonoBehaviour
             baseButtonPos[3] - deltaPos
         };
         float speed = 0.01f;
-        while (time < 1)
+        while (Mathf.Abs(buttons[2].transform.position.x - goalPositions[2].x) > 0.01f)
         {
             time += Time.unscaledDeltaTime * speed;
             for (int i = 0; i < buttons.Length; i++)
@@ -159,6 +163,10 @@ public class MenuUIManager : MonoBehaviour
                 buttons[i].transform.localPosition = Vector3.Lerp(buttons[i].transform.localPosition, goalPositions[i], time);
             }
             yield return null;
+        }
+        foreach (var button in buttons)
+        {
+            button.transform.localPosition = goalPositions[Array.IndexOf(buttons, button)];
         }
         yield return null;
     }
@@ -172,9 +180,9 @@ public class MenuUIManager : MonoBehaviour
             canvas.transform.GetChild(1).GetChild(5).gameObject,
             canvas.transform.GetChild(1).GetChild(6).gameObject
         };
-        float time = 0;
+        float time = 0;        
         float speed = 0.01f;
-        while (time < 1)
+        while (Mathf.Abs(buttons[2].transform.position.x - baseButtonPos[2].x) > 0.01f)
         {
             time += Time.unscaledDeltaTime * speed;
             for (int i = 0; i < buttons.Length; i++)
@@ -190,9 +198,6 @@ public class MenuUIManager : MonoBehaviour
     {
         SetYesNo("Are you sure you want to go to the menu?+Вийти до головного меню?", () => { SceneManager.LoadScene("MainMenu"); });
     }
-    
-
-
     
     public void ChangeLanguage()
     {
@@ -222,7 +227,7 @@ public class MenuUIManager : MonoBehaviour
         StopAllCoroutines();
         var blackout = blockInstance.transform.GetChild(0).gameObject;
         var block = blockInstance.transform.GetChild(1).gameObject;
-        block.transform.localPosition = new Vector3(-4.3f, 9);
+        block.transform.localPosition = new Vector3(-4.3f, 9, 47);
         float y = 0.3f;
         if (paused)
         {
@@ -340,6 +345,52 @@ public class MenuUIManager : MonoBehaviour
         yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(onYes);
     }
 
+    public void ShowDLCScreen()
+    {
+        if (blockInstance.transform.GetChild(1).childCount > 1)
+        {
+            Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
+        }
+        int selected = 4;
+        bool[] available = new bool[] {true, false, true, false, true, false};
+
+        
+        var block0 = blockInstance.transform.GetChild(1);
+        var block = new GameObject("DLC Block");
+        block.transform.SetParent(block0, false);
+
+        GameObject playerBase = Instantiate(playerSkin, block.transform);
+        playerBase.transform.localScale = new Vector2(0.3f, 0.3f);
+        playerBase.transform.localPosition = new Vector3(-30, 17.5f);
+        playerBase.GetComponent<Button>().onClick.AddListener(() => { SetV(0); });
+        
+        int offsetX = 30;
+        int offsetY = -40;
+        for (int i = 1; i < 6; i++)
+        {
+            GameObject skin = Instantiate(playerSkin, block.transform);
+            skin.transform.localScale = new Vector2(0.3f, 0.3f);
+            skin.transform.localPosition = new Vector3(-30 + offsetX * (i%3), 17.5f + offsetY * (i / 3));
+            skin.GetComponent<Image>().sprite = playerSprites[i];
+            skin.GetComponent<Button>().interactable = available[i];
+            int j = i;
+            skin.GetComponent<Button>().onClick.AddListener(() => { SetV(j); });
+        }
+        V = new GameObject();
+        V.AddComponent<Image>().sprite = v;
+        V.transform.SetParent(block.transform);
+        V.transform.localScale = new Vector2(0.15f, 0.15f);
+        SetV(selected);
+        ShowBlock();
+    }
+
+    public void SetV(int selected)
+    {
+        V.transform.localPosition = new Vector3(-20 + 28.5f * (selected % 3), 6 - 41 * (selected / 3));
+        //{selected}
+        //set skin
+    }
+
     public void ShowSettingsScreen()
     {
         if (blockInstance.transform.GetChild(1).childCount > 1)
@@ -455,6 +506,7 @@ public class MenuUIManager : MonoBehaviour
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
         }
         ShowBlock();
+        //TODO:
     }
 
     private void RemoveYesNo()
