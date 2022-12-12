@@ -17,17 +17,19 @@ public class DataManager : MonoBehaviour
         {
             Instance = this;
         }
-    }
-
-    public void Load()
-    {
         sparksAmount = 0;
         unlockedColors = 0;
     }
 
-    public void Save()
+    public DataManagerSerializedData Serialize()
     {
+        return new DataManagerSerializedData(sparksAmount, unlockedColors);
+    }
 
+    public void Deserialize(DataManagerSerializedData data)
+    {
+        sparksAmount = data.sparksAmount;
+        unlockedColors = data.unlockedColors;
     }
 
     public void AddSpark()

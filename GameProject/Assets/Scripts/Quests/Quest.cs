@@ -72,6 +72,25 @@ public abstract class Quest : MonoBehaviour
         return currentObjective >= questData.Objectives.Count ? null : questData.Objectives[currentObjective];
     }
 
+    public int GetCurrentObjectiveIndex()
+    {
+        return currentObjective;
+    }
+
+    public void SetCurrentObjectiveIndex(int index)
+    {
+        if (gameObject.activeSelf && IsActive())
+        {
+            questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
+        }
+        currentObjective = index;
+        if (gameObject.activeSelf && IsActive())
+        {
+            questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
+        }
+
+    }
+
     // Is called in event of current objective's completion
     private void CompleteCurrentObjective()
     {

@@ -23,6 +23,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool damageable = true;
     [SerializeField] private Vector2 spawnLocation;
     private PlayerMovement movement;
+    public bool canSave { get; private set; }
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -56,7 +57,7 @@ public class PlayerInteraction : MonoBehaviour
     void AddSpark(GameObject spark)
     {
         DataManager.Instance.AddSpark();
-        Destroy(spark);
+        spark.SetActive(false);
     }
     
     private void GetDamaged()
@@ -249,6 +250,9 @@ public class PlayerInteraction : MonoBehaviour
             case "DeadlyDamage":
                 StartCoroutine(Die());
                 break;
+            case "SaveZone":
+                canSave = true;
+                break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
                 break;
@@ -294,6 +298,9 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             case "Waypoint":
                 nearWaypoint = false;
+                break;
+            case "SaveZone":
+                canSave = false;
                 break;
         }
     }
