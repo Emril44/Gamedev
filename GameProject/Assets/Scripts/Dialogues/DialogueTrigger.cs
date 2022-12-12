@@ -4,39 +4,62 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [SerializeField] private List<Dialogue> dialogueList; // main sequence of one-time dialogues. each interaction with the trigger starts the first dialogue and removes it from the list
-    [SerializeField] private Dialogue fallbackDialogue; // one dialogue that will keep repeating after the main sequence was finished
+    [SerializeField] private List<DialogueBatch> batches = new List<DialogueBatch>(); // predefined dialogue states, indexed by this list (used in saves)
+    private int batchIndex;
+    private DialogueBatch batch;
+    private int dialogueIndex;
 
     public void Awake()
     {
-        if (dialogueList.Count == 0 && fallbackDialogue == null) gameObject.tag = "Untagged";
+        batchIndex = 0;
+        batch = batches[batchIndex];
+        dialogueIndex = 0;
+        if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
     }
 
     public void TriggerDialogue()
     {
-        if (dialogueList.Count > 0)
+        if (dialogueIndex < batch.dialogueList.Count)
         {
-            DialogueManager.Instance.GetTriggered(dialogueList.First());
-            dialogueList.RemoveAt(0);
-            if (dialogueList.Count == 0 && fallbackDialogue == null) gameObject.tag = "Untagged"; // remove DialogueTrigger tag from the base object if the trigger has no dialogues
+            DialogueManager.Instance.GetTriggered(batch.dialogueList[dialogueIndex]);
+            dialogueIndex++;
+            if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged"; // remove trigger if there are no dialogues and no fallback dialogue left
         }
         else
         {
-            DialogueManager.Instance.GetTriggered(fallbackDialogue);
+            DialogueManager.Instance.GetTriggered(batch.fallbackDialogue);
         }
     }
 
-    public void SetDialogueData(List<Dialogue> dialogueList, Dialogue fallbackDialogue)
+    public int GetBatchIndex()
     {
-        this.dialogueList = dialogueList;
-        this.fallbackDialogue = fallbackDialogue;
-        if (dialogueList.Count > 0 || fallbackDialogue != null) gameObject.tag = "DialogueTrigger";
-        else gameObject.tag = "Untagged";
+        return batchIndex;
+    }
+
+    public void SetBatchIndex(int index)
+    {
+        batchIndex = index;
+        batch = batches[index];
+        dialogueIndex = 0;
+        if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        else gameObject.tag = "DialogueTrigger";
+    }
+
+    public int GetDialogueIndex()
+    {
+        return dialogueIndex;
+    }
+
+    public void SetDialogueIndex(int index)
+    {
+        batchIndex = index;
+        if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        else gameObject.tag = "DialogueTrigger";
     }
 
     public Dialogue GetCurrentDialogue()
     {
-        if (dialogueList.Count > 0) return dialogueList.First();
-        return fallbackDialogue;
+        if (dialogueIndex < batch.dialogueList.Count) return batch.dialogueList[dialogueIndex];
+        return batch.fallbackDialogue;
     }
 }
