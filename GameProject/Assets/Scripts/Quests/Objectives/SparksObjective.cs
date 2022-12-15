@@ -16,11 +16,11 @@ public class SparksObjective : Objective
                 Complete();
                 return;
             }
-            DataManager.Instance.onSparkCollect += CheckForCompletion;
+            DataManager.Instance.onSparksUpdate += CheckForCompletion;
         }
         else
         {
-            DataManager.Instance.onSparkCollect -= CheckForCompletion;
+            DataManager.Instance.onSparksUpdate -= CheckForCompletion;
         }
     }
 

@@ -13,13 +13,26 @@ public class BlackCircle : NPC
     [SerializeField] private float fadeoutTime;
     private SpriteRenderer selfRenderer;
     private SpriteShapeRenderer gateRenderer;
+    private Dialogue finalDialogue;
 
-    void Start()
+    override protected void Awake()
     {
+        base.Awake();
         UpdateRequirements();
-        DataManager.Instance.onSparkCollect += UpdateRequirements;
+        DataManager.Instance.onSparksUpdate += UpdateRequirements;
         selfRenderer = gameObject.GetComponent<SpriteRenderer>();
         gateRenderer = gate.GetComponent<SpriteShapeRenderer>();
+        finalDialogue = trigger.GetBatchAtIndex(1).dialogueList[0];
+    }
+
+    private void OnEnable()
+    {
+        finalDialogue.onDialogueEnd += Disappear;
+    }
+
+    private void OnDisable()
+    {
+        finalDialogue.onDialogueEnd -= Disappear;
     }
 
     private void UpdateRequirements()
@@ -27,7 +40,6 @@ public class BlackCircle : NPC
         if (DataManager.Instance.sparksAmount >= sparksNeeded)
         {
             trigger.SetBatchIndex(1);
-            trigger.GetCurrentDialogue().onDialogueEnd += Disappear;
         }
     }
 

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
@@ -61,5 +60,10 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (dialogueIndex < batch.dialogueList.Count) return batch.dialogueList[dialogueIndex];
         return batch.fallbackDialogue;
+    }
+
+    public DialogueBatch GetBatchAtIndex(int i)
+    {
+        return batches[i];
     }
 }

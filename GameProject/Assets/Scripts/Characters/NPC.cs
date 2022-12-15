@@ -7,7 +7,7 @@ public class NPC : MonoBehaviour
     protected Dictionary<string, string> tags;
     protected DialogueTrigger trigger;
 
-    private void Awake()
+    protected virtual void Awake()
     {
         tags = new Dictionary<string, string>();
         trigger = GetComponent<DialogueTrigger>();
