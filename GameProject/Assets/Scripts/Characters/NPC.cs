@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DialogueTrigger))]
-public abstract class NPC : MonoBehaviour
+public class NPC : MonoBehaviour
 {
     protected Dictionary<string, string> tags;
     protected DialogueTrigger trigger;
