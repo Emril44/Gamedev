@@ -23,7 +23,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool damageable = true;
     [SerializeField] private Vector2 spawnLocation;
     private PlayerMovement movement;
-    public bool canSave { get; private set; }
+    public bool CanSave { get; private set; }
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -251,7 +251,8 @@ public class PlayerInteraction : MonoBehaviour
                 StartCoroutine(Die());
                 break;
             case "SaveZone":
-                canSave = true;
+                CanSave = true;
+                health = 3;
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
@@ -300,7 +301,7 @@ public class PlayerInteraction : MonoBehaviour
                 nearWaypoint = false;
                 break;
             case "SaveZone":
-                canSave = false;
+                CanSave = false;
                 break;
         }
     }
