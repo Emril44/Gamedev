@@ -55,19 +55,11 @@ public class LevelUIManager : MonoBehaviour
 
     IEnumerator Test()
     {
-        yield return new WaitForSeconds(4f);
         AddQuestCard(sampleQuest.GetComponent<Quest>());
         AddQuestCard(sampleQuest2.GetComponent<Quest>());
-        RemoveQuestCard(activeQuests[1]);
         AddQuestCard(sampleQuest4.GetComponent<Quest>());
         AddQuestCard(sampleQuest3.GetComponent<Quest>());
-        RemoveQuestCard(activeQuests[0]);
-        RemoveQuestCard(activeQuests[2]);
-        RemoveQuestCard(activeQuests[3]);
-        AddQuestCard(sampleQuest.GetComponent<Quest>());
-        AddQuestCard(sampleQuest3.GetComponent<Quest>());
-        RemoveQuestCard(activeQuests[0]);
-        RemoveQuestCard(activeQuests[3]);
+        yield return null;
     }
     //TO remove end
 
@@ -138,7 +130,7 @@ public class LevelUIManager : MonoBehaviour
         isCoroutineRunning = true;
         float time = 0;
         string originalText = text.text;
-        float durationOne = 0.017f;
+        float durationOne = 0.05f;
         int symbols = text.text.Length;
         float duration = durationOne * symbols;
         while (time < duration)
@@ -151,7 +143,24 @@ public class LevelUIManager : MonoBehaviour
         isCoroutineRunning = false;
         TryMoveQueue();
     }
-
+    IEnumerator MoveToNextObjective(TextMeshProUGUI tmp, Quest quest)
+    {
+        var text = quest.GetCurrentObjective().GetMessage();
+        isCoroutineRunning = true;
+        float time = 0;
+        float duration = text.Length * 0.05f;
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            tmp.text = text.Substring(0, (int)(text.Length * (time / duration)));
+            yield return null;
+        }
+        questCoroutines.Dequeue();
+        isCoroutineRunning = false;
+        quest.GetCurrentObjective().onComplete += () => { questCoroutines.Enqueue(StrikeText(tmp)); questCoroutines.Enqueue(MoveToNextObjective(tmp, quest)); TryMoveQueue(); };
+        TryMoveQueue();
+    }
+    
     IEnumerator FadeInQuestTitle(GameObject title, Image line)
     {
         float duration = 0.8f;
@@ -204,6 +213,7 @@ public class LevelUIManager : MonoBehaviour
         questCoroutines.Enqueue(FadeInQuestTitle(titleGO, line.GetComponent<Image>()));
         TryMoveQueue();
 
+        /*
         var objectives = quest.GetObjectives().ToArray();
         var objectiveGOs = new GameObject[objectives.Length];
         TextMeshProUGUI[] objectiveTMPs = new TextMeshProUGUI[objectives.Length];
@@ -222,9 +232,25 @@ public class LevelUIManager : MonoBehaviour
             questCoroutines.Enqueue(FadeIn(objectiveGOs[j], objectiveGOs[j].transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMPs[j], objectiveGOs[j].transform.localPosition + new Vector3(0, 90), 0.7f));
             objectives[j].onComplete += () => { questCoroutines.Enqueue(StrikeText(objectiveTMPs[j])); TryMoveQueue(); };
         }
+        */
+
+        var objective = Instantiate(objectiveGO, questGO.transform);
+        var objectiveTMP = objective.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+        objective.transform.position = new Vector2(objective.transform.position.x, y);
+        objectiveTMP.text = quest.GetCurrentObjective().GetMessage();
+        objective.transform.localPosition = objective.transform.localPosition + new Vector3(0, -90);
+        objective.SetActive(false);
+        questCoroutines.Enqueue(FadeIn(objective, objective.transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMP, objective.transform.localPosition + new Vector3(0, 90), 0.7f));
+        quest.GetCurrentObjective().onComplete += () => { questCoroutines.Enqueue(StrikeText(objectiveTMP)); questCoroutines.Enqueue(MoveToNextObjective(objectiveTMP, quest)); TryMoveQueue(); };
+
         activeQuests.Add(quest);
-        quest.onUpdate += () => { UpdateQuestTexts(quest, objectiveTMPs); };
+        quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };
         quest.onComplete += () => { RemoveQuestCard(quest); };
+    }
+
+    private void UpdateQuestText(Quest quest, TextMeshProUGUI objectiveTMP)
+    {
+        objectiveTMP.text = quest.GetCurrentObjective().GetMessage();
     }
 
     private void UpdateQuestTexts(Quest quest, TextMeshProUGUI[] objectiveTMPs)
@@ -249,11 +275,11 @@ public class LevelUIManager : MonoBehaviour
     {
         //base height
         float height = 0.59f + 0.07f;
-        foreach (var objective in quest.GetObjectives())
-        {
+        //foreach (var objective in quest.GetObjectives())
+        //{
             //objective height
             height += 0.38f;
-        }
+        //}
         return height;
     }
     
