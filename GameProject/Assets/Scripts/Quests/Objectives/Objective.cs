@@ -3,7 +3,8 @@ using UnityEngine;
 public abstract class Objective : ScriptableObject
 {
     public event Action onComplete;
-
+    [Header("Basic separator is '+'")]
+    public char separator = '+';
     [TextArea(1, 5)]
     [SerializeField] protected string message;
 
@@ -15,8 +16,12 @@ public abstract class Objective : ScriptableObject
 
     public abstract void SetActive(bool active);
 
-    public virtual string GetMessage()
+    public string Message()
     {
         return message;
+    }
+    public virtual string LocalizedMessage()
+    {
+        return message.Split(separator)[PlayerPrefs.GetInt("Language")];
     }
 }

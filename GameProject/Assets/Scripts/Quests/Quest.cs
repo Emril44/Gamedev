@@ -42,16 +42,6 @@ public abstract class Quest : MonoBehaviour
         return questData;
     }
 
-    public string GetTitle()
-    {
-        return questData.Title;
-    }
-
-    public string GetDescription()
-    {
-        return questData.Description;
-    }
-
     public List<Objective> GetObjectives()
     {
         return questData.Objectives;
@@ -61,7 +51,7 @@ public abstract class Quest : MonoBehaviour
     {
         if (i < 0 || i >= questData.Objectives.Count)
         {
-            Debug.LogWarning("Trying to get undefined objective " + i + " from quest " + questData.Title);
+            Debug.LogWarning("Trying to get undefined objective " + i + " from quest " + questData.LocalizedTitle());
             return null;
         }
         return questData.Objectives[i];

@@ -13,13 +13,13 @@ public class SampleQuest : Quest
         switch(objective)
         {
             case 0:
-                Debug.Log("Complete objective 0, dialogue, " + GetObjective(objective).GetMessage());
+                Debug.Log("Complete objective 0, dialogue, " + GetObjective(objective).LocalizedMessage());
                 break;
             case 1:
-                Debug.Log("Complete objective 1, location, " + GetObjective(objective).GetMessage());
+                Debug.Log("Complete objective 1, location, " + GetObjective(objective).LocalizedMessage());
                 break;
             case 2:
-                Debug.Log("Complete objective 2, location, " + GetObjective(objective).GetMessage());
+                Debug.Log("Complete objective 2, location, " + GetObjective(objective).LocalizedMessage());
                 break;
         }
     }

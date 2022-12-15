@@ -145,7 +145,7 @@ public class LevelUIManager : MonoBehaviour
     }
     IEnumerator MoveToNextObjective(TextMeshProUGUI tmp, Quest quest)
     {
-        var text = quest.GetCurrentObjective().GetMessage();
+        var text = quest.GetCurrentObjective().LocalizedMessage();
         isCoroutineRunning = true;
         float time = 0;
         float duration = text.Length * 0.05f;
@@ -200,7 +200,7 @@ public class LevelUIManager : MonoBehaviour
         questGO.transform.SetParent(canvasHUD.transform.GetChild(0), false);
 
         var titleGO = Instantiate(questTitle, questGO.transform);
-        titleGO.GetComponent<TextMeshProUGUI>().text = quest.GetTitle();
+        titleGO.GetComponent<TextMeshProUGUI>().text = quest.GetData().LocalizedTitle();
         titleGO.transform.position = new Vector2(titleGO.transform.position.x, y);
         titleGO.SetActive(false);
 
@@ -237,7 +237,7 @@ public class LevelUIManager : MonoBehaviour
         var objective = Instantiate(objectiveGO, questGO.transform);
         var objectiveTMP = objective.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         objective.transform.position = new Vector2(objective.transform.position.x, y);
-        objectiveTMP.text = quest.GetCurrentObjective().GetMessage();
+        objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
         objective.transform.localPosition = objective.transform.localPosition + new Vector3(0, -90);
         objective.SetActive(false);
         questCoroutines.Enqueue(FadeIn(objective, objective.transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMP, objective.transform.localPosition + new Vector3(0, 90), 0.7f));
@@ -250,7 +250,7 @@ public class LevelUIManager : MonoBehaviour
 
     private void UpdateQuestText(Quest quest, TextMeshProUGUI objectiveTMP)
     {
-        objectiveTMP.text = quest.GetCurrentObjective().GetMessage();
+        objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
     }
 
     private void UpdateQuestTexts(Quest quest, TextMeshProUGUI[] objectiveTMPs)
@@ -258,7 +258,7 @@ public class LevelUIManager : MonoBehaviour
         var objectives = quest.GetObjectives().ToArray();
         for (int i = 0; i < objectives.Length; i++)
         {
-            objectiveTMPs[i].text = objectives[i].GetMessage();
+            objectiveTMPs[i].text = objectives[i].LocalizedMessage();
         }
     }
 
