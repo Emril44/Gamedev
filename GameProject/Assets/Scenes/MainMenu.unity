@@ -295,6 +295,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1664652490}
+    - target: {fileID: 7036732537213883786, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartNewGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 7036732537213883786, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MenuUIManager, UI
+      objectReference: {fileID: 0}
     - target: {fileID: 7840597627288181270, guid: c3b63e13b19d16f4e91cc98ecc609504, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

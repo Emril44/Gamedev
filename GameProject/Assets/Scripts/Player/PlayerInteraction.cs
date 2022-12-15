@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
 {
+    public Action onHealthUpdate;
     public bool Controllable = true;
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
@@ -23,6 +25,7 @@ public class PlayerInteraction : MonoBehaviour
     private bool damageable = true;
     [SerializeField] private Vector2 spawnLocation;
     private PlayerMovement movement;
+    public bool CanSave { get; private set; }
 
     private Rigidbody2D rb;
     private Animator animator;
@@ -56,7 +59,7 @@ public class PlayerInteraction : MonoBehaviour
     void AddSpark(GameObject spark)
     {
         DataManager.Instance.AddSpark();
-        Destroy(spark);
+        spark.SetActive(false);
     }
     
     private void GetDamaged()
@@ -65,6 +68,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             damageable = false;
             health--;
+            onHealthUpdate?.Invoke();
             animator.Play(DAMAGE_NAME);
             StartCoroutine(Undamageable());
         }
@@ -247,7 +251,14 @@ public class PlayerInteraction : MonoBehaviour
                 other.gameObject.GetComponent<SparkDoor>().Open();
                 break;
             case "DeadlyDamage":
+                health = 0;
+                onHealthUpdate?.Invoke();
                 StartCoroutine(Die());
+                break;
+            case "SaveZone":
+                CanSave = true;
+                health = 3;
+                onHealthUpdate?.Invoke();
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
@@ -294,6 +305,9 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             case "Waypoint":
                 nearWaypoint = false;
+                break;
+            case "SaveZone":
+                CanSave = false;
                 break;
         }
     }

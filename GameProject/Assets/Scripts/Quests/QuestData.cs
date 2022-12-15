@@ -4,6 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Quest", menuName = "Quest")]
 public class QuestData : ScriptableObject
 {
+    [Header("Basic separator is '+'")]
+    public char separator = '+';
     // Display title of the quest in quest menu
     [field: TextArea(1, 5)]
     [field: SerializeField] public string Title { get; private set; }
@@ -16,5 +18,13 @@ public class QuestData : ScriptableObject
     [field: SerializeField] public List<QuestData> Prerequisites { get; private set; }
     // Quests that will try to become available (not active) after this one is completed. Quests whose prerequisite quests are not completed will not become available
     [field: SerializeField] public List<QuestData> NextQuests { get; private set; }
+    public string LocalizedTitle()
+    {
+        return Title.Split(separator)[PlayerPrefs.GetInt("Language")];
+    }
+    public string LocalizedDescription()
+    {
+        return Description.Split(separator)[PlayerPrefs.GetInt("Language")];
+    }
 
 }

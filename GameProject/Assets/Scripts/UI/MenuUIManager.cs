@@ -266,7 +266,12 @@ public class MenuUIManager : MonoBehaviour
         }
     }
     
-    public void ShowNewGameScreen() 
+    public void StartNewGame()
+    {
+        SceneManager.LoadSceneAsync("GameScene");
+    }
+
+    /*public void ShowNewGameScreen() 
     {
         if (blockInstance.transform.GetChild(1).childCount > 1)
         {
@@ -276,8 +281,9 @@ public class MenuUIManager : MonoBehaviour
         s.transform.SetParent(blockInstance.transform.GetChild(1), false);
         s.transform.localPosition = new Vector3(4.8f, 31.6f, -14);
         s.transform.localScale = new Vector3(0.06f, 0.06f, 0.06f);
-        var autosave = SavesManager.Instance.Autosave();
-        if(save != null)
+        SaveHeader[] saveHeaders = SavesManager.Instance.SaveHeaders();
+        var autosave = saveHeaders[0];
+        if (save != null && autosave != null)
         {
             var card = SaveCard(autosaveString, autosave, s.transform, 0);
             card.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -285,12 +291,12 @@ public class MenuUIManager : MonoBehaviour
         }
         var l = Instantiate(line, s.transform);
         l.transform.localPosition = l.transform.localPosition + new Vector3(0, -375);
-        int i = SavesManager.Instance.Saves().Length;
+        int i = saveHeaders.Length;
         for(int j = 0; j < i; j++)
         {
-            if(SavesManager.Instance.Saves()[j] != null)
+            if (saveHeaders[j] != null)
             {
-                var card = SaveCard(saveString, SavesManager.Instance.Saves()[j], s.transform, j + 1);
+                var card = SaveCard(saveString, saveHeaders[j], s.transform, j + 1);
                 card.transform.localPosition = card.transform.localPosition + new Vector3(0, -338 * (j + 1));
                 if (j == 0)
                 {
@@ -302,13 +308,13 @@ public class MenuUIManager : MonoBehaviour
                 var card = Instantiate(newSave, s.transform);
                 card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338 * (j+1) + 415);
                 int n = j + 1;
-                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.NewGame(n); });
+                save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save{num}+Перезаписати збереження{num}", () => { SavesManager.Instance.NewGame(n); }) ; });
             }
         }
         ShowBlock();
-    }
+    }*/
 
-    public GameObject SaveCard(string title, Save saveInfo, Transform parent, int n)
+    public GameObject SaveCard(string title, SaveHeader saveInfo, Transform parent, int n)
     {
         GameObject save = Instantiate(this.save, parent.transform);
         string t = title.Split('+')[PlayerPrefs.GetInt("Language")];
@@ -319,9 +325,9 @@ public class MenuUIManager : MonoBehaviour
         save.GetComponent<SaveTexts>().day.text = day + ": " + saveInfo.day;
 
         save.GetComponent<SaveTexts>().sparksAmount.text = saveInfo.sparks.ToString();
-        save.GetComponent<SaveTexts>().time.text = TimeString(saveInfo.time);
+        save.GetComponent<SaveTexts>().time.text = TimeString(saveInfo.timePlayed);
 
-        save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save{num}+Перезаписати збереження{num}", () => { SavesManager.Instance.NewGame(n); }) ; });
+        //save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save{num}+Перезаписати збереження{num}", () => { SavesManager.Instance.NewGame(); }) ; });
         var x = save.transform.GetChild(1).gameObject;
         x.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Delete save{num}+Видалити збереження{num}", () => { SavesManager.Instance.RemoveSave(n); }); });
         return save;

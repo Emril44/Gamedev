@@ -18,6 +18,7 @@ TagManager:
   - Damage
   - Waypoint
   - Moving
+  - SaveZone
   layers:
   - Default
   - TransparentFX

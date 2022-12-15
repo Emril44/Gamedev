@@ -42,16 +42,6 @@ public abstract class Quest : MonoBehaviour
         return questData;
     }
 
-    public string GetTitle()
-    {
-        return questData.Title;
-    }
-
-    public string GetDescription()
-    {
-        return questData.Description;
-    }
-
     public List<Objective> GetObjectives()
     {
         return questData.Objectives;
@@ -61,7 +51,7 @@ public abstract class Quest : MonoBehaviour
     {
         if (i < 0 || i >= questData.Objectives.Count)
         {
-            Debug.LogWarning("Trying to get undefined objective " + i + " from quest " + questData.Title);
+            Debug.LogWarning("Trying to get undefined objective " + i + " from quest " + questData.LocalizedTitle());
             return null;
         }
         return questData.Objectives[i];
@@ -70,6 +60,25 @@ public abstract class Quest : MonoBehaviour
     public Objective GetCurrentObjective()
     {
         return currentObjective >= questData.Objectives.Count ? null : questData.Objectives[currentObjective];
+    }
+
+    public int GetCurrentObjectiveIndex()
+    {
+        return currentObjective;
+    }
+
+    public void SetCurrentObjectiveIndex(int index)
+    {
+        if (gameObject.activeSelf && IsActive())
+        {
+            questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
+        }
+        currentObjective = index;
+        if (gameObject.activeSelf && IsActive())
+        {
+            questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
+        }
+
     }
 
     // Is called in event of current objective's completion

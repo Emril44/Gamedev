@@ -26,6 +26,26 @@ public class QuestManager : MonoBehaviour
         for (int i = 0; i < quests.Count; i++) questsToIds.Add(quests.ElementAt(i).GetData(), i); // backwards-map QuestData instances to ids of quests
     }
 
+    public QuestManagerSerializedData Serialize()
+    {
+        List<int> objectiveIds = new List<int>();
+        for (int i = 0; i < availableQuests.Count; i++) objectiveIds.Add(QuestById(availableQuests[i]).GetCurrentObjectiveIndex()); // add ids in the same order as their corresponding objectives
+        return new QuestManagerSerializedData(completedQuests, availableQuests, objectiveIds);
+    }
+
+    public void Deserialize(QuestManagerSerializedData data)
+    {
+        completedQuests = data.completedQuests;
+        availableQuests = data.availableQuests;
+        foreach (Quest quest in quests) quest.gameObject.SetActive(false);
+        for (int i = 0; i < availableQuests.Count; i++)
+        {
+            Quest quest = QuestById(availableQuests[i]);
+            quest.SetCurrentObjectiveIndex(data.availableQuestObjectiveIDs[i]);
+            quest.gameObject.SetActive(true);
+        }
+    }
+
     // Makes a quest available (not yet active in the quest menu)
     public void AddAvailableQuest(int id)
     {
@@ -55,6 +75,11 @@ public class QuestManager : MonoBehaviour
             quest.onComplete += CompleteQuest;
         }
     }
+    
+    public void AddAvailableQuest(QuestData data)
+    {
+        AddAvailableQuest(IdByQuestData(data));
+    }
 
     // Make quest unavailable without completing it (e.g. if the day ended)
     public void RemoveAvailableQuest(int id)
@@ -63,6 +88,10 @@ public class QuestManager : MonoBehaviour
         quest.ResetEvents();
         availableQuests.Remove(id);
         quest.gameObject.SetActive(false);
+    }
+    public void RemoveAvailableQuest(QuestData data)
+    {
+        RemoveAvailableQuest(IdByQuestData(data));
     }
 
     private Quest QuestById(int id)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public event Action onSparkCollect;
+    public event Action onSparksUpdate;
     public int sparksAmount { get; private set; }
     public int unlockedColors { get; private set; }
     public static DataManager Instance { get; private set; }
@@ -17,23 +17,26 @@ public class DataManager : MonoBehaviour
         {
             Instance = this;
         }
-    }
-
-    public void Load()
-    {
         sparksAmount = 0;
         unlockedColors = 0;
     }
 
-    public void Save()
+    public DataManagerSerializedData Serialize()
     {
+        return new DataManagerSerializedData(sparksAmount, unlockedColors);
+    }
 
+    public void Deserialize(DataManagerSerializedData data)
+    {
+        sparksAmount = data.sparksAmount;
+        unlockedColors = data.unlockedColors;
+        onSparksUpdate?.Invoke();
     }
 
     public void AddSpark()
     {
         sparksAmount++;
-        onSparkCollect?.Invoke();
+        onSparksUpdate?.Invoke();
     }
 
     public void Die()
