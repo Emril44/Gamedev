@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
 {
+    public Action onHealthUpdate;
     public bool Controllable = true;
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
@@ -66,6 +68,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             damageable = false;
             health--;
+            onHealthUpdate?.Invoke();
             animator.Play(DAMAGE_NAME);
             StartCoroutine(Undamageable());
         }
@@ -248,11 +251,14 @@ public class PlayerInteraction : MonoBehaviour
                 other.gameObject.GetComponent<SparkDoor>().Open();
                 break;
             case "DeadlyDamage":
+                health = 0;
+                onHealthUpdate?.Invoke();
                 StartCoroutine(Die());
                 break;
             case "SaveZone":
                 CanSave = true;
                 health = 3;
+                onHealthUpdate?.Invoke();
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
