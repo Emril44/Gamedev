@@ -181,9 +181,4 @@ public class SavesManager : MonoBehaviour
         Directory.Delete(savePath);
         saveHeaders[saveIndex] = null;
     }
-
-    public void Die()
-    {
-        //
-    }
 }

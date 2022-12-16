@@ -16,6 +16,7 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private Canvas canvas;
     [SerializeField] private Button loadButton;
     [SerializeField] private GameObject settings;
+    [SerializeField] private GameObject about;
     [SerializeField] private GameObject playerSkin;
     [SerializeField] private Sprite v;
     [SerializeField] private Sprite[] playerSprites;
@@ -55,7 +56,12 @@ public class MenuUIManager : MonoBehaviour
         yesNoInstance.SetActive(false);
         yesNoInstance.transform.SetParent(canvas.transform, false);
         var no = yesNoInstance.transform.GetChild(1).GetChild(2).gameObject;
-        no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });      
+        no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });
+        try
+        {
+            PlayerInteraction.Instance.onDeath += delegate { ShowDeathScreen(); };
+        }
+        catch { }
     }
 
     private void Start()
@@ -357,10 +363,16 @@ public class MenuUIManager : MonoBehaviour
         {
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
         }
+
         int selected = 4;
         bool[] available = new bool[] {true, false, true, false, true, false};
+        //playersprites
+        for(int i = 0; i < available.Length; i++)
+        {
+            //var card = 
+        }
 
-        
+        /*
         var block0 = blockInstance.transform.GetChild(1);
         var block = new GameObject("DLC Block");
         block.transform.SetParent(block0, false);
@@ -388,6 +400,7 @@ public class MenuUIManager : MonoBehaviour
         V.transform.localScale = new Vector2(0.15f, 0.15f);
         SetV(selected);
         ShowBlock();
+        */
     }
 
     public void SetV(int selected)
@@ -416,7 +429,7 @@ public class MenuUIManager : MonoBehaviour
         
         resolutionsDropdown.value = resolutionsDropdown.options.Select(option => option.text).ToList().IndexOf(Screen.currentResolution.ToString().Split('@')[0]);
         resolutionsDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionsDropdown.options[resolutionsDropdown.value].text); });
-
+        /*
         var refreshRate = settings.transform.GetChild(5).GetComponent<TMP_InputField>();
         if(Application.targetFrameRate < 0)
         {
@@ -425,7 +438,7 @@ public class MenuUIManager : MonoBehaviour
         refreshRate.text = Application.targetFrameRate.ToString();
         refreshRate.gameObject.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = Application.targetFrameRate.ToString();
         refreshRate.onEndEdit.AddListener(delegate { ChangeRefreshRate(int.Parse(refreshRate.text), refreshRate); });
-
+        */
         var fullscreen = settings.transform.GetChild(7).GetComponent<TMP_Dropdown>();
         fullscreen.ClearOptions();
         fullscreen.AddOptions(ScreenModes());
@@ -512,7 +525,9 @@ public class MenuUIManager : MonoBehaviour
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
         }
         ShowBlock();
-        //TODO:
+        var about = Instantiate(this.about);
+        about.transform.SetParent(blockInstance.transform.GetChild(1), false);
+
     }
 
     private void RemoveYesNo()
@@ -524,5 +539,28 @@ public class MenuUIManager : MonoBehaviour
     public void ExitGame()
     {
         SetYesNo("Exit the game+Вийти з гри", () => { Application.Quit(); });
+    }
+
+    //TODO:
+    public void ShowDeathScreen()
+    {
+        SetYesNo(
+        "Rectangle is dead. Load autosave or go to the main menu+Прямокутник помер. Завантаж автозбереження або перейди у головне меню",
+        delegate { SavesManager.Instance.Load(0); },
+        "Autosave+Автозбереження",
+        delegate { SceneManager.LoadScene("MainMenu"); },
+        "Main Menu+Головне меню"
+        );
+    }
+
+    public void SetYesNo(string message, UnityEngine.Events.UnityAction onLeft, string onLeftMessage, UnityEngine.Events.UnityAction onRight, string onRightMessage)
+    {
+        blockInstance.transform.GetChild(0).gameObject.SetActive(false);
+        yesNoInstance.SetActive(true);
+        yesNoInstance.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = message.Split('+')[PlayerPrefs.GetInt("Language")];
+        yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(onLeft);
+        yesNoInstance.transform.GetChild(1).GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = onLeftMessage.Split('+')[PlayerPrefs.GetInt("Language")];
+        yesNoInstance.transform.GetChild(1).GetChild(2).GetComponent<Button>().onClick.AddListener(onRight);
+        yesNoInstance.transform.GetChild(1).GetChild(2).GetChild(0).GetComponent<TextMeshProUGUI>().text = onRightMessage.Split('+')[PlayerPrefs.GetInt("Language")];
     }
 }

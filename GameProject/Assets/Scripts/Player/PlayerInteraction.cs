@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerInteraction : MonoBehaviour
 {
     public Action onHealthUpdate;
+    public Action onDeath;
     public bool Controllable = true;
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
@@ -19,7 +20,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject movableGO;
     private Transform oldParent;
     private GameObject grabbedObject;
-    [SerializeField] private int health = 3;
+    [SerializeField] public int health { get; private set; } = 3;
     [SerializeField] private float undamageableTime = 0.65f;
     private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
@@ -62,7 +63,7 @@ public class PlayerInteraction : MonoBehaviour
         spark.SetActive(false);
     }
     
-    private void GetDamaged()
+    private void GetDamaged(string source)
     {
         if (damageable)
         {
@@ -74,7 +75,8 @@ public class PlayerInteraction : MonoBehaviour
         }
         if(health <= 0)
         {
-            StartCoroutine(Die());
+            onDeath?.Invoke();
+            StartCoroutine(Die(source));
         }
     }
 
@@ -84,13 +86,14 @@ public class PlayerInteraction : MonoBehaviour
         damageable = true;
     }
 
-    private IEnumerator Die()
+    private IEnumerator Die(string source)
     {
         rb.bodyType = RigidbodyType2D.Static;
         animator.Play(DEATH_NAME);
+        AnalyticsManager.Instance.DeathEvent(DataManager.Instance.day,source);
         yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
-        Destroy(gameObject);
-        DataManager.Instance.Die();
+        Controllable = false;
+        GetComponent<SpriteRenderer>().enabled = false; 
     }
 
     private void Update()
@@ -253,7 +256,7 @@ public class PlayerInteraction : MonoBehaviour
             case "DeadlyDamage":
                 health = 0;
                 onHealthUpdate?.Invoke();
-                StartCoroutine(Die());
+                StartCoroutine(Die(other.gameObject.name));
                 break;
             case "SaveZone":
                 CanSave = true;
@@ -271,10 +274,10 @@ public class PlayerInteraction : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Lava":
-                if (!IsFireproof()) GetDamaged();
+                if (!IsFireproof()) GetDamaged(other.gameObject.name);
                 break;
             case "Damage":
-                GetDamaged();
+                GetDamaged(other.gameObject.name);
                 break;
         }
     }

@@ -6,6 +6,8 @@ public class DataManager : MonoBehaviour
     public event Action onSparksUpdate;
     public int sparksAmount { get; private set; }
     public int unlockedColors { get; private set; }
+    //TODO: day
+    public int day;
     public static DataManager Instance { get; private set; }
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class DataManager : MonoBehaviour
         }
         sparksAmount = 0;
         unlockedColors = 0;
+        day = -1;
     }
 
     public DataManagerSerializedData Serialize()
@@ -37,11 +40,6 @@ public class DataManager : MonoBehaviour
     {
         sparksAmount++;
         onSparksUpdate?.Invoke();
-    }
-
-    public void Die()
-    {
-        //TODO: death screen
     }
 
     public void UnlockColor()

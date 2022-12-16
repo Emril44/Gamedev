@@ -19,6 +19,7 @@ public class LevelUIManager : MonoBehaviour
         }
         leverLookInstance = Instantiate(leverLook, canvasWorld.transform);
         leverLookInstance.SetActive(false);
+        PlayerInteraction.Instance.onHealthUpdate += delegate { UpdateHealthbar(); };
     }
 
     [SerializeField] private Canvas canvasHUD;
@@ -63,6 +64,13 @@ public class LevelUIManager : MonoBehaviour
     }
     //TO remove end
 
+
+    public void UpdateHealthbar()
+    {
+        int newHealth = PlayerInteraction.Instance.health;
+        //TODO: update healthbar
+    }
+
     /*
     public void ShowLeverLook(Vector3 position)
     {
@@ -106,7 +114,7 @@ public class LevelUIManager : MonoBehaviour
         yield return null;
     }
     */
-    
+
     IEnumerator FadeIn(GameObject instance, Image image, float imageTargetA, TextMeshProUGUI text, Vector3 position, float duration)
     {
         isCoroutineRunning = true;
@@ -366,6 +374,5 @@ public class LevelUIManager : MonoBehaviour
         {
             StartCoroutine(questCoroutines.Peek());
         }
-    }
-    
+    }    
 }
