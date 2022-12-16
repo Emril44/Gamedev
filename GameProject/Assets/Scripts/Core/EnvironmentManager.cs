@@ -71,7 +71,6 @@ public class EnvironmentManager : MonoBehaviour
 
     void FillPool()
     {
-        /*
         coloredObjectsPool = new Queue<ColoredObject>();
         foreach (ColoredObject obj in FindObjectsOfType<ColoredObject>())
         {
@@ -85,7 +84,6 @@ public class EnvironmentManager : MonoBehaviour
                 //TODO: disable?
             }
         }
-        */
     }
 
     private void RepaintPool(PrismColor color)
