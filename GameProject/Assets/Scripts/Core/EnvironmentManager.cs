@@ -27,7 +27,7 @@ public class EnvironmentManager : MonoBehaviour
     
     private void Start()
     {
-        FillPool();
+        ActivateColoredObjects();
     }
 
     public EnvironmentManagerSerializedData Serialize()
@@ -69,7 +69,7 @@ public class EnvironmentManager : MonoBehaviour
         }
     }
 
-    void FillPool()
+    void ActivateColoredObjects()
     {
         coloredObjectsPool = new Queue<ColoredObject>();
         foreach (ColoredObject obj in FindObjectsOfType<ColoredObject>())

@@ -40,6 +40,9 @@ public class PlayerInteraction : MonoBehaviour
     private const string DAMAGE_NAME = "Player_Damage";
     private const string DEATH_NAME = "Player_Death";
 
+    public Transform waterSplash;
+    public Transform lavaSplash;
+
     public static PlayerInteraction Instance { get; private set; }
     private void Awake()
     {
@@ -52,6 +55,8 @@ public class PlayerInteraction : MonoBehaviour
             Instance = this;
         }
         animator = GetComponent<Animator>();
+        waterSplash.GetComponent<ParticleSystem>().Pause();
+        lavaSplash.GetComponent<ParticleSystem>().Pause();
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
         transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // spawn at spawn location
@@ -234,11 +239,17 @@ public class PlayerInteraction : MonoBehaviour
             case "Water":
                 StopAllCoroutines();
                 damageable = true;
+                ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
+                waterSploosh.name = "WaterSplashParticles";
+                waterSploosh.Play();
                 StartCoroutine(SetInWater(true));
                 break;
             case "Lava":
                 StopAllCoroutines();
                 damageable = true;
+                ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
+                lavaSploosh.name = "LavaSplashParticles";
+                lavaSploosh.Play();
                 StartCoroutine(SetInLava(true));
                 break;
             case "Lever":
@@ -294,10 +305,16 @@ public class PlayerInteraction : MonoBehaviour
         {
             case "Water":
                 StopAllCoroutines();
+                ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
+                waterSploosh.name = "WaterSplashParticles";
+                waterSploosh.Play();
                 StartCoroutine(SetInWater(false));
                 break;
             case "Lava":
                 StopAllCoroutines();
+                ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
+                lavaSploosh.name = "LavaSplashParticles";
+                lavaSploosh.Play();
                 StartCoroutine(SetInLava(false));
                 break;
             case "Lever":
