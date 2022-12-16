@@ -8,7 +8,14 @@ public class PlayerInteraction : MonoBehaviour
 {
     public Action onHealthUpdate;
     public Action onDeath;
-    public bool Controllable = true;
+    public bool Controllable
+    {
+        get { return PlayerMovement.Instance.Controllable; }
+        set 
+        {
+            PlayerMovement.Instance.Controllable = value; 
+        }
+    }
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
     private bool nearLever = false;
@@ -44,7 +51,6 @@ public class PlayerInteraction : MonoBehaviour
         {
             Instance = this;
         }
-        Controllable = true;
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
@@ -75,7 +81,6 @@ public class PlayerInteraction : MonoBehaviour
         }
         if(health <= 0)
         {
-            onDeath?.Invoke();
             StartCoroutine(Die(source));
         }
     }
@@ -88,11 +93,12 @@ public class PlayerInteraction : MonoBehaviour
 
     private IEnumerator Die(string source)
     {
+        Controllable = false;
         rb.bodyType = RigidbodyType2D.Static;
         animator.Play(DEATH_NAME);
         AnalyticsManager.Instance.DeathEvent(DataManager.Instance.day,source);
         yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
-        Controllable = false;
+        onDeath?.Invoke();
         GetComponent<SpriteRenderer>().enabled = false; 
     }
 

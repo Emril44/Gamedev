@@ -19,7 +19,6 @@ public class LevelUIManager : MonoBehaviour
         }
         leverLookInstance = Instantiate(leverLook, canvasWorld.transform);
         leverLookInstance.SetActive(false);
-        PlayerInteraction.Instance.onHealthUpdate += delegate { UpdateHealthbar(); };
     }
 
     [SerializeField] private Canvas canvasHUD;
@@ -48,9 +47,10 @@ public class LevelUIManager : MonoBehaviour
     
     private int cardsMoving = 0;
 
-    //TO remove
     private void Start()
     {
+        PlayerInteraction.Instance.onHealthUpdate += delegate { UpdateHealthbar(); };
+        //TO remove
         StartCoroutine(Test());
     }
 
@@ -68,7 +68,10 @@ public class LevelUIManager : MonoBehaviour
     public void UpdateHealthbar()
     {
         int newHealth = PlayerInteraction.Instance.health;
-        //TODO: update healthbar
+        var healthbar = canvasHUD.transform.GetChild(1).GetChild(2).gameObject;
+        healthbar.GetComponent<Slider>().value = newHealth;
+        var healthbarText = healthbar.transform.GetChild(2).GetChild(0).GetChild(0).gameObject;
+        healthbarText.GetComponent<TextMeshProUGUI>().text = newHealth.ToString();
     }
 
     /*

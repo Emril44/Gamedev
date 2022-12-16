@@ -21,8 +21,18 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private const string JUMP_NAME = "Player_Jump";
 
+    public static PlayerMovement Instance { get; private set; }
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
         rb = GetComponent<Rigidbody2D>();
         Controllable = true;
         baseParent = transform.parent;
