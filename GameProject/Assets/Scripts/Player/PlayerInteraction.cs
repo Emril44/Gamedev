@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
@@ -60,7 +61,20 @@ public class PlayerInteraction : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
         transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // spawn at spawn location
-        Debug.Log("spawn");
+    }
+
+    IEnumerator Start()
+    {
+        yield return SkinManager.Instance.LoadOnlyChosenSkin();
+        Skin skin = SkinManager.Instance.GetChosenSkinReference().Asset as Skin;
+        if (skin == null)
+        {
+            Debug.Log("Unable to load skin, proceeding with no skin");
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().sprite = skin.Sprite;
+        }
     }
 
     void PutPrism(PrismShard prismShard)
@@ -180,6 +194,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
+
 
     public void Drop()
     {
