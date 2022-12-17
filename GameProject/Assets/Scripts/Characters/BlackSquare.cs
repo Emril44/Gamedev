@@ -66,7 +66,6 @@ public class BlackSquare : MonoBehaviour
             state = State.Pursuing;
             timeSinceTargetUpdate = 0;
             tracker.SetDetectionRadius(tracker.GetDetectionRadius() * 2);
-            Debug.Log("Now Pursuing");
         }
     }
 
@@ -83,13 +82,11 @@ public class BlackSquare : MonoBehaviour
         if (timeSinceTargetUpdate >= pursuitTimeout)
         {
             state = State.Alert;
-            Debug.Log("Now Alert");
             return;
         }
         else
         {
             float xDiff = tracker.TargetPos.x - transform.position.x;
-            Debug.Log(tracker.TargetPos);
             if (Mathf.Abs(xDiff) >= 0.5)
             {
                 if (xDiff > 0) rb.velocity = new Vector2(pursueSpeed, rb.velocity.y);
@@ -104,7 +101,6 @@ public class BlackSquare : MonoBehaviour
         if (tracker.PlayerVisible)
         {
             state = State.Pursuing;
-            Debug.Log("Now Pursuing");
         }
         else
         {
@@ -115,7 +111,6 @@ public class BlackSquare : MonoBehaviour
             state = State.Idle;
             tracker.SetDetectionRadius(tracker.GetDetectionRadius() / 2);
             Reset();
-            Debug.Log("Now Idle");
             return;
         }
     }
