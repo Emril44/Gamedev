@@ -277,6 +277,57 @@ public class MenuUIManager : MonoBehaviour
         SceneManager.LoadSceneAsync("GameScene");
     }
 
+    public void ShowSaveGameScreen()
+    {
+        if (blockInstance.transform.GetChild(1).childCount > 1)
+        {
+            Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
+        }
+        GameObject s = new("Saves Block");
+        s.transform.SetParent(blockInstance.transform.GetChild(1), false);
+        s.transform.localPosition = new Vector3(4.8f, 31.6f, -14);
+        s.transform.localScale = new Vector3(0.06f, 0.06f, 0.06f);
+        SaveHeader[] saveHeaders = SavesManager.Instance.SaveHeaders();
+        var autosave = saveHeaders[0];
+        if (save != null && autosave != null)
+        {
+            var card = SaveCard(autosaveString, autosave, s.transform, 0);
+            card.GetComponent<Button>().onClick.RemoveAllListeners();
+            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(0); });
+            card.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Overwrite autosave?+Перезаписати автозбереження?", delegate { SavesManager.Instance.Save(0); RemoveBlock(); }); });
+        }
+        else
+        {
+            var card = Instantiate(newSave, s.transform);
+            card.transform.localPosition = card.transform.localPosition + new Vector3(-246, 425);
+            card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log("Save autosave"); SavesManager.Instance.Save(0); RemoveBlock(); });
+        }
+        var l = Instantiate(line, s.transform);
+        l.transform.localPosition = l.transform.localPosition + new Vector3(0, -375);
+        int i = saveHeaders.Length;
+        for (int j = 1; j < i; j++)
+        {
+            int n = j;
+            if (saveHeaders[j] != null)
+            {
+                var card = SaveCard(saveString, saveHeaders[j], s.transform, j);
+                card.transform.localPosition = card.transform.localPosition + new Vector3(0, -338 * (j));
+                if (j == 0)
+                {
+                    card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
+                }
+                card.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save #{n}?+Перезаписати збереження #{n}?", delegate { SavesManager.Instance.Save(n);RemoveBlock(); }); });
+            }
+            else
+            {
+                var card = Instantiate(newSave, s.transform);
+                card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338 * (j) + 415);
+                card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log($"Save {n}"); SavesManager.Instance.Save(n); RemoveBlock(); });
+            }
+        }
+        ShowBlock();
+    }
+
     public void ShowLoadGameScreen() 
     {
         if (blockInstance.transform.GetChild(1).childCount > 1)
@@ -299,6 +350,8 @@ public class MenuUIManager : MonoBehaviour
         {
             var card = Instantiate(newSave, s.transform);
             card.transform.localPosition = card.transform.localPosition + new Vector3(-246, 425);
+            card.GetComponentInChildren<LocalizedText>().text = "It's empty+Тут пусто";
+            card.GetComponentInChildren<LocalizedText>().OnEnable();
         }
         var l = Instantiate(line, s.transform);
         l.transform.localPosition = l.transform.localPosition + new Vector3(0, -375);
@@ -314,12 +367,14 @@ public class MenuUIManager : MonoBehaviour
                     card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
                 }
                 int n = j;
-                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(n); });
+                card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log($"Load {n}"); SavesManager.Instance.Load(n); });
             }
             else
             {
                 var card = Instantiate(newSave, s.transform);
                 card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338 * (j) + 415);
+                card.GetComponentInChildren<LocalizedText>().text = "It's empty+Тут пусто";
+                card.GetComponentInChildren<LocalizedText>().OnEnable();
             }
         }
         ShowBlock();
