@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement;
 
 public class MenuUIManager : MonoBehaviour
 {
@@ -18,7 +20,8 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject about;
     [SerializeField] private GameObject playerSkin;
-    [SerializeField] private Sprite v;
+    [SerializeField] private Sprite vSprite;
+    [SerializeField] private GameObject skinsScroll;
     [SerializeField] private Sprite[] playerSprites;
     private const int LANGUAGES = 2;
     [Header("Saves")]
@@ -57,6 +60,11 @@ public class MenuUIManager : MonoBehaviour
         yesNoInstance.transform.SetParent(canvas.transform, false);
         var no = yesNoInstance.transform.GetChild(1).GetChild(2).gameObject;
         no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });
+        V = new GameObject("V");
+        V.AddComponent<SpriteRenderer>().sprite = vSprite;
+        V.SetActive(false);
+        V.transform.localScale = new Vector2(0.09f, 0.09f);
+        V.GetComponent<SpriteRenderer>().sortingOrder = 150;
         try
         {
             PlayerInteraction.Instance.onDeath += delegate { ShowDeathScreen(); };
@@ -406,7 +414,7 @@ public class MenuUIManager : MonoBehaviour
     public string TimeString(int seconds)
     {
         int hours = seconds / 3600;
-        string h = hours > 0 ? hours + ":" : "";
+        string h = hours > 0 ? (hours + ":") : "";
         int minutes = (seconds - hours*3600)/ 60;
         string m = minutes >= 10 ? minutes.ToString() : 0 + minutes.ToString();
         seconds = seconds - hours * 3600 - minutes * 60;
@@ -421,57 +429,106 @@ public class MenuUIManager : MonoBehaviour
         yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(onYes);
     }
 
-    public void ShowDLCScreen()
+    public void ShowSkinpacks(bool showBlock)
+    {
+        if (blockInstance.transform.GetChild(1).childCount > 1)
+        {
+            Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
+        }   
+        var block0 = blockInstance.transform.GetChild(1);
+        GameObject skinBlock = new("Skins Block");
+        skinBlock.transform.SetParent(block0, false);
+        int i = 0;
+        foreach (var skinPack in SkinManager.Instance.SkinPacks())
+        {
+            var text = skinPack.LocalizedName();
+            GameObject s = Instantiate(playerSkin, skinBlock.transform);
+            s.transform.localScale = new Vector2(0.3f, 0.3f);
+            s.transform.localPosition = new Vector3(-30 + 30 * (i % 3), 17.5f + -40 * (i / 3));
+            s.GetComponent<Button>().onClick.AddListener(() => { ShowAppearanceScreen(skinPack); });
+            var skin = ((Skin)skinPack.Skins[0].Asset);
+            s.GetComponent<Image>().sprite = skin.Sprite;
+            TextMeshProUGUI t = s.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            t.text = text;
+            i++;
+        }
+        if (showBlock)
+        {
+            ShowBlock();
+        }
+        else
+        {
+            block0.GetChild(0).gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
+            block0.GetChild(0).gameObject.GetComponent<Button>().onClick.AddListener(() => { RemoveBlock(); });
+        }
+    }
+    
+    public void ShowAppearanceScreen(SkinPack pack)
     {
         if (blockInstance.transform.GetChild(1).childCount > 1)
         {
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
         }
-
-        int selected = 4;
-        bool[] available = new bool[] {true, false, true, false, true, false};
-        //playersprites
-        for(int i = 0; i < available.Length; i++)
+        Sprite[] sprites = new Sprite[pack.Skins.Count];
+        for(int i = 0; i < sprites.Length; i++)
         {
-            //var card = 
+            sprites[i] = ((Skin)pack.Skins[i].Asset).Sprite;
         }
-
-        /*
         var block0 = blockInstance.transform.GetChild(1);
-        var block = new GameObject("DLC Block");
+        block0.GetChild(0).gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
+        block0.GetChild(0).gameObject.GetComponent<Button>().onClick.AddListener(() => { V.transform.parent = null; ShowSkinpacks(false); V.SetActive(false); });
+        var block = new GameObject("Appearance");
         block.transform.SetParent(block0, false);
+        var layout = Instantiate(this.skinsScroll, block.transform).transform.GetChild(1).GetChild(0);
+        layout.GetComponent<RectTransform>().sizeDelta = new Vector2(9.4265f, 8.8214f + 2.9f * (sprites.Length/4));
 
-        GameObject playerBase = Instantiate(playerSkin, block.transform);
-        playerBase.transform.localScale = new Vector2(0.3f, 0.3f);
-        playerBase.transform.localPosition = new Vector3(-30, 17.5f);
-        playerBase.GetComponent<Button>().onClick.AddListener(() => { SetV(0); });
-        
-        int offsetX = 30;
-        int offsetY = -40;
-        for (int i = 1; i < 6; i++)
+        if (sprites.Length <= 12)
         {
-            GameObject skin = Instantiate(playerSkin, block.transform);
-            skin.transform.localScale = new Vector2(0.3f, 0.3f);
-            skin.transform.localPosition = new Vector3(-30 + offsetX * (i%3), 17.5f + offsetY * (i / 3));
-            skin.GetComponent<Image>().sprite = playerSprites[i];
-            skin.GetComponent<Button>().interactable = available[i];
-            int j = i;
-            skin.GetComponent<Button>().onClick.AddListener(() => { SetV(j); });
+            //remove scrollbar
+            Destroy(block.transform.GetChild(0).GetChild(0).gameObject);
         }
-        V = new GameObject();
-        V.AddComponent<Image>().sprite = v;
-        V.transform.SetParent(block.transform);
-        V.transform.localScale = new Vector2(0.15f, 0.15f);
-        SetV(selected);
-        ShowBlock();
-        */
+        for (int r = 0; r < sprites.Length/4 + 1; r++)
+        {
+            GameObject row = layout.GetChild(r).gameObject;
+            for(int i = 0; i < 4; i++)
+            {
+                var skinButton = row.transform.GetChild(i).gameObject;
+                if (r * 4 + i < sprites.Length)
+                {
+                    skinButton.GetComponent<Button>().interactable = ((Skin)pack.Skins[r * 4 + i].Asset).IsAvailable();
+                    skinButton.GetComponent<Image>().sprite = sprites[r * 4 + i];
+                    skinButton.GetComponent<Image>().color = Color.white;
+                    int j = i;
+                    skinButton.GetComponent<Button>().onClick.AddListener(delegate { SetV(skinButton, j, pack); });
+                }
+                else
+                {
+                    Destroy(skinButton);
+                }   
+            }
+        }
+        if (pack.Skins.Contains(SkinManager.Instance.GetChosenSkinReference()))
+        {
+            SetV(layout.GetChild((pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()) / 4)).GetChild(pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()) % 4).gameObject, pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()), pack);
+        }
+        for (int i = sprites.Length / 4 + 1; i <= 7; i++)
+        {
+            Destroy(layout.GetChild(i).gameObject);
+        }
     }
 
-    public void SetV(int selected)
+    public void SetV(GameObject button, int i, SkinPack pack)
     {
-        V.transform.localPosition = new Vector3(-20 + 28.5f * (selected % 3), 6 - 41 * (selected / 3));
-        //{selected}
-        //set skin
+        V.SetActive(true);
+        SkinManager.Instance.SetChosenSkinReference(pack.Skins[i]);
+        V.transform.parent = button.transform;
+        V.transform.localPosition = new Vector3(193,-235);
+    }
+    public void SetV(GameObject button)
+    {
+        V.SetActive(true);
+        V.transform.parent = button.transform;
+        V.transform.localPosition = new Vector3(193, -235);
     }
 
     public void ShowSettingsScreen()
@@ -486,23 +543,13 @@ public class MenuUIManager : MonoBehaviour
         settings.transform.localScale = new Vector3(0.05725f, 0.05725f, 0.05725f);
         settings.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => { ChangeLanguage(); });
 
-        
         var resolutionsDropdown = settings.transform.GetChild(3).GetComponent<TMP_Dropdown>();
         resolutionsDropdown.ClearOptions();
         resolutionsDropdown.AddOptions(Resolutions());
         
         resolutionsDropdown.value = resolutionsDropdown.options.Select(option => option.text).ToList().IndexOf(Screen.currentResolution.ToString().Split('@')[0]);
         resolutionsDropdown.onValueChanged.AddListener(delegate { ChangeResolution(resolutionsDropdown.options[resolutionsDropdown.value].text); });
-        /*
-        var refreshRate = settings.transform.GetChild(5).GetComponent<TMP_InputField>();
-        if(Application.targetFrameRate < 0)
-        {
-            Application.targetFrameRate = 60;
-        }
-        refreshRate.text = Application.targetFrameRate.ToString();
-        refreshRate.gameObject.transform.GetChild(0).GetChild(1).GetComponent<TextMeshProUGUI>().text = Application.targetFrameRate.ToString();
-        refreshRate.onEndEdit.AddListener(delegate { ChangeRefreshRate(int.Parse(refreshRate.text), refreshRate); });
-        */
+       
         var fullscreen = settings.transform.GetChild(7).GetComponent<TMP_Dropdown>();
         fullscreen.ClearOptions();
         fullscreen.AddOptions(ScreenModes());
@@ -532,17 +579,6 @@ public class MenuUIManager : MonoBehaviour
             _ => FullScreenMode.MaximizedWindow,
         };
         Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, fullScreen);
-    }
-
-    private void ChangeRefreshRate(int refreshRate, TMP_InputField input)
-    {
-        if(refreshRate < 10)
-        {
-            refreshRate = 60;
-        }
-        Application.targetFrameRate = refreshRate;
-        Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, Screen.fullScreenMode, refreshRate);
-        input.text = refreshRate.ToString();
     }
 
     private List<string> Resolutions()
@@ -591,7 +627,6 @@ public class MenuUIManager : MonoBehaviour
         ShowBlock();
         var about = Instantiate(this.about);
         about.transform.SetParent(blockInstance.transform.GetChild(1), false);
-
     }
 
     private void RemoveYesNo()
@@ -605,7 +640,6 @@ public class MenuUIManager : MonoBehaviour
         SetYesNo("Exit the game+Вийти з гри", () => { Application.Quit(); });
     }
 
-    //TODO:
     public void ShowDeathScreen()
     {
         SetYesNo(
