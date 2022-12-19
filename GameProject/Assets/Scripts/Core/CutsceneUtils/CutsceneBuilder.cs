@@ -20,16 +20,14 @@ public class CutsceneBuilder
     }
 
     // Triggers a DialogueTrigger's current dialogue and waits for completion
-    public static IEnumerator WaitForDialogue(DialogueTrigger trigger)
+    public static IEnumerator WaitForDialogue(NPC npc)
     {
-        Dialogue dialogue = trigger.GetCurrentDialogue();
-        trigger.TriggerDialogue();
-        yield return WaitForDialogue(dialogue);
+        yield return WaitForDialogue(npc.TriggerDialogue());
     }
 
-    public static IEnumerator MoveTo(NPCMobile npc, MoveData move)
+    public static IEnumerator MoveTo(IMobileCharacter character, MoveData move)
     {
-        yield return npc.MoveTo(move.target.transform.position, move.velocity);
+        yield return character.MoveTo(move.target.transform.position, move.velocity);
     }
 
     public static IEnumerator PerformDuringBlackout(Action action)

@@ -18,6 +18,16 @@ public class NPC : MonoBehaviour
         trigger.SetBatchIndex(i);
     }
 
+    public void SetDialogueBatch(DialogueBatch batch)
+    {
+        trigger.SetBatch(batch);
+    }
+
+    public Dialogue TriggerDialogue()
+    {
+        return trigger.TriggerDialogue();
+    }
+
     public NPCSerializedData Serialize()
     {
         List<string> tagNames = new List<string>();

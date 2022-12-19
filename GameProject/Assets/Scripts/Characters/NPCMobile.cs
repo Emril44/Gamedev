@@ -4,7 +4,7 @@ using UnityEngine;
 
 // NPC that can move and jump (in cutscenes)
 [RequireComponent(typeof(DialogueTrigger)), RequireComponent(typeof(Rigidbody2D))]
-public class NPCMobile : NPC
+public class NPCMobile : NPC, IMobileCharacter
 {
     private Rigidbody2D rb;
     [SerializeField] private LayerMask groundLayer;

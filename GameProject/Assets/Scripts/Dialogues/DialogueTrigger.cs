@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
     [SerializeField] private List<DialogueBatch> batches = new List<DialogueBatch>(); // predefined dialogue states, indexed by this list (used in saves)
+    private Dictionary<DialogueBatch, int> batchesToIds = new Dictionary<DialogueBatch, int>();
     private int batchIndex;
     private DialogueBatch batch;
     private int dialogueIndex;
@@ -13,20 +15,25 @@ public class DialogueTrigger : MonoBehaviour
         batchIndex = 0;
         batch = batches[batchIndex];
         dialogueIndex = 0;
-        if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        if (dialogueIndex >= batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        for (int i = 0; i < batches.Count; i++) batchesToIds.Add(batches[i], i);
     }
 
-    public void TriggerDialogue()
+    public Dialogue TriggerDialogue()
     {
         if (dialogueIndex < batch.dialogueList.Count)
         {
-            DialogueManager.Instance.GetTriggered(batch.dialogueList[dialogueIndex]);
+            Dialogue dialogue = batch.dialogueList[dialogueIndex];
+            DialogueManager.Instance.GetTriggered(dialogue);
             dialogueIndex++;
             if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged"; // remove trigger if there are no dialogues and no fallback dialogue left
+            return dialogue;
         }
         else
         {
-            DialogueManager.Instance.GetTriggered(batch.fallbackDialogue);
+            Dialogue dialogue = batch.fallbackDialogue;
+            DialogueManager.Instance.GetTriggered(dialogue);
+            return dialogue;
         }
     }
 
@@ -42,6 +49,12 @@ public class DialogueTrigger : MonoBehaviour
         dialogueIndex = 0;
         if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
         else gameObject.tag = "DialogueTrigger";
+    }
+
+    public void SetBatch(DialogueBatch batch)
+    {
+        if (!batchesToIds.ContainsKey(batch)) throw new ArgumentException("Unknown dialogue batch");
+        SetBatchIndex(batchesToIds[batch]);
     }
 
     public int GetDialogueIndex()
