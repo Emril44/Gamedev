@@ -140,6 +140,14 @@ public class PlayerMovement : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, rotationGoal, 0.3f);
     }
 
+    // Unconditional jumping animation for outer use
+    public void Jump()
+    {
+        ResetParent();
+        animator.Play(JUMP_NAME);
+        rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+    }
+
     public void ResetParent()
     {
         transform.SetParent(baseParent, true);
