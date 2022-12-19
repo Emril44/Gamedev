@@ -34,7 +34,7 @@ public abstract class Quest : MonoBehaviour
 
     public bool IsActive()
     {
-        return currentObjective > 0 && currentObjective < questData.Objectives.Count;
+        return currentObjective >= questData.RequisiteObjectives && currentObjective < questData.Objectives.Count;
     }
 
     public QuestData GetData()

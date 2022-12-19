@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnvironmentManager : MonoBehaviour
 {
+    public Action onColorChange;
     private Queue<ColoredObject> coloredObjectsPool;
     [Header("Spark-giving objects")]
     [SerializeField] private List<GameObject> sparks; // listed separately from generic objects simply for editing convenience
@@ -11,6 +13,7 @@ public class EnvironmentManager : MonoBehaviour
     [SerializeField] private List<GameObject> objects;
     [Header("NPCs")]
     [SerializeField] private List<NPC> npcs; // objects should have the NPC (or a derived) component
+    public PrismColor CurrentColor { get; private set; }
 
     public static EnvironmentManager Instance { get; private set; }
     private void Awake()
@@ -41,8 +44,10 @@ public class EnvironmentManager : MonoBehaviour
         return new EnvironmentManagerSerializedData(activeSparks, activeObjects, npcData);
     }
 
+    // if data is null, prepare for new game instead of deserializing
     public void Deserialize(EnvironmentManagerSerializedData data)
     {
+        if (data == null) return;
         foreach (GameObject spark in sparks) spark.SetActive(false);
         foreach (int spark in data.activeSparks) sparks[spark].SetActive(true);
         foreach (GameObject go in objects) go.SetActive(false);
@@ -62,6 +67,8 @@ public class EnvironmentManager : MonoBehaviour
         {
             ChangeBackground(color);
             RepaintPool(color);
+            CurrentColor = color;
+            onColorChange?.Invoke();
         }
         else
         {

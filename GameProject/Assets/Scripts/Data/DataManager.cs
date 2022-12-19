@@ -20,8 +20,8 @@ public class DataManager : MonoBehaviour
             Instance = this;
         }
         sparksAmount = 0;
-        unlockedColors = 3;
-        day = -1;
+        unlockedColors = 0;
+        day = 0;
     }
 
     public DataManagerSerializedData Serialize()
@@ -31,8 +31,10 @@ public class DataManager : MonoBehaviour
 
     public void Deserialize(DataManagerSerializedData data)
     {
+        if (data == null) return;
         sparksAmount = data.sparksAmount;
         unlockedColors = data.unlockedColors;
+        day = data.day;
         onSparksUpdate?.Invoke();
     }
 

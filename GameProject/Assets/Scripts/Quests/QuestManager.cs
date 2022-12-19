@@ -33,8 +33,14 @@ public class QuestManager : MonoBehaviour
         return new QuestManagerSerializedData(completedQuests, availableQuests, objectiveIds);
     }
 
+    // if data is null, prepare for new game instead of deserializing
     public void Deserialize(QuestManagerSerializedData data)
     {
+        if (data == null)
+        {
+            AddAvailableQuest(0); // make first quest available when starting a new game
+            return;
+        }
         completedQuests = data.completedQuests;
         availableQuests = data.availableQuests;
         foreach (Quest quest in quests) quest.gameObject.SetActive(false);
@@ -58,6 +64,7 @@ public class QuestManager : MonoBehaviour
             {
                 completedQuests.Add(id);
                 quest.onComplete -= CompleteQuest;
+                quest.gameObject.SetActive(false);
                 // add all direct next quests (whose prerequisites are met)
                 foreach (QuestData data in quest.GetData().NextQuests)
                 {

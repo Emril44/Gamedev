@@ -54,6 +54,13 @@ public class SavesManager : MonoBehaviour
         SaveEnvironmentManager(savePath);
         SaveQuestManager(savePath);
     }
+    
+    public void LoadNewGame()
+    {
+        DataManager.Instance.Deserialize(null);
+        EnvironmentManager.Instance.Deserialize(null);
+        QuestManager.Instance.Deserialize(null);
+    }
 
     public void Load(int saveIndex)
     {
