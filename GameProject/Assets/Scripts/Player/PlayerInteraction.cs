@@ -32,6 +32,7 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private float undamageableTime = 0.65f;
     private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
+    private bool alive = true;
     [SerializeField] private Vector2 spawnLocation;
     private PlayerMovement movement;
     public bool CanSave { get; private set; }
@@ -112,13 +113,17 @@ public class PlayerInteraction : MonoBehaviour
 
     private IEnumerator Die(string source)
     {
-        Controllable = false;
-        rb.bodyType = RigidbodyType2D.Static;
-        animator.Play(DEATH_NAME);
-        AnalyticsManager.Instance.DeathEvent(DataManager.Instance.day,source);
-        yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
-        onDeath?.Invoke();
-        GetComponent<SpriteRenderer>().enabled = false; 
+        if (alive)
+        {
+            alive = false;
+            Controllable = false;
+            rb.bodyType = RigidbodyType2D.Static;
+            animator.Play(DEATH_NAME);
+            AnalyticsManager.Instance.DeathEvent(DataManager.Instance.day,source);
+            yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            onDeath?.Invoke();
+            GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
 
     private void Update()

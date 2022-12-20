@@ -1090,6 +1090,14 @@ PrefabInstance:
       propertyPath: m_DynamicOccludee
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3837181816089569425, guid: 713daac97b32733458bfb34f98001935, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8477203694612111355, guid: 713daac97b32733458bfb34f98001935, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9157113288707994603, guid: 713daac97b32733458bfb34f98001935, type: 3}
       propertyPath: m_Name
       value: MM-Background
