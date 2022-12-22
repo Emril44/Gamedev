@@ -20,20 +20,22 @@ public class PlayerInteraction : MonoBehaviour
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
     private bool nearLever = false;
+    private bool nearPrism = false;
     private bool nearDialogue = false;
     private bool nearMovable = false;
     private bool nearWaypoint = false;
+    private GameObject prismGO;
     private GameObject leverGO;
     private GameObject dialogueGO;
     private GameObject movableGO;
     private Transform oldParent;
     private GameObject grabbedObject;
-    [SerializeField] public int health { get; private set; } = 3;
+    [field: SerializeField] public int health { get; private set; } = 3;
     [SerializeField] private float undamageableTime = 0.65f;
     private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
     private bool alive = true;
-    [SerializeField] private Vector2 spawnLocation;
+    private Vector2 spawnLocation;
     private PlayerMovement movement;
     public bool CanSave { get; private set; }
 
@@ -148,6 +150,10 @@ public class PlayerInteraction : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.F))
             {
+                if (nearPrism)
+                {
+                    PutPrism(prismGO.gameObject.GetComponent<PrismShard>());
+                }
                 if (nearLever)
                 {
                     leverGO.GetComponent<Lever>().Toggle();
@@ -163,7 +169,7 @@ public class PlayerInteraction : MonoBehaviour
                         Controllable = true;
                         movement.Controllable = true;
                         dialogue.onDialogueEnd -= reenable;
-                        if (trigger.tag != "DialogueTrigger") // for the rare case when further dialogue is impossible, i.e. finishing last main sequence and having no fallback dialogue
+                        if (!trigger.CompareTag("DialogueTrigger")) // for the rare case when further dialogue is impossible, i.e. finishing last main sequence and having no fallback dialogue
                         {
                             nearDialogue = false;
                             dialogueGO = null;
@@ -251,7 +257,8 @@ public class PlayerInteraction : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Prism":
-                PutPrism(other.gameObject.GetComponent<PrismShard>());
+                nearPrism = true;
+                prismGO = other.gameObject;
                 break;
             case "Spark":
                 AddSpark(other.gameObject);
@@ -323,6 +330,10 @@ public class PlayerInteraction : MonoBehaviour
     {
         switch (other.gameObject.tag)
         {
+            case "Prism":
+                nearPrism = false;
+                prismGO = null;
+                break;
             case "Water":
                 StopAllCoroutines();
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
