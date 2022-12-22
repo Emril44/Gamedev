@@ -45,7 +45,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   batches:
+  - {fileID: 11400000, guid: 22d55894de1f70e4e82b1c2db9ad1134, type: 2}
   - {fileID: 11400000, guid: 5f7a03900940e0e46a0ede56c5d0e4f5, type: 2}
   - {fileID: 11400000, guid: 2d25c45d3d7ace84cbcc15f5ffe136d0, type: 2}
   - {fileID: 11400000, guid: 0ba3acdf42b5d034c9a21c0fc8ce983a, type: 2}

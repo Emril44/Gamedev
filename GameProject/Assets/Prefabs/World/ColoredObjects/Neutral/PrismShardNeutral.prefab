@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1860143141828390330}
   - component: {fileID: 6692766349700724546}
   m_Layer: 0
-  m_Name: PrismShardBargain
+  m_Name: PrismShardNeutral
   m_TagString: Prism
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
