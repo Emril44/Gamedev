@@ -61,7 +61,7 @@ public class PlayerInteraction : MonoBehaviour
         lavaSplash.GetComponent<ParticleSystem>().Pause();
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
-        transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // spawn at spawn location
+        spawnLocation = transform.position;
     }
 
     IEnumerator Start()
@@ -182,7 +182,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     nearWaypoint = false;
                     movement.ResetParent();
-                    transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // teleport to spawn (i.e. to Monochrome)
+                    transform.position = new Vector3(spawnLocation.x, spawnLocation.y, 0); // teleport to spawn (i.e. to Monochrome)
                     EnvironmentManager.Instance.SetNewColor(PrismColor.Neutral); // reset color to avoid cheesing
                 }
             }
