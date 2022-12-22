@@ -26,6 +26,7 @@ public class LevelUIManager : MonoBehaviour
     [SerializeField] private GameObject questTitle;
     [SerializeField] private GameObject questLine;
     [SerializeField] private GameObject objectiveGO;
+    [SerializeField] private GameObject fireResistance;
     //TO remove
     [SerializeField] private GameObject sampleQuest;
     [SerializeField] private GameObject sampleQuest2;
