@@ -2,25 +2,36 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-// NPC that can move and jump (in cutscenes)
-[RequireComponent(typeof(DialogueTrigger)), RequireComponent(typeof(Rigidbody2D))]
-public class NPCMobile : NPC, IMobileCharacter
+// Character that can move and jump (in cutscenes)
+[RequireComponent(typeof(Rigidbody2D))]
+public class MobileCharacter : MonoBehaviour
 {
     private Rigidbody2D rb;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private bool animated;
+    [SerializeField] private string jumpAnimationName;
     private Transform baseParent;
+    private Animator animator;
 
-    override protected void Awake()
+    private void Awake()
     {
-        base.Awake();
         rb = GetComponent<Rigidbody2D>();
         baseParent = transform.parent;
+        if (animated)
+        {
+            animator = GetComponent<Animator>();
+            if (animator == null)
+            {
+                animated = false;
+                Debug.LogWarning("MobileCharacter is set to animated, but Animator component was not found. Switching to non-animated");
+            }
+        }
     }
 
-    // Makes the NPC move to the position similarly to how a player would, with fixed velocity. Location must be reachable without jumping
+    // Makes the character move to the position similarly to how a player would, with fixed velocity. Location must be reachable without jumping
     public IEnumerator MoveTo(Vector3 position, float velocity)
     {
-        SetMobile(true);
+        if (!IsMobile()) Debug.LogWarning("Attempting to move a currently immobile MobileCharacter");
         if (velocity <= 0) throw new ArgumentException("Illegal velocity " + velocity);
         float xDiff = position.x - transform.position.x;
         Quaternion rotationGoal;
@@ -51,21 +62,27 @@ public class NPCMobile : NPC, IMobileCharacter
             xDiff = position.x - transform.position.x;
         }
         rb.velocity = new Vector2(0, rb.velocity.y);
-        SetMobile(false);
     }
 
-    // Should be made explicitly immobile at some point after jumping
     public void Jump(float jumpVelocity)
     {
-        SetMobile(true);
+        if (!IsMobile()) Debug.LogWarning("Attempting to use jump on a currently immobile MobileCharacter");
         transform.SetParent(baseParent, true);
-        // animation maybe?
+        if (animated)
+        {
+            animator.Play(jumpAnimationName);
+        }
         rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
     }
 
     public void SetMobile(bool mobile)
     {
         rb.bodyType = mobile ? RigidbodyType2D.Dynamic : RigidbodyType2D.Static;
+    }
+
+    public bool IsMobile()
+    {
+        return rb.bodyType == RigidbodyType2D.Dynamic;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
