@@ -17,17 +17,12 @@ public class LevelUIManager : MonoBehaviour
         {
             Instance = this;
         }
-        leverLookInstance = Instantiate(leverLook, canvasWorld.transform);
-        leverLookInstance.SetActive(false);
     }
 
     [SerializeField] private Canvas canvasHUD;
-    [SerializeField] private Canvas canvasWorld;
     [SerializeField] private GameObject quests;
     
     [Header("HUDs")]
-    [SerializeField] private GameObject leverLook;
-    private GameObject leverLookInstance;
     [SerializeField] private GameObject questTitle;
     [SerializeField] private GameObject questLine;
     [SerializeField] private GameObject objectiveGO;

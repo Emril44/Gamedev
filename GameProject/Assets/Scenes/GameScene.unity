@@ -459,6 +459,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4139822609402464566, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
+      propertyPath: about
+      value: 
+      objectReference: {fileID: 2319146293421604091, guid: 27d569ecf01815c469db152f578b1069, type: 3}
+    - target: {fileID: 4139822609402464566, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: canvas
       value: 
       objectReference: {fileID: 3828450536948807171}
@@ -1285,6 +1289,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 317388512021663765, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 317388512021663765, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1424203805582768056, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -1344,6 +1356,18 @@ PrefabInstance:
     - target: {fileID: 2139708694958751157, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
       propertyPath: m_Name
       value: LevelUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2688192680928715654, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2688192680928715654, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2688192680928715654, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3668815194250658859, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
       propertyPath: m_AnchorMax.x
