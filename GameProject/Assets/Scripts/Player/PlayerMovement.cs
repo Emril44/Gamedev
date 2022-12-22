@@ -4,9 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
-public class PlayerMovement : MonoBehaviour, IMobileCharacter
+public class PlayerMovement : MonoBehaviour
 {
-    public bool Controllable;
+    private bool controllable;
+    public bool Controllable
+    { 
+        get
+        {
+            return controllable;
+        }
+        set
+        {
+            controllable = value;
+            if (!value) rb.velocity = new Vector2(rb.velocity.x / 10, rb.velocity.y);
+        }
+    }
     [SerializeField] private float movementSpeed = 14f;
     [SerializeField] private float jumpVelocity = 14f;
     [SerializeField] private float outOfWaterMultiplier = 1.6f;
