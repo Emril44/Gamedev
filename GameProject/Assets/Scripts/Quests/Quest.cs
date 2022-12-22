@@ -10,19 +10,30 @@ public abstract class Quest : MonoBehaviour
     [SerializeField] private QuestData questData;
 
     private int currentObjective = 0;
+    private void Start()
+    {
+        if (currentObjective == questData.RequisiteObjectives) onStart?.Invoke();
+    }
 
-    void OnEnable()
+    private void OnEnable()
     {
         if (currentObjective >= questData.Objectives.Count) return;
         questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
+        questData.Objectives[currentObjective].onUpdate += UpdateQuest;
         questData.Objectives[currentObjective].SetActive(true);
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         if (currentObjective >= questData.Objectives.Count) return;
         questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
+        questData.Objectives[currentObjective].onUpdate -= UpdateQuest;
         questData.Objectives[currentObjective].SetActive(false);
+    }
+
+    private void UpdateQuest()
+    {
+        onUpdate?.Invoke();
     }
 
     public void ResetEvents()
@@ -34,7 +45,7 @@ public abstract class Quest : MonoBehaviour
 
     public bool IsActive()
     {
-        return currentObjective >= questData.RequisiteObjectives && currentObjective < questData.Objectives.Count;
+        return gameObject.activeSelf && currentObjective >= questData.RequisiteObjectives && currentObjective < questData.Objectives.Count;
     }
 
     public QuestData GetData()
@@ -69,14 +80,16 @@ public abstract class Quest : MonoBehaviour
 
     public void SetCurrentObjectiveIndex(int index)
     {
-        if (gameObject.activeSelf && IsActive())
+        if (IsActive())
         {
             questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
+            questData.Objectives[currentObjective].onUpdate -= UpdateQuest;
         }
         currentObjective = index;
-        if (gameObject.activeSelf && IsActive())
+        if (IsActive())
         {
             questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
+            questData.Objectives[currentObjective].onUpdate += UpdateQuest;
         }
 
     }
@@ -85,6 +98,7 @@ public abstract class Quest : MonoBehaviour
     private void CompleteCurrentObjective()
     {
         questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
+        questData.Objectives[currentObjective].onUpdate -= UpdateQuest;
         questData.Objectives[currentObjective].SetActive(false); // only deactivate an objective when its parent quest registered completion
         ActOnObjective(currentObjective);
         currentObjective++;
@@ -92,13 +106,13 @@ public abstract class Quest : MonoBehaviour
         {
             onUpdate?.Invoke();
             onComplete?.Invoke();
-            gameObject.SetActive(false);
         }
         else
         {
             questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
+            questData.Objectives[currentObjective].onUpdate += UpdateQuest;
             questData.Objectives[currentObjective].SetActive(true);
-            if (currentObjective == 1) onStart?.Invoke();
+            if (currentObjective == questData.RequisiteObjectives) onStart?.Invoke();
             onUpdate?.Invoke();
         }
     }

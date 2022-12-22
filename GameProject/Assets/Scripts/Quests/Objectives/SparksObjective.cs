@@ -26,6 +26,7 @@ public class SparksObjective : Objective
 
     private void CheckForCompletion()
     {
+        Update();
         if (DataManager.Instance.sparksAmount >= targetCount)
         {
             Complete();
