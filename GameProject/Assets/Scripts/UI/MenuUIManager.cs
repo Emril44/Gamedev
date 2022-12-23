@@ -669,7 +669,17 @@ public class MenuUIManager : MonoBehaviour
     {
         SetYesNo(
         "Rectangle is dead. Load autosave or go to the main menu+Прямокутник помер. Завантаж автозбереження або перейди у головне меню",
-        delegate { SavesManager.Instance.Load(0); },
+        delegate 
+        {
+            if (SavesManager.Instance.HasSave(0))
+            {
+                SavesManager.Instance.Load(0);
+            }
+            else
+            {
+                SavesManager.Instance.LoadNewGame();
+            }
+        },
         "Autosave+Автозбереження",
         delegate { SceneManager.LoadScene("MainMenu"); },
         "Main Menu+Головне меню"
