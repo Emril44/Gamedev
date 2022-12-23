@@ -73,7 +73,7 @@ public class PlayerInteraction : MonoBehaviour
         Skin skin = SkinManager.Instance.GetChosenSkinReference().Asset as Skin;
         if (skin == null)
         {
-            Debug.Log("Unable to load skin, proceeding with no skin");
+            Debug.LogWarning("Unable to load skin, proceeding with no skin");
         }
         else
         {
@@ -271,20 +271,18 @@ public class PlayerInteraction : MonoBehaviour
                 AddSpark(other.gameObject);
                 break;
             case "Water":
-                StopAllCoroutines();
-                damageable = true;
+                StopCoroutine(nameof(SetInWater));
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
                 waterSploosh.name = "WaterSplashParticles";
                 waterSploosh.Play();
-                StartCoroutine(SetInWater(true));
+                StartCoroutine(nameof(SetInWater), true);
                 break;
             case "Lava":
-                StopAllCoroutines();
-                damageable = true;
+                StopCoroutine(nameof(SetInLava));
                 ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
                 lavaSploosh.name = "LavaSplashParticles";
                 lavaSploosh.Play();
-                StartCoroutine(SetInLava(true));
+                StartCoroutine(nameof(SetInLava), true);
                 break;
             case "Lever":
                 nearLever = true;
@@ -342,18 +340,18 @@ public class PlayerInteraction : MonoBehaviour
                 prismGO = null;
                 break;
             case "Water":
-                StopAllCoroutines();
+                StopCoroutine(nameof(SetInWater));
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
                 waterSploosh.name = "WaterSplashParticles";
                 waterSploosh.Play();
-                StartCoroutine(SetInWater(false));
+                StartCoroutine(nameof(SetInWater), false);
                 break;
             case "Lava":
-                StopAllCoroutines();
+                StopCoroutine(nameof(SetInLava));
                 ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
                 lavaSploosh.name = "LavaSplashParticles";
                 lavaSploosh.Play();
-                StartCoroutine(SetInLava(false));
+                StartCoroutine(nameof(SetInLava), false);
                 break;
             case "Lever":
                 nearLever = false;
@@ -396,6 +394,6 @@ public class PlayerInteraction : MonoBehaviour
     IEnumerator SetInLava(bool isInLava)
     {
         yield return new WaitForSeconds(0.1f);
-        movement.SetInWater(isInLava);
+        movement.SetInLava(isInLava);
     }
 }
