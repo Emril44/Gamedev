@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D)), RequireComponent(typeof(Rigidbody2D))]
@@ -18,6 +19,7 @@ public class BlackSquare : MonoBehaviour
     [SerializeField] private float pursuitTimeout = 10f; // time for which the square keeps Pursuing a target without updates (updates happen when the square can see the player); square's detection radius is doubled when pursuing
     [SerializeField] private float alertTimeout = 10f; // time for which the square stays in place after unsuccessfully pursuing the player, its detection radius is still doubled; if the square still can't see the player, it will reset to original position
     [SerializeField] private PlayerTracker tracker;
+    [SerializeField] private OverlapHandler overlap;
     private Rigidbody2D rb;
     private float timeSinceTargetUpdate = 0;
     private Vector3 origin;
@@ -38,6 +40,7 @@ public class BlackSquare : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (overlap.Overlapping) GetDamaged();
         switch(state)
         {
             case State.Idle:
@@ -117,17 +120,20 @@ public class BlackSquare : MonoBehaviour
 
     private void GetDamaged()
     {
-        if (damageable)
+        if (health > 0)
         {
-            damageable = false;
-            health--;
-            animator.Play(DAMAGE_NAME);
-            StartCoroutine(Undamageable());
-        }
-        if (health <= 0)
-        {
-            animator.SetTrigger("EnemyDeath");
-            StartCoroutine(Die());
+            if (damageable)
+            {
+                damageable = false;
+                health--;
+                animator.Play(DAMAGE_NAME);
+                StartCoroutine(Undamageable());
+            }
+            if (health <= 0)
+            {
+                animator.SetTrigger("EnemyDeath");
+                StartCoroutine(Die());
+            }
         }
     }
 
@@ -144,6 +150,7 @@ public class BlackSquare : MonoBehaviour
         DataManager.Instance.AddSpark();
         gameObject.SetActive(false);
     }
+
     void OnTriggerStay2D(Collider2D other)
     {
         switch (other.gameObject.tag)
@@ -154,22 +161,6 @@ public class BlackSquare : MonoBehaviour
             case "Damage":
                 if (other.gameObject.GetComponent<BlackSquare>() == null) GetDamaged(); // avoid damaging from collision with fellow black squares
                 break;
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Moving"))
-        {
-            transform.SetParent(collision.transform, true);
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Moving"))
-        {
-            transform.SetParent(baseParent, true);
         }
     }
 }

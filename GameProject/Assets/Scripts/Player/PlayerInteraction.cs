@@ -32,6 +32,7 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject grabbedObject;
     [field: SerializeField] public int health { get; private set; } = 3;
     [SerializeField] private float undamageableTime = 0.65f;
+    [SerializeField] private OverlapHandler overlap;
     private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
     private bool alive = true;
@@ -93,17 +94,20 @@ public class PlayerInteraction : MonoBehaviour
     
     private void GetDamaged(string source)
     {
-        if (damageable)
+        if (alive)
         {
-            damageable = false;
-            health--;
-            onHealthUpdate?.Invoke();
-            animator.Play(DAMAGE_NAME);
-            StartCoroutine(Undamageable());
-        }
-        if(health <= 0)
-        {
-            StartCoroutine(Die(source));
+            if (damageable)
+            {
+                damageable = false;
+                health--;
+                onHealthUpdate?.Invoke();
+                animator.Play(DAMAGE_NAME);
+                StartCoroutine(Undamageable());
+            }
+            if (health <= 0)
+            {
+                StartCoroutine(Die(source));
+            }
         }
     }
 
@@ -124,7 +128,7 @@ public class PlayerInteraction : MonoBehaviour
             AnalyticsManager.Instance.DeathEvent(DataManager.Instance.day,source);
             yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
             onDeath?.Invoke();
-            GetComponent<SpriteRenderer>().enabled = false;
+            gameObject.SetActive(false);
         }
     }
 
@@ -135,6 +139,7 @@ public class PlayerInteraction : MonoBehaviour
             fireproofTime -= Time.deltaTime;
             if (fireproofTime < 0) fireproofTime = 0;
         }
+        if (alive && overlap.Overlapping) GetDamaged(overlap.OverlapList[0].gameObject.name);
         if (Controllable)
         {
             if (Input.GetKeyDown(KeyCode.E))
