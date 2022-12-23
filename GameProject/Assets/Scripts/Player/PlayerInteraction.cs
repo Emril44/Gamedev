@@ -309,11 +309,6 @@ public class PlayerInteraction : MonoBehaviour
             case "SparkDoor":
                 other.gameObject.GetComponent<SparkDoor>().Open();
                 break;
-            case "DeadlyDamage":
-                health = 0;
-                onHealthUpdate?.Invoke();
-                StartCoroutine(Die(other.gameObject.name));
-                break;
             case "SaveZone":
                 CanSave = true;
                 health = 3;
