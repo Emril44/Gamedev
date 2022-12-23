@@ -8,7 +8,7 @@ public class AnalyticsManager : MonoBehaviour
     public static AnalyticsManager Instance { get;private set; }
     public void Awake()
     {
-        if (Instance == null || Instance != this)
+        if (Instance == null || Instance == this)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
