@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec5a413f9f5fd2a4cb003c51af3c3360, type: 3}
-  m_Name: FlagUA
+  m_Name: Transgender
   m_EditorClassIdentifier: 
-  <Sprite>k__BackingField: {fileID: 21300000, guid: fde1e53b18c7f0243a5b568af1ee4b0f, type: 3}
+  <Sprite>k__BackingField: {fileID: 21300000, guid: ce7c08028b87b014a814d9fa832b637f, type: 3}
   <conditionKeyNames>k__BackingField: []
   <conditionKeyValues>k__BackingField: []
