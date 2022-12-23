@@ -171,7 +171,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     PutPrism(prismGO.gameObject.GetComponent<PrismShard>());
                 }
-                if (nearLever)
+                else if (nearLever)
                 {
                     leverGO.GetComponent<Lever>().Toggle();
                 }
