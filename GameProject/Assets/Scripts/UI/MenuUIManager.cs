@@ -102,7 +102,14 @@ public class MenuUIManager : MonoBehaviour
         }
     }
 
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && PlayerInteraction.Instance.Controllable)
+        {
+            Pause();
+        }
+    }
+    
     public void Pause()
     {
         if (!paused)
