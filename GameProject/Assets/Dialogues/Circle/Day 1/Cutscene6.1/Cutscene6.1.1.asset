@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene3.4.12
+  m_Name: Cutscene6.1.1
   m_EditorClassIdentifier: 
   separator: 0
-  character: 0
+  character: 3
   text:
-  - "Well that's a relief!+\u041D\u0443, \u0433\u043E\u0440\u0430 \u0437 \u043F\u043B\u0435\u0447!"
-  next: {fileID: 11400000, guid: b13994af22032f14c966e45899c8c0a4, type: 2}
+  - "That should be enough. Let's begin the process.+\u0426\u044C\u043E\u0433\u043E
+    \u043C\u0430\u0454 \u0432\u0438\u0441\u0442\u0430\u0447\u0438\u0442\u0438. \u0414\u0430\u0432\u0430\u0439
+    \u0440\u043E\u0437\u043F\u043E\u0447\u043D\u0435\u043C\u043E."
+  next: {fileID: 11400000, guid: f3743dbd0b461a94c9dfd6d92c83393f, type: 2}
