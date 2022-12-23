@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   separator: 0
   character: 0
-  text: []
-  next: {fileID: 0}
+  text:
+  - "...no?+...\u043D\u0456?"
+  next: {fileID: 11400000, guid: 149ad69a74f578440ae2231038e8df19, type: 2}

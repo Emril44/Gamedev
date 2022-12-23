@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   separator: 0
   character: 0
-  text: []
-  next: {fileID: 0}
+  text:
+  - "Was it Circle?+\u0422\u0438 \u041A\u043E\u043B\u043E?"
+  next: {fileID: 11400000, guid: d17c22dc61555e74c918bb2ed84bf3b6, type: 2}
