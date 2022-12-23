@@ -7,8 +7,8 @@ using UnityEngine.AddressableAssets;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
 {
-    public Action onHealthUpdate;
-    public Action onDeath;
+    public Action onHealthUpdate, onDeath, onFireproofEnd;
+    public Action<float> onFireproofApply, onFireproofUpdate;
     public bool Controllable
     {
         get { return PlayerMovement.Instance.Controllable; }
@@ -138,6 +138,8 @@ public class PlayerInteraction : MonoBehaviour
         {
             fireproofTime -= Time.deltaTime;
             if (fireproofTime < 0) fireproofTime = 0;
+            onFireproofUpdate?.Invoke(fireproofTime);
+            if (fireproofTime == 0) onFireproofEnd?.Invoke();
         }
         if (alive && overlap.Overlapping) GetDamaged(overlap.OverlapList[0].gameObject.name);
         if (Controllable)
@@ -377,6 +379,7 @@ public class PlayerInteraction : MonoBehaviour
     public void ApplyFireproof(float seconds)
     {
         fireproofTime = seconds;
+        onFireproofApply?.Invoke(fireproofTime);
     }
 
     public bool IsFireproof()
