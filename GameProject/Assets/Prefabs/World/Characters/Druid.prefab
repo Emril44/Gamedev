@@ -161,7 +161,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -207,7 +207,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3708107394855490838}
-  m_BodyType: 2
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -259,12 +259,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: f73e10f5c87d19848bfe9241063c3a24, type: 2}
+      objectReference: {fileID: 11400000, guid: 73d79b54104753f4cbbb25321e806e49, type: 2}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 33af05da65ffc3242befb190bda1d59f, type: 2}
     - target: {fileID: 3593797973173693372, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: m_Name
       value: DialogueTrigger

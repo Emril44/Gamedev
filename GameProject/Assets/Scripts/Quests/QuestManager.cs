@@ -65,11 +65,9 @@ public class QuestManager : MonoBehaviour
             void StartQuest()
             {
                 quest.onStart -= StartQuest;
-                Debug.Log("invoke start quest");
                 onQuestStart?.Invoke(quest);
             }
             quest.onStart += StartQuest;
-            quest.onStart += () => { Debug.Log("NNNNNNNNNN"); };
             void CompleteQuest()
             {
                 completedQuests.Add(id);
