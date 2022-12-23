@@ -8,7 +8,9 @@ public class CharacterName
         Rectangle = 0,
         Circle = 1,
         Cat = 2,
-        Druid = 3
+        Druid = 3,
+        BlackCircle=4,
+        Seeker=5
     }
 
     private static readonly List<string> names = new()
@@ -16,7 +18,9 @@ public class CharacterName
         "Rectangle+Прямокутник",
         "Circle+Коло",
         "Cat+Кіт",
-        "Druid+Друїд"
+        "Druid+Друїд",
+        "Black Circle+Чорне Коло",
+        "Seeker+Шукач"
     };
 
     public static string GetLocalizedCharachterName(Character character)
