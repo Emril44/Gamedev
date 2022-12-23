@@ -115,8 +115,6 @@ public abstract class Quest : MonoBehaviour
             if (currentObjective == questData.RequisiteObjectives)
             {
                 onStart?.Invoke();
-                Debug.Log(onStart == null);
-                Debug.Log("invoke");
             }
             onUpdate?.Invoke();
         }
