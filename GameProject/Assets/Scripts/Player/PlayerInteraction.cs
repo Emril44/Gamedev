@@ -300,6 +300,11 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             case "Waypoint":
                 nearWaypoint = true;
+                if (alive && health < 2)
+                {
+                    health = 2;
+                    onHealthUpdate?.Invoke();
+                }
                 break;
             case "SparkDoor":
                 other.gameObject.GetComponent<SparkDoor>().Open();
