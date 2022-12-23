@@ -97,14 +97,6 @@ PrefabInstance:
       propertyPath: m_Points.Array.data[2].y
       value: 0.32641065
       objectReference: {fileID: 0}
-    - target: {fileID: 4547360920220777839, guid: 75c338d4b5d57c64faf7e46d145471f6, type: 3}
-      propertyPath: batches.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4547360920220777839, guid: 75c338d4b5d57c64faf7e46d145471f6, type: 3}
-      propertyPath: batches.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: f73e10f5c87d19848bfe9241063c3a24, type: 2}
     - target: {fileID: 7568950205908866262, guid: 75c338d4b5d57c64faf7e46d145471f6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.35
