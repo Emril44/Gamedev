@@ -344,6 +344,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1733903755 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6855915296989059455, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+  m_PrefabInstance: {fileID: 6722157585187336350}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1947035547 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3043736479171827126, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
@@ -442,6 +453,10 @@ PrefabInstance:
       propertyPath: loadButton
       value: 
       objectReference: {fileID: 1559762611}
+    - target: {fileID: 4139822609402464566, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
+      propertyPath: saveButton
+      value: 
+      objectReference: {fileID: 1733903755}
     - target: {fileID: 5246407415721562968, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: dialogueBox
       value: 
@@ -2900,6 +2915,14 @@ PrefabInstance:
     - target: {fileID: 6496383284291470618, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -4.385002
+      objectReference: {fileID: 0}
+    - target: {fileID: 6855915296989059455, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 765100296}
+    - target: {fileID: 6855915296989059455, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowSaveGameScreen
       objectReference: {fileID: 0}
     - target: {fileID: 7288453170227909750, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
       propertyPath: m_SizeDelta.x

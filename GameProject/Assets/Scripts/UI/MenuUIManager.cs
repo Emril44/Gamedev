@@ -17,6 +17,7 @@ public class MenuUIManager : MonoBehaviour
     private GameObject yesNoInstance;
     [SerializeField] private Canvas canvas;
     [SerializeField] private Button loadButton;
+    [SerializeField] private Button saveButton;
     [SerializeField] private GameObject settings;
     [SerializeField] private GameObject about;
     [SerializeField] private GameObject playerSkin;
@@ -70,6 +71,11 @@ public class MenuUIManager : MonoBehaviour
             PlayerInteraction.Instance.onDeath += delegate { ShowDeathScreen(); };
         }
         catch { }
+        try
+        {
+            PlayerInteraction.Instance.onCanSaveUpdate += b => saveButton.interactable = b;
+        }
+        catch { }
     }
 
     private void Start()
@@ -81,7 +87,8 @@ public class MenuUIManager : MonoBehaviour
                 canvas.transform.GetChild(1).GetChild(3).gameObject.transform.localPosition,
                 canvas.transform.GetChild(1).GetChild(4).gameObject.transform.localPosition,
                 canvas.transform.GetChild(1).GetChild(5).gameObject.transform.localPosition,
-                canvas.transform.GetChild(1).GetChild(6).gameObject.transform.localPosition
+                canvas.transform.GetChild(1).GetChild(6).gameObject.transform.localPosition,
+                canvas.transform.GetChild(1).GetChild(7).gameObject.transform.localPosition
             };
         }
         catch { }
@@ -157,7 +164,8 @@ public class MenuUIManager : MonoBehaviour
             canvas.transform.GetChild(1).GetChild(3).gameObject,
             canvas.transform.GetChild(1).GetChild(4).gameObject,
             canvas.transform.GetChild(1).GetChild(5).gameObject,
-            canvas.transform.GetChild(1).GetChild(6).gameObject
+            canvas.transform.GetChild(1).GetChild(6).gameObject,
+            canvas.transform.GetChild(1).GetChild(7).gameObject
         };
         float time = 0;
         Vector3 deltaPos = new(915, 0, 0);
@@ -166,7 +174,8 @@ public class MenuUIManager : MonoBehaviour
             baseButtonPos[0] - deltaPos,
             baseButtonPos[1] - deltaPos,
             baseButtonPos[2] - deltaPos,
-            baseButtonPos[3] - deltaPos
+            baseButtonPos[3] - deltaPos,
+            baseButtonPos[4] - deltaPos
         };
         float speed = 0.01f;
         while (Mathf.Abs(buttons[2].transform.position.x - goalPositions[2].x) > 0.01f)
@@ -192,7 +201,8 @@ public class MenuUIManager : MonoBehaviour
             canvas.transform.GetChild(1).GetChild(3).gameObject,
             canvas.transform.GetChild(1).GetChild(4).gameObject,
             canvas.transform.GetChild(1).GetChild(5).gameObject,
-            canvas.transform.GetChild(1).GetChild(6).gameObject
+            canvas.transform.GetChild(1).GetChild(6).gameObject,
+            canvas.transform.GetChild(1).GetChild(7).gameObject
         };
         float time = 0;        
         float speed = 0.01f;
@@ -425,7 +435,8 @@ public class MenuUIManager : MonoBehaviour
         blockInstance.transform.GetChild(0).gameObject.SetActive(false);
         yesNoInstance.SetActive(true);
         yesNoInstance.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = message.Split('+')[PlayerPrefs.GetInt("Language")];
-        yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(onYes);
+        yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
+        yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { onYes(); yesNoInstance.SetActive(false); blockInstance.transform.GetChild(0).gameObject.SetActive(true); });
     }
 
     public void ShowSkinpacks(bool showBlock)
