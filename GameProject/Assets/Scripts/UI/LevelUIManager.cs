@@ -27,12 +27,6 @@ public class LevelUIManager : MonoBehaviour
     [SerializeField] private GameObject questLine;
     [SerializeField] private GameObject objectiveGO;
     [SerializeField] private GameObject fireResistance;
-    //TO remove
-    [SerializeField] private GameObject sampleQuest;
-    [SerializeField] private GameObject sampleQuest2;
-    [SerializeField] private GameObject sampleQuest3;
-    [SerializeField] private GameObject sampleQuest4;
-    //TO remove end
     [SerializeField] private Transform player;
     [SerializeField] private AnimationCurve cardMoveCurve;
     [SerializeField] private AnimationCurve fadeOutCurve;
@@ -42,25 +36,40 @@ public class LevelUIManager : MonoBehaviour
     private bool isCoroutineRunning = false;
     
     private int cardsMoving = 0;
+    private float fireResistanceFull;
 
     private void Start()
     {
         PlayerInteraction.Instance.onHealthUpdate += delegate { UpdateHealthbar(); };
-        //TO remove
-        StartCoroutine(Test());
+        if (PlayerInteraction.Instance.IsFireproof())
+        {
+            fireResistance.SetActive(true);
+        }
+        else
+        {
+            fireResistance.SetActive(false);
+        }
+        PlayerInteraction.Instance.onFireproofApply += x => UpdateFireproof(x, x);
+        PlayerInteraction.Instance.onFireproofUpdate += x => UpdateFireproof(x);
+        PlayerInteraction.Instance.onFireproofEnd += delegate { fireResistance.SetActive(false); };
     }
-
-    IEnumerator Test()
+    
+    void UpdateFireproof(float full, float current)
     {
-        AddQuestCard(sampleQuest.GetComponent<Quest>());
-        AddQuestCard(sampleQuest2.GetComponent<Quest>());
-        AddQuestCard(sampleQuest4.GetComponent<Quest>());
-        AddQuestCard(sampleQuest3.GetComponent<Quest>());
-        yield return null;
+        fireResistance.SetActive(true);
+        fireResistanceFull = full;
+        UpdateFireproof(current);
     }
-    //TO remove end
-
-
+    void UpdateFireproof(float current)
+    {
+        var image = fireResistance.GetComponent<Image>();
+        image.fillAmount = current / fireResistanceFull;
+        if (current < 0.001f)
+        {
+            fireResistance.SetActive(false);
+        }
+    }
+        
     public void UpdateHealthbar()
     {
         int newHealth = PlayerInteraction.Instance.health;
