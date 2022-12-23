@@ -19,6 +19,7 @@ public class DialogueManager : MonoBehaviour
     private GameObject[] dialogOptions;
     private int phraseCounter;
     private bool animatingText = false;
+    private bool cutscenePlaying = false;
     private TextMeshProUGUI animatedTMP;
     private string animatedText;
 
@@ -62,7 +63,11 @@ public class DialogueManager : MonoBehaviour
     {
         if (dialogueBox.activeSelf)
         {
-            if (animatingText && Input.GetMouseButtonDown(0))
+            if (cutscenePlaying)
+            {
+                return;
+            }
+            else if (animatingText && Input.GetMouseButtonDown(0))
             {
                 StopAllCoroutines();
                 ShowAnimatedText();
@@ -236,5 +241,31 @@ public class DialogueManager : MonoBehaviour
             currentNode = ((DialogueOption)currentNode).options[i].optionBranch;
             GetNext();
         } 
+    }
+
+    public IEnumerator DisplayTextCoroutine(string displayText, float time)
+    {
+        cutscenePlaying = true;
+        string text = GetLocalizedText(displayText, '+');
+        textWithoutName.SetActive(true);
+        textWithName.SetActive(false);
+        dialogueBox.SetActive(true);
+        dialogueBox.GetComponent<Image>().enabled = false;
+        yield return AnimateTextCoroutine(onlyText, text);
+        yield return new WaitForSeconds(time);
+        yield return HideCutsceneText(onlyText, text);
+        dialogueBox.GetComponent<Image>().enabled = true;
+        dialogueBox.SetActive(false);
+        cutscenePlaying = false;
+    }
+    
+    private IEnumerator HideCutsceneText(TextMeshProUGUI tmp, string text)
+    {
+        tmp.text = text;
+        for (int i = 0; i < text.Length; i++)
+        {
+            tmp.text = text.Substring(i, text.Length - 1 - i);
+            yield return new WaitForSeconds(0.03f);
+        }
     }
 }

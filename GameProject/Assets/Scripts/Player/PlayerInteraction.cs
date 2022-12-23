@@ -8,6 +8,7 @@ public class PlayerInteraction : MonoBehaviour
 {
     public Action onHealthUpdate, onDeath, onFireproofEnd;
     public Action<float> onFireproofApply, onFireproofUpdate;
+    public Action<bool> onCanSaveUpdate;
     public bool Controllable
     {
         get { return PlayerMovement.Instance.Controllable; }
@@ -37,7 +38,16 @@ public class PlayerInteraction : MonoBehaviour
     private bool alive = true;
     private Vector2 spawnLocation;
     private PlayerMovement movement;
-    public bool CanSave { get; private set; }
+    private bool canSave = false;
+    public bool CanSave 
+    {
+        get { return canSave; }
+        private set
+        {
+            canSave = value;
+            onCanSaveUpdate?.Invoke(value);
+        }
+    }
 
     private Rigidbody2D rb;
     private Animator animator;

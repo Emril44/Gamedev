@@ -67,13 +67,12 @@ public class CutsceneEvent
                 yield return null; // TODO when effect is available
                 break;
             case EventType.DisplayText:
-                yield return null; // TODO
+                yield return DialogueManager.Instance.DisplayTextCoroutine(displayText, time);
                 break;
             default:
                 yield return null;
                 break;
         }
-
     }
 
     private IEnumerator RunDialogue(Dialogue dialogue)
@@ -87,6 +86,5 @@ public class CutsceneEvent
         dialogue.onDialogueEnd += ReactToEnd;
         DialogueManager.Instance.GetTriggered(dialogue);
         yield return new WaitUntil(() => { return dialogueEnded; });
-
     }
 }
