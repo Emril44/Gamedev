@@ -112,6 +112,14 @@ public class MenuUIManager : MonoBehaviour
     
     public void Pause()
     {
+        if (SavesManager.Instance.HasSaves())
+        {
+            loadButton.interactable = true;
+        }
+        else
+        {
+            loadButton.interactable = false;
+        }
         if (!paused)
         {
             paused = true;

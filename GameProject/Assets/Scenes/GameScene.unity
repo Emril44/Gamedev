@@ -3051,6 +3051,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 765100296}
+    - target: {fileID: 7840597626883571244, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowLoadGameScreen
+      objectReference: {fileID: 0}
     - target: {fileID: 7840597628052497314, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
