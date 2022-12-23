@@ -77,7 +77,15 @@ public class MobileCharacter : MonoBehaviour
 
     public void SetMobile(bool mobile)
     {
-        rb.bodyType = mobile ? RigidbodyType2D.Dynamic : RigidbodyType2D.Static;
+        if (mobile)
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+        }
+        else
+        {
+            rb.velocity = new Vector2(0, 0);
+            rb.bodyType = RigidbodyType2D.Kinematic;
+        }
     }
 
     public bool IsMobile()
