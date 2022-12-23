@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: NotEnoughSparksGrotto
   m_EditorClassIdentifier: 
   <dialogueList>k__BackingField: []
-  <fallbackDialogue>k__BackingField: {fileID: 0}
+  <fallbackDialogue>k__BackingField: {fileID: 11400000, guid: 93b48cb02342b0e469f79ae4f613215a, type: 2}

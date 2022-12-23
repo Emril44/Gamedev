@@ -15,5 +15,6 @@ MonoBehaviour:
   separator: 0
   character: 0
   text:
-  - "Well that's a relief!+\u041D\u0443, \u0433\u043E\u0440\u0430 \u0437 \u043F\u043B\u0435\u0447!"
+  - "Well that's a relief! (Probably...)+\u041D\u0443, \u0433\u043E\u0440\u0430 \u0437
+    \u043F\u043B\u0435\u0447! (\u041D\u0430\u043F\u0435\u0432\u043D\u043E...)"
   next: {fileID: 11400000, guid: b13994af22032f14c966e45899c8c0a4, type: 2}
