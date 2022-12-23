@@ -5,22 +5,15 @@ using System.Collections.Generic;
 public class NPCSerializedData
 {
     public bool active;
-    public int dialogueBatchIndex; // index of the predefined dialogue collection that is the basis of the current dialogue set
-    public int dialogueIndex; // current dialogue index in the batch
-    public float x, y, z; // position of the NPC in the world (rotation and scale are not dynamic)]
-    // any freeform information that NPCs may require; saves system is not responsible for how this information interpreted
-    public List<string> tagNames;
-    public List<string> tagValues;
+    public DialogueTriggerSerializedData dialogueTrigger;
+    public float x, y, z; // position of the NPC in the world (rotation and scale are not dynamic)
     
-    public NPCSerializedData(bool active, int dialogueBatchIndex, int dialogueIndex, float x, float y, float z, List<string> tagNames, List<string> tagValues)
+    public NPCSerializedData(bool active, DialogueTriggerSerializedData dialogueTrigger, float x, float y, float z)
     {
         this.active = active;
-        this.dialogueBatchIndex = dialogueBatchIndex;
-        this.dialogueIndex = dialogueIndex;
+        this.dialogueTrigger = dialogueTrigger;
         this.x = x;
         this.y = y;
         this.z = z;
-        this.tagNames = tagNames;
-        this.tagValues = tagValues;
     }
 }

@@ -79,4 +79,15 @@ public class DialogueTrigger : MonoBehaviour
     {
         return batches[i];
     }
+
+    public DialogueTriggerSerializedData Serialize()
+    {
+        return new DialogueTriggerSerializedData(batchIndex, dialogueIndex);
+    }
+
+    public void Deserialize(DialogueTriggerSerializedData data)
+    {
+        SetBatchIndex(data.dialogueBatchIndex);
+        SetDialogueIndex(data.dialogueIndex);
+    }
 }

@@ -6,6 +6,7 @@ using UnityEngine.U2D;
 // Should only have two dialogue batches, for the guarding and letting-through states respectively
 // Guarding batch should have 1 lore dialogue and a fallback dialogue reminding to gather more sparks
 // Letting-through batch is expected to have 1 one-time dialogue, after playing which both the circle and the gate disappear
+[RequireComponent(typeof(SpriteRenderer))]
 public class BlackCircle : NPC
 {
     [SerializeField] private int sparksNeeded;
@@ -15,11 +16,9 @@ public class BlackCircle : NPC
     private SpriteShapeRenderer gateRenderer;
     private Dialogue finalDialogue;
 
-    override protected void Awake()
+    private void Awake()
     {
-        base.Awake();
         UpdateRequirements();
-        DataManager.Instance.onSparksUpdate += UpdateRequirements;
         selfRenderer = gameObject.GetComponent<SpriteRenderer>();
         gateRenderer = gate.GetComponent<SpriteShapeRenderer>();
         finalDialogue = trigger.GetBatchAtIndex(1).dialogueList[0];
@@ -28,11 +27,13 @@ public class BlackCircle : NPC
     private void OnEnable()
     {
         finalDialogue.onDialogueEnd += Disappear;
+        DataManager.Instance.onSparksUpdate += UpdateRequirements;
     }
 
     private void OnDisable()
     {
         finalDialogue.onDialogueEnd -= Disappear;
+        DataManager.Instance.onSparksUpdate -= UpdateRequirements;
     }
 
     private void UpdateRequirements()
@@ -48,7 +49,7 @@ public class BlackCircle : NPC
         StartCoroutine(Fadeout());
     }
 
-    IEnumerator Fadeout()
+    private IEnumerator Fadeout()
     {
         float time = 0;
         Color ogColor = selfRenderer.color;

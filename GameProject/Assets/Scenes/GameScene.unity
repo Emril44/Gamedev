@@ -2740,6 +2740,14 @@ PrefabInstance:
       propertyPath: m_Points.Array.data[31].y
       value: -0.004220009
       objectReference: {fileID: 0}
+    - target: {fileID: 8177285621584450617, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
+      propertyPath: m_Points.Array.data[2].x
+      value: 1.0964597
+      objectReference: {fileID: 0}
+    - target: {fileID: 8177285621584450617, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
+      propertyPath: m_Points.Array.data[2].y
+      value: 0.32641065
+      objectReference: {fileID: 0}
     - target: {fileID: 8200556328473725433, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
       propertyPath: m_Points.Array.data[15].x
       value: 1.978133
