@@ -182,8 +182,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Get sparks 9/14
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 62b0e5397a687074781076bf41f17f57, type: 2}
-  m_sharedMaterial: {fileID: -2097374465650543126, guid: 62b0e5397a687074781076bf41f17f57, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 130f6d8bdd36ce64ab965461b0d402eb, type: 2}
+  m_sharedMaterial: {fileID: -2097374465650543126, guid: 130f6d8bdd36ce64ab965461b0d402eb, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
