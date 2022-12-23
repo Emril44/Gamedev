@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Cutscene1.1Greeting
   m_EditorClassIdentifier: 
   separator: 0
-  character: 0
-  text: []
-  next: {fileID: 0}
+  character: 1
+  text:
+  - "Hello there! Wanna see what I brought? You\u2019ll have to get ready, though.+\u041F\u0440\u0438\u0432\u0456\u0442!
+    \u0425\u043E\u0447\u0435\u0448 \u0433\u043B\u044F\u043D\u0443\u0442\u0438, \u0449\u043E
+    \u044F \u043F\u0440\u0438\u043D\u0435\u0441\u043B\u043E? \u0422\u0456\u043B\u044C\u043A\u0438
+    \u043F\u0440\u0438\u0433\u043E\u0442\u0443\u0439\u0441\u044F \u0441\u043F\u043E\u0447\u0430\u0442\u043A\u0443."
+  next: {fileID: 11400000, guid: 503930dba41f2a6469d3c80ea4def8c4, type: 2}
