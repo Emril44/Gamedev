@@ -31,6 +31,7 @@ public class CutsceneEvent
     [SerializeField] private float time;
     [SerializeField] private GameObject target;
     [SerializeField] private bool setTargetToActive = true;
+    [SerializeField] private GameObject[] targets; // for activity management, because it can be reasonably done in bulk
 
     public IEnumerator Run()
     {
@@ -50,7 +51,7 @@ public class CutsceneEvent
                 yield return new WaitForSeconds(time);
                 break;
             case EventType.SetActivity:
-                target.SetActive(setTargetToActive);
+                foreach(GameObject t in targets) t.SetActive(setTargetToActive);
                 yield return null;
                 break;
             case EventType.SetPosition:

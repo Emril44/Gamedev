@@ -41,15 +41,15 @@ public class CutsceneEventDrawer : PropertyDrawer
                     break;
                 case CutsceneEvent.EventType.SetActivity:
                     line = GetNextLineRect(line);
-                    EditorGUI.PropertyField(line, property.FindPropertyRelative("target"), new GUIContent("Object"));
+                    EditorGUI.PropertyField(line, property.FindPropertyRelative("setTargetToActive"), new GUIContent("Set to True"));
                     line = GetNextLineRect(line);
-                    EditorGUI.PropertyField(line, property.FindPropertyRelative("setTargetToActive"), new GUIContent("Set to Active"));
+                    EditorGUI.PropertyField(line, property.FindPropertyRelative("targets"), new GUIContent("Objects"));
                     break;
                 case CutsceneEvent.EventType.SetPosition:
                     line = GetNextLineRect(line);
-                    EditorGUI.PropertyField(line, property.FindPropertyRelative("target"), new GUIContent("Object"));
-                    line = GetNextLineRect(line);
                     EditorGUI.PropertyField(line, property.FindPropertyRelative("targetLocation"));
+                    line = GetNextLineRect(line);
+                    EditorGUI.PropertyField(line, property.FindPropertyRelative("target"), new GUIContent("Object"));
                     break;
                 case CutsceneEvent.EventType.DisplayText:
                     line = GetNextLineRect(line);
@@ -75,7 +75,7 @@ public class CutsceneEventDrawer : PropertyDrawer
             CutsceneEvent.EventType.CharacterJump => GetHeightByLines(4),
             CutsceneEvent.EventType.DisplayText => GetHeightByLines(4),
             CutsceneEvent.EventType.Wait => GetHeightByLines(3),
-            CutsceneEvent.EventType.SetActivity => GetHeightByLines(4),
+            CutsceneEvent.EventType.SetActivity => GetHeightByLines(3) + EditorGUI.GetPropertyHeight(property.FindPropertyRelative("targets")) + EditorGUIUtility.standardVerticalSpacing,
             CutsceneEvent.EventType.SetPosition => GetHeightByLines(4),
             _ => GetHeightByLines(2),
         };
