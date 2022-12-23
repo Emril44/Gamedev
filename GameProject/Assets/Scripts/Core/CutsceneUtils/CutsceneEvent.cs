@@ -56,9 +56,11 @@ public class CutsceneEvent
                 break;
             case EventType.SetPosition:
                 target.transform.position = targetLocation.position;
+                yield return null;
                 break;
             case EventType.UnlockColor:
                 DataManager.Instance.UnlockColor();
+                yield return null;
                 break;
             case EventType.FadeIn:
                 yield return null; // TODO when effect is available
