@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4212162440847527329}
+  - component: {fileID: 1035551358065062156}
   m_Layer: 0
   m_Name: Notestone
   m_TagString: DialogueTrigger
@@ -33,6 +34,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1035551358065062156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 328867898127605805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9949fbacbd4e84548a53cba7d4ff7ef0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trigger: {fileID: 6472264668745080456}
 --- !u!1001 &5133980656685756958
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -82,6 +96,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+--- !u!114 &6472264668745080456 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+  m_PrefabInstance: {fileID: 5133980656685756958}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55c99fe352ae10948a25cff6f9a83d5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &9007394029075270736 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4197109737356705358, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
@@ -112,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1005930883005346351, guid: c73dbd88859cd4a488bc754fdc394e93, type: 3}
       propertyPath: m_DynamicOccludee
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1005930883005346351, guid: c73dbd88859cd4a488bc754fdc394e93, type: 3}
       propertyPath: m_LocalAABB.m_Center.x

@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5acbcb52695596440b810933b12957ed, type: 3}
-  m_Name: NotEnoughSparksGrotto
+  m_Script: {fileID: 11500000, guid: 05648aab54f8643499ab797884ce6a5c, type: 3}
+  m_Name: Objective 1
   m_EditorClassIdentifier: 
-  <dialogueList>k__BackingField: []
-  <fallbackDialogue>k__BackingField: {fileID: 11400000, guid: 93b48cb02342b0e469f79ae4f613215a, type: 2}
+  separator: 43
+  message: 
+  dialogue: {fileID: 11400000, guid: 3870efdf3b8d5bb42b3ff8792748cbf1, type: 2}
