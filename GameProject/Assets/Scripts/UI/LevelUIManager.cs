@@ -162,6 +162,13 @@ public class LevelUIManager : MonoBehaviour
     }
     IEnumerator MoveToNextObjective(TextMeshProUGUI tmp, Quest quest)
     {
+        if (quest == null || quest.GetCurrentObjective() == null)
+        {
+            questCoroutines.Dequeue();
+            isCoroutineRunning = false;
+            TryMoveQueue();
+            yield break;
+        }
         var text = quest.GetCurrentObjective().LocalizedMessage();
         isCoroutineRunning = true;
         float time = 0;
