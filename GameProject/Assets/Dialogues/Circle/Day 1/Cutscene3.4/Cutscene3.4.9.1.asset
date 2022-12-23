@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8ce10a27bc5ad44bf61bab27a59fd5, type: 3}
-  m_Name: Cutscene3.4.8
+  m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
+  m_Name: Cutscene3.4.9.1
   m_EditorClassIdentifier: 
   separator: 0
-  options: []
+  character: 3
+  text:
+  - .......+.......
+  next: {fileID: 11400000, guid: 1830f2af656f1984689ee5211a284c2b, type: 2}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene5.1.6
+  m_Name: Fallback3.2
   m_EditorClassIdentifier: 
   separator: 0
-  character: -1
+  character: 0
   text:
-  - "The Druid leaves+\u0414\u0440\u0443\u0457\u0434 \u0439\u0434\u0435"
+  - 
   next: {fileID: 0}

@@ -15,5 +15,5 @@ MonoBehaviour:
   separator: 0
   character: 0
   text:
-  - ..........
+  - ..........+..........
   next: {fileID: 11400000, guid: 40e9d692c5613ed4e89a93433a172e37, type: 2}

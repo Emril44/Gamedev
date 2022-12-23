@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0562645db54ef2e4c959daf10fc40472, type: 3}
-  m_Name: Cutscene4.1 Dialogue
+  m_Script: {fileID: 11500000, guid: 5acbcb52695596440b810933b12957ed, type: 3}
+  m_Name: NotEnoughSparksGrotto
   m_EditorClassIdentifier: 
-  <firstNode>k__BackingField: {fileID: 11400000, guid: 398e6d0efe1242e4db7ce83756b2ee69, type: 2}
+  <dialogueList>k__BackingField: []
+  <fallbackDialogue>k__BackingField: {fileID: 0}

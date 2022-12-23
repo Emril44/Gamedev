@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5acbcb52695596440b810933b12957ed, type: 3}
-  m_Name: 0Cutscene4.1
+  m_Name: NotEnoughSparks
   m_EditorClassIdentifier: 
   <dialogueList>k__BackingField:
   - {fileID: 11400000, guid: 3b2b9a3f36d3c014fa8f7cee9f0691a9, type: 2}

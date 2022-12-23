@@ -21,4 +21,4 @@ MonoBehaviour:
   - "Want to see what I brought or not?+\u041F\u043E\u043A\u0430\u0437\u0430\u0442\u0438,
     \u0449\u043E \u044F \u043F\u0440\u0438\u043D\u0435\u0441\u043B\u043E, \u0447\u0438
     \u043D\u0456?"
-  next: {fileID: 0}
+  next: {fileID: 11400000, guid: 503930dba41f2a6469d3c80ea4def8c4, type: 2}

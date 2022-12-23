@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene4.1.1
+  m_Name: OneTime1
   m_EditorClassIdentifier: 
   separator: 0
   character: -1

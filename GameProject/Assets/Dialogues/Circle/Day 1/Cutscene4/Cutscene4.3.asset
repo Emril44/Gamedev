@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene5.1.2
+  m_Name: Cutscene4.3
   m_EditorClassIdentifier: 
   separator: 0
-  character: 3
+  character: -1
   text:
-  - "Let me see...+\u0414\u0430\u0439 \u043F\u043E\u0433\u043B\u044F\u043D\u0443\u0442\u0438..."
-  next: {fileID: 11400000, guid: cd0c023afafc94848bbbc94056a58961, type: 2}
+  - "Druid takes some time to inspect.+ \u0414\u0435\u044F\u043A\u0438\u0439 \u0447\u0430\u0441
+    \u0414\u0440\u0443\u0457\u0434 \u043E\u0433\u043B\u044F\u0434\u0430\u0454 \u0457\u0445."
+  next: {fileID: 11400000, guid: aace2321cf2ca1c4db7b17446dfc3130, type: 2}

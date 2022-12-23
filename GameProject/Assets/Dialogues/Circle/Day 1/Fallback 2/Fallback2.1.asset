@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene3.2EmptyRec2
+  m_Script: {fileID: 11500000, guid: 0562645db54ef2e4c959daf10fc40472, type: 3}
+  m_Name: Fallback2.1
   m_EditorClassIdentifier: 
-  separator: 0
-  character: 0
-  text:
-  - ........
-  next: {fileID: 0}
+  <firstNode>k__BackingField: {fileID: 11400000, guid: 9b01c4aef5e57334c8b4e79b216b3454, type: 2}
