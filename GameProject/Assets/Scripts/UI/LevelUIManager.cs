@@ -174,7 +174,7 @@ public class LevelUIManager : MonoBehaviour
         }
         questCoroutines.Dequeue();
         isCoroutineRunning = false;
-        quest.GetCurrentObjective().onComplete += () => { questCoroutines.Enqueue(StrikeText(tmp)); questCoroutines.Enqueue(MoveToNextObjective(tmp, quest)); TryMoveQueue(); };
+        quest.GetCurrentObjective().onComplete += () => { EnqueMove(StrikeText(tmp), MoveToNextObjective(tmp, quest)); };
         TryMoveQueue();
     }
     
@@ -207,7 +207,7 @@ public class LevelUIManager : MonoBehaviour
             StartCoroutine(AddQuestCardCoroutine(quest));
             return;
         }
-        float y = 4.02f + player.localPosition.y + 3.2108f;
+        float y = 1.54f + player.localPosition.y;
         foreach (Quest q in activeQuests)
         {
             y -= QuestCardHeight(q);
@@ -258,13 +258,20 @@ public class LevelUIManager : MonoBehaviour
         objective.transform.localPosition = objective.transform.localPosition + new Vector3(0, -90);
         objective.SetActive(false);
         questCoroutines.Enqueue(FadeIn(objective, objective.transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMP, objective.transform.localPosition + new Vector3(0, 90), 0.7f));
-        quest.GetCurrentObjective().onComplete += () => { questCoroutines.Enqueue(StrikeText(objectiveTMP)); questCoroutines.Enqueue(MoveToNextObjective(objectiveTMP, quest)); TryMoveQueue(); };
+        quest.GetCurrentObjective().onComplete += () => { EnqueMove(StrikeText(objectiveTMP), MoveToNextObjective(objectiveTMP, quest)); };
 
         activeQuests.Add(quest);
-        quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };
+        //quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };
         quest.onComplete += () => { RemoveQuestCard(quest); };
     }
 
+    private void EnqueMove(IEnumerator a, IEnumerator b)
+    {
+        questCoroutines.Enqueue(a);
+        TryMoveQueue();
+        questCoroutines.Enqueue(b); 
+    }
+    
     private void UpdateQuestText(Quest quest, TextMeshProUGUI objectiveTMP)
     {
         objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
