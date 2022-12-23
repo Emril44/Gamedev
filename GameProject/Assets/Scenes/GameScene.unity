@@ -803,7 +803,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 897729073646623325, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -11.91
+      value: -12.86
       objectReference: {fileID: 0}
     - target: {fileID: 912472471107190724, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
       propertyPath: m_Points.Array.data[3].x
@@ -845,6 +845,10 @@ PrefabInstance:
       propertyPath: m_Points.Array.data[7].y
       value: -1.7834221
       objectReference: {fileID: 0}
+    - target: {fileID: 1006136692891608761, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
+      propertyPath: events.Array.data[8].target
+      value: 
+      objectReference: {fileID: 3583609863825038944}
     - target: {fileID: 1006136692891608761, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
       propertyPath: events.Array.data[1].character
       value: 
@@ -2959,6 +2963,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
+--- !u!1 &3583609863825038944 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 974167094870730853, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
+  m_PrefabInstance: {fileID: 3583609863825038943}
+  m_PrefabAsset: {fileID: 0}
 --- !u!223 &3828450536948807171 stripped
 Canvas:
   m_CorrespondingSourceObject: {fileID: 3828450536166982873, guid: 529d046ac7d13e346929e2c4dbf6fc54, type: 3}
