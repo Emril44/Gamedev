@@ -20,7 +20,7 @@ public class DataManager : MonoBehaviour
             Instance = this;
         }
         sparksAmount = 0;
-        unlockedColors = 3;
+        unlockedColors = 1;
         day = 0;
     }
 

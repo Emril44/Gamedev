@@ -54,7 +54,7 @@ public class MovableObject : MonoBehaviour
 
     private void Reset()
     {
-        ScreenFade.Instance.FadeOut(5);
+        StartCoroutine(ScreenFade.Instance.FadeOut(5));
         transform.position = defPosition;
         transform.localScale = defScale;
         transform.rotation = defRotation;
@@ -62,7 +62,7 @@ public class MovableObject : MonoBehaviour
         gameObject.tag = "Movable";
         rb.bodyType = RigidbodyType2D.Static;
         // play sound
-        ScreenFade.Instance.FadeIn(5);
+        StartCoroutine(ScreenFade.Instance.FadeIn(5));
     }
 
     public void StartMove()

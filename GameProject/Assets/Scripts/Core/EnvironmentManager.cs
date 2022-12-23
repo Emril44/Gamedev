@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class EnvironmentManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class EnvironmentManager : MonoBehaviour
     [Header("NPCs")]
     [SerializeField] private List<NPC> npcs; // objects should have the NPC (or a derived) component
     public PrismColor CurrentColor { get; private set; }
+    static Color Locked = new(0.1132075f, 0.1132075f, 0.1132075f, 1);
 
     public static EnvironmentManager Instance { get; private set; }
     private void Awake()
@@ -113,7 +115,7 @@ public class EnvironmentManager : MonoBehaviour
             }
             else
             {
-                obj.GetComponent<SpriteRenderer>().color = Color.gray;
+                obj.GetComponent<SpriteShapeRenderer>().color = Locked;
                 //TODO: disable?
             }
         }
