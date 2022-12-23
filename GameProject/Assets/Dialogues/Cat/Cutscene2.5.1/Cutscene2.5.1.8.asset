@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
+  m_Name: Cutscene2.5.1.8
+  m_EditorClassIdentifier: 
+  separator: 0
+  character: 2
+  text:
+  - "Haven't you seen what THEY did? I will never forgive them.+\u0422\u0438 \u043D\u0435
+    \u0431\u0430\u0447\u0438\u0432, \u0449\u043E \u0412\u041E\u041D\u0418 \u0437\u0440\u043E\u0431\u0438\u043B\u0438?
+    \u042F \u043D\u0456\u043A\u043E\u043B\u0438 \u0457\u043C \u043D\u0435 \u043F\u0440\u043E\u0431\u0430\u0447\u0443."
+  next: {fileID: 11400000, guid: b29244b3044058d4880944efa72c0e45, type: 2}
