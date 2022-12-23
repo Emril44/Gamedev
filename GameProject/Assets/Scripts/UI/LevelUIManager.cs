@@ -52,6 +52,7 @@ public class LevelUIManager : MonoBehaviour
         PlayerInteraction.Instance.onFireproofApply += x => UpdateFireproof(x, x);
         PlayerInteraction.Instance.onFireproofUpdate += x => UpdateFireproof(x);
         PlayerInteraction.Instance.onFireproofEnd += delegate { fireResistance.SetActive(false); };
+        QuestManager.Instance.onQuestStart += q => AddQuestCard(q);
     }
     
     void UpdateFireproof(float full, float current)

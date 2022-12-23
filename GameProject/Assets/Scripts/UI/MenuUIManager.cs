@@ -120,7 +120,7 @@ public class MenuUIManager : MonoBehaviour
         var blackout = canvas.transform.GetChild(1).GetChild(0).gameObject.GetComponent<Image>();
         blackout.color = new Color(blackout.color.r, blackout.color.r, blackout.color.r, 0);
         float time = 0;
-        float speed = 1f;
+        float speed = 3f;
         while(time < 1)
         {
             time += Time.unscaledDeltaTime * speed;
@@ -138,7 +138,7 @@ public class MenuUIManager : MonoBehaviour
     {
         var blackout = canvas.transform.GetChild(1).GetChild(0).gameObject.GetComponent<Image>();
         float time = Time.timeScale;
-        float speed = 1f;
+        float speed = 3f;
         while (time < 1)
         {
             time += Time.unscaledDeltaTime * speed;
@@ -238,7 +238,6 @@ public class MenuUIManager : MonoBehaviour
     
     public void ShowBlock()
     {
-        StopAllCoroutines();
         var blackout = blockInstance.transform.GetChild(0).gameObject;
         var block = blockInstance.transform.GetChild(1).gameObject;
         block.transform.localPosition = new Vector3(-4.3f, 9, 47);
