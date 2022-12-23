@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 // Stores dynamic macro information about quest progress
 public class QuestManager : MonoBehaviour
 {
+    public Action<Quest> onQuestStart;
     public static QuestManager Instance { get; private set; }
     // Reliable links to all quests. Quests are identified by their indices in this list, so indices should not change
     [SerializeField] private List<Quest> quests = new List<Quest>();
@@ -58,8 +60,13 @@ public class QuestManager : MonoBehaviour
         Quest quest = QuestById(id);
         if (!availableQuests.Contains(id))
         {
-            quest.gameObject.SetActive(true);
             availableQuests.Add(id);
+            void StartQuest()
+            {
+                quest.onStart -= StartQuest;
+                onQuestStart?.Invoke(quest);
+            }
+            quest.onStart += StartQuest;
             void CompleteQuest()
             {
                 completedQuests.Add(id);
@@ -80,6 +87,7 @@ public class QuestManager : MonoBehaviour
                 }
             }
             quest.onComplete += CompleteQuest;
+            quest.gameObject.SetActive(true);
         }
     }
     
