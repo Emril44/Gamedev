@@ -59,7 +59,10 @@ public class BlackSquare : MonoBehaviour
     {
         // trigger VFX and SFX...
 
+        StartCoroutine(ScreenFade.Instance.FadeOut(5));
+        // play sound
         transform.position = origin;
+        StartCoroutine(ScreenFade.Instance.FadeIn(5));
     }
 
     private void ProcessIdleState()

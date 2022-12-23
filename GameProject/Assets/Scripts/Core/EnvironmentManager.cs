@@ -58,7 +58,27 @@ public class EnvironmentManager : MonoBehaviour
 
     private void ChangeBackground(PrismColor color)
     {
+        Color Neutral = new(0.5294118f, 0.5137255f, 0.5137255f, 1);
+        Color Denial = new(0.2078431f, 0.8117647f, 0.2235294f, 1);
+        Color Anger = new(0.7921569f, 0.1529412f, 0.1607843f, 1);
+        Color Bargaining = new(0.8666667f, 0.7333333f, 0.1686275f, 1);
         //TODO:...
+        CamMovement.Instance.mainCam.clearFlags = CameraClearFlags.SolidColor;
+        switch((int) color)
+        {
+            case 1:
+                CamMovement.Instance.mainCam.backgroundColor = Denial;
+                break;
+            case 2:
+                CamMovement.Instance.mainCam.backgroundColor = Anger;
+                break;
+            case 3:
+                CamMovement.Instance.mainCam.backgroundColor = Bargaining;
+                break;
+            default:
+                CamMovement.Instance.mainCam.backgroundColor = Neutral;
+                break;
+        }
     }
 
     public void SetNewColor(PrismColor color)

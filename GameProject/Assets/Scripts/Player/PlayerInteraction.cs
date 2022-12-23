@@ -116,6 +116,7 @@ public class PlayerInteraction : MonoBehaviour
             if (health <= 0)
             {
                 StartCoroutine(Die(source));
+                StartCoroutine(ScreenFade.Instance.FadeOut(1));
             }
         }
     }

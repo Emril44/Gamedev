@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class CamMovement : MonoBehaviour
 {
-    private Camera mainCam;
+    [NonSerialized] public Camera mainCam;
     private GameObject player;
     [SerializeField] private float scalingSpeed;
     public bool onPlayer { get; private set; } = true;
