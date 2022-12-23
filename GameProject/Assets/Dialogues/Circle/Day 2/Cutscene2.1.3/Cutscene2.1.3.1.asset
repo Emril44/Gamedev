@@ -17,4 +17,4 @@ MonoBehaviour:
   - option: " I see red.+\u042F \u0431\u0430\u0447\u0443 \u0447\u0435\u0440\u0432\u043E\u043D\u0438\u0439.\r\n"
     optionBranch: {fileID: 11400000, guid: 274a068d8c1e67c48a37b3736eb2b83e, type: 2}
   - option: "What is this?+\u0429\u043E \u0446\u0435?\n"
-    optionBranch: {fileID: 0}
+    optionBranch: {fileID: 11400000, guid: 4cf83c8017a731541bdf79e894a3d1a7, type: 2}
