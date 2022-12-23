@@ -112,7 +112,12 @@ public abstract class Quest : MonoBehaviour
             questData.Objectives[currentObjective].onComplete += CompleteCurrentObjective;
             questData.Objectives[currentObjective].onUpdate += UpdateQuest;
             questData.Objectives[currentObjective].SetActive(true);
-            if (currentObjective == questData.RequisiteObjectives) onStart?.Invoke();
+            if (currentObjective == questData.RequisiteObjectives)
+            {
+                onStart?.Invoke();
+                Debug.Log(onStart == null);
+                Debug.Log("invoke");
+            }
             onUpdate?.Invoke();
         }
     }

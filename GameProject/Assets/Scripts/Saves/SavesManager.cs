@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SavesManager : MonoBehaviour
 {
+    [SerializeField] private bool forceLoadNewGame;
     public static SavesManager Instance { get; private set; }
     private SaveHeader[] saveHeaders = new SaveHeader[4]; // lightweight UI-targeted containers with core information about saves
     private void Awake()
@@ -17,12 +18,23 @@ public class SavesManager : MonoBehaviour
         else
         {
             Instance = this;
+            DontDestroyOnLoad(this);
         }
         for (int i = 0; i < saveHeaders.Length; i++)
         {
             string savePath = Application.persistentDataPath + "/Saves/" + (i == 0 ? "Autosave" : "Save " + i);
             DataManagerSerializedData data = LoadDataManager(savePath);
             saveHeaders[i] = data == null ? null : new SaveHeader(data);
+        }
+    }
+
+    private void Start()
+    {
+        if (forceLoadNewGame)
+        {
+            DataManager.Instance.Deserialize(null);
+            EnvironmentManager.Instance.Deserialize(null);
+            QuestManager.Instance.Deserialize(null);
         }
     }
 
@@ -57,9 +69,15 @@ public class SavesManager : MonoBehaviour
     
     public void LoadNewGame()
     {
-        DataManager.Instance.Deserialize(null);
-        EnvironmentManager.Instance.Deserialize(null);
-        QuestManager.Instance.Deserialize(null);
+        void ProcessSceneLoad(Scene scene, LoadSceneMode mode)
+        {
+            DataManager.Instance.Deserialize(null);
+            EnvironmentManager.Instance.Deserialize(null);
+            QuestManager.Instance.Deserialize(null);
+            SceneManager.sceneLoaded -= ProcessSceneLoad;
+        }
+        SceneManager.sceneLoaded += ProcessSceneLoad;
+        SceneManager.LoadSceneAsync("GameScene");
     }
 
     public void Load(int saveIndex)
@@ -81,9 +99,15 @@ public class SavesManager : MonoBehaviour
             return;
         }
         saveHeaders[saveIndex] = new SaveHeader(dataManager); // regenerate header just in case
-        DataManager.Instance.Deserialize(dataManager);
-        EnvironmentManager.Instance.Deserialize(environmentManager);
-        QuestManager.Instance.Deserialize(questManager);
+        void ProcessSceneLoad(Scene scene, LoadSceneMode mode)
+        {
+            DataManager.Instance.Deserialize(dataManager);
+            EnvironmentManager.Instance.Deserialize(environmentManager);
+            QuestManager.Instance.Deserialize(questManager);
+            SceneManager.sceneLoaded -= ProcessSceneLoad;
+        }
+        SceneManager.sceneLoaded += ProcessSceneLoad;
+        SceneManager.LoadSceneAsync("GameScene");
     }
 
     private DataManagerSerializedData SaveDataManager(string savePath)

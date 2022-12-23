@@ -298,7 +298,7 @@ public class MenuUIManager : MonoBehaviour
     
     public void StartNewGame()
     {
-        SceneManager.LoadSceneAsync("GameScene");
+        SavesManager.Instance.LoadNewGame();
     }
 
     public void ShowSaveGameScreen()

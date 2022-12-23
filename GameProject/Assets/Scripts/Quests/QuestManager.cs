@@ -61,12 +61,15 @@ public class QuestManager : MonoBehaviour
         if (!availableQuests.Contains(id))
         {
             availableQuests.Add(id);
+            quest.gameObject.SetActive(true);
             void StartQuest()
             {
                 quest.onStart -= StartQuest;
+                Debug.Log("invoke start quest");
                 onQuestStart?.Invoke(quest);
             }
             quest.onStart += StartQuest;
+            quest.onStart += () => { Debug.Log("NNNNNNNNNN"); };
             void CompleteQuest()
             {
                 completedQuests.Add(id);
@@ -87,7 +90,6 @@ public class QuestManager : MonoBehaviour
                 }
             }
             quest.onComplete += CompleteQuest;
-            quest.gameObject.SetActive(true);
         }
     }
     
