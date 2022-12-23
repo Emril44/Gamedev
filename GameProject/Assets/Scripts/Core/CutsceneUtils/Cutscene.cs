@@ -4,6 +4,7 @@ using UnityEngine;
 // Container class for a list of sequenced events that happen without player's control (except for choices in dialogues)
 public class Cutscene : MonoBehaviour
 {
+    [SerializeField] private bool skipAhead; // in development purposes only
     [SerializeField] private MobileCharacter[] NPCParticipants;
     [SerializeField] private CutsceneEvent[] events;
 
@@ -18,22 +19,33 @@ public class Cutscene : MonoBehaviour
     }
     public IEnumerator Play()
     {
-        EnvironmentManager.Instance.NotifyCutscenePlaying(true);
-        bool oldControllable = PlayerInteraction.Instance.Controllable;
-        PlayerInteraction.Instance.Controllable = false;
-        foreach (MobileCharacter character in NPCParticipants)
+        if (skipAhead)
         {
-            character.SetMobile(true);
+            foreach (CutsceneEvent cutsceneEvent in events)
+            {
+                cutsceneEvent.Skip();
+            }
+            yield return null;
         }
-        foreach (CutsceneEvent cutsceneEvent in events)
+        else
         {
-            yield return cutsceneEvent.Run();
+            EnvironmentManager.Instance.NotifyCutscenePlaying(true);
+            bool oldControllable = PlayerInteraction.Instance.Controllable;
+            PlayerInteraction.Instance.Controllable = false;
+            foreach (MobileCharacter character in NPCParticipants)
+            {
+                character.SetMobile(true);
+            }
+            foreach (CutsceneEvent cutsceneEvent in events)
+            {
+                yield return cutsceneEvent.Run();
+            }
+            foreach (MobileCharacter character in NPCParticipants)
+            {
+                character.SetMobile(false);
+            }
+            PlayerInteraction.Instance.Controllable = oldControllable;
+            EnvironmentManager.Instance.NotifyCutscenePlaying(false);
         }
-        foreach (MobileCharacter character in NPCParticipants)
-        {
-            character.SetMobile(false);
-        }
-        PlayerInteraction.Instance.Controllable = oldControllable;
-        EnvironmentManager.Instance.NotifyCutscenePlaying(false);
     }
 }

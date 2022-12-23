@@ -26,7 +26,7 @@ public class DialogueTrigger : MonoBehaviour
             Dialogue dialogue = batch.dialogueList[dialogueIndex];
             DialogueManager.Instance.GetTriggered(dialogue);
             dialogueIndex++;
-            if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged"; // remove trigger if there are no dialogues and no fallback dialogue left
+            if (dialogueIndex >= batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged"; // remove trigger if there are no dialogues and no fallback dialogue left
             return dialogue;
         }
         else
@@ -47,7 +47,7 @@ public class DialogueTrigger : MonoBehaviour
         batchIndex = index;
         batch = batches[index];
         dialogueIndex = 0;
-        if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        if (dialogueIndex >= batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
         else gameObject.tag = "DialogueTrigger";
     }
 
@@ -65,7 +65,7 @@ public class DialogueTrigger : MonoBehaviour
     public void SetDialogueIndex(int index)
     {
         batchIndex = index;
-        if (dialogueIndex > batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        if (dialogueIndex >= batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
         else gameObject.tag = "DialogueTrigger";
     }
 

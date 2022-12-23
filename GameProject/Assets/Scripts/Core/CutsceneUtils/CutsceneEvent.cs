@@ -77,6 +77,28 @@ public class CutsceneEvent
         }
     }
 
+    public void Skip()
+    {
+        switch (Type)
+        {
+            case EventType.Dialogue:
+                dialogue.Finish();
+                break;
+            case EventType.CharacterMove:
+                character.transform.position = targetLocation.position;
+                break;
+            case EventType.SetActivity:
+                foreach (GameObject t in targets) t.SetActive(setTargetToActive);
+                break;
+            case EventType.SetPosition:
+                target.transform.position = targetLocation.position;
+                break;
+            case EventType.UnlockColor:
+                DataManager.Instance.UnlockColor();
+                break;
+        }
+    }
+
     private IEnumerator RunDialogue(Dialogue dialogue)
     {
         bool dialogueEnded = false;
