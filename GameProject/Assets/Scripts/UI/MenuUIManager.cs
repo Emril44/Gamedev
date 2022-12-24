@@ -366,7 +366,7 @@ public class MenuUIManager : MonoBehaviour
             {
                 var card = Instantiate(newSave, s.transform);
                 card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338 * (j) + 415);
-                card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log($"Save {n}"); SavesManager.Instance.Save(n); RemoveBlock(); });
+                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Save(n); RemoveBlock(); });
             }
         }
         ShowBlock();
