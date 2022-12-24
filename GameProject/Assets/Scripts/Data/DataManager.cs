@@ -3,9 +3,12 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public event Action onSparkCollect;
+    public event Action onSparksUpdate;
     public int sparksAmount { get; private set; }
     public int unlockedColors { get; private set; }
+    public int day;
+    private int timePlayed;
+    private float startTime;
     public static DataManager Instance { get; private set; }
     private void Awake()
     {
@@ -17,28 +20,30 @@ public class DataManager : MonoBehaviour
         {
             Instance = this;
         }
-    }
-
-    public void Load()
-    {
         sparksAmount = 0;
         unlockedColors = 0;
+        startTime = Time.time;
     }
 
-    public void Save()
+    public DataManagerSerializedData Serialize()
     {
+        return new DataManagerSerializedData(sparksAmount, unlockedColors, timePlayed + (int)(Time.time - startTime), day);
+    }
 
+    public void Deserialize(DataManagerSerializedData data)
+    {
+        if (data == null) return;
+        sparksAmount = data.sparksAmount;
+        unlockedColors = data.unlockedColors;
+        day = data.day;
+        timePlayed = data.timePlayed;
+        onSparksUpdate?.Invoke();
     }
 
     public void AddSpark()
     {
         sparksAmount++;
-        onSparkCollect?.Invoke();
-    }
-
-    public void Die()
-    {
-        //TODO: death screen
+        onSparksUpdate?.Invoke();
     }
 
     public void UnlockColor()

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
+  m_Name: Cutscene2.6.1.1
+  m_EditorClassIdentifier: 
+  separator: 0
+  character: 2
+  text:
+  - "I found it. Their hidden den.+\u042F \u0437\u043D\u0430\u0439\u0448\u043E\u0432
+    \u0439\u043E\u0433\u043E. \u0407\u0445 \u043F\u0440\u0438\u0445\u043E\u0432\u0430\u043D\u0435
+    \u043B\u0456\u0433\u0432\u043E."
+  next: {fileID: 11400000, guid: a05b25d8b742d654fb5030dc89e3876f, type: 2}

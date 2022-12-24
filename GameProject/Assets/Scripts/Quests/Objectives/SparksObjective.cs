@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Objective whose completion is triggered when a certain threshold of sparks is reached
-// Objective's message is modified to include " (m/n)" after the defined message, where m is current spark count and n is target
+// Objective's localized message is modified to include " (m/n)" after the defined message, where m is current spark count and n is target
 [CreateAssetMenu(fileName = "New Sparks Objective", menuName = "Sparks Objective")]
 public class SparksObjective : Objective
 {
@@ -16,25 +16,26 @@ public class SparksObjective : Objective
                 Complete();
                 return;
             }
-            DataManager.Instance.onSparkCollect += CheckForCompletion;
+            DataManager.Instance.onSparksUpdate += CheckForCompletion;
         }
         else
         {
-            DataManager.Instance.onSparkCollect -= CheckForCompletion;
+            DataManager.Instance.onSparksUpdate -= CheckForCompletion;
         }
     }
 
     private void CheckForCompletion()
     {
+        Update();
         if (DataManager.Instance.sparksAmount >= targetCount)
         {
             Complete();
         }
     }
 
-    public override string GetMessage()
+    public override string LocalizedMessage()
     {
-        return message + " (" + DataManager.Instance.sparksAmount + "/" + targetCount + ")";
+        return base.LocalizedMessage() + " (" + DataManager.Instance.sparksAmount + "/" + targetCount + ")";
     }
 
 }

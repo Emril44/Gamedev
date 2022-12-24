@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,29 +6,56 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D))]
 public class PlayerInteraction : MonoBehaviour
 {
-    public bool Controllable = true;
+    public Action onHealthUpdate, onDeath, onFireproofEnd;
+    public Action<float> onFireproofApply, onFireproofUpdate;
+    public Action<bool> onCanSaveUpdate;
+    public bool Controllable
+    {
+        get { return PlayerMovement.Instance.Controllable; }
+        set 
+        {
+            PlayerMovement.Instance.Controllable = value; 
+        }
+    }
     [SerializeField] private Collider2D bodyCollider;
     private bool isGrabbing = false;
     private bool nearLever = false;
+    private bool nearPrism = false;
     private bool nearDialogue = false;
     private bool nearMovable = false;
     private bool nearWaypoint = false;
+    private GameObject prismGO;
     private GameObject leverGO;
     private GameObject dialogueGO;
     private GameObject movableGO;
     private Transform oldParent;
     private GameObject grabbedObject;
-    [SerializeField] private int health = 3;
+    [field: SerializeField] public int health { get; private set; } = 3;
     [SerializeField] private float undamageableTime = 0.65f;
+    [SerializeField] private OverlapHandler overlap;
     private float fireproofTime = 0f; // time left of being fireproof
     private bool damageable = true;
-    [SerializeField] private Vector2 spawnLocation;
+    private bool alive = true;
+    private Vector2 spawnLocation;
     private PlayerMovement movement;
+    private bool canSave = false;
+    public bool CanSave 
+    {
+        get { return canSave; }
+        private set
+        {
+            canSave = value;
+            onCanSaveUpdate?.Invoke(value);
+        }
+    }
 
     private Rigidbody2D rb;
     private Animator animator;
     private const string DAMAGE_NAME = "Player_Damage";
     private const string DEATH_NAME = "Player_Death";
+
+    public Transform waterSplash;
+    public Transform lavaSplash;
 
     public static PlayerInteraction Instance { get; private set; }
     private void Awake()
@@ -40,12 +68,26 @@ public class PlayerInteraction : MonoBehaviour
         {
             Instance = this;
         }
-        Controllable = true;
         animator = GetComponent<Animator>();
+        waterSplash.GetComponent<ParticleSystem>().Pause();
+        lavaSplash.GetComponent<ParticleSystem>().Pause();
         rb = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
-        transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // spawn at spawn location
-        Debug.Log("spawn");
+        spawnLocation = transform.position;
+    }
+
+    IEnumerator Start()
+    {
+        yield return SkinManager.Instance.LoadOnlyChosenSkin();
+        Skin skin = SkinManager.Instance.GetChosenSkinReference().Asset as Skin;
+        if (skin == null)
+        {
+            Debug.LogWarning("Unable to load skin, proceeding with no skin");
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().sprite = skin.Sprite;
+        }
     }
 
     void PutPrism(PrismShard prismShard)
@@ -55,22 +97,32 @@ public class PlayerInteraction : MonoBehaviour
 
     void AddSpark(GameObject spark)
     {
-        DataManager.Instance.AddSpark();
-        Destroy(spark);
+        Spark sp = spark.GetComponent<Spark>();
+        if (!sp.Exhausted)
+        {
+            DataManager.Instance.AddSpark();
+            spark.SetActive(false);
+            sp.Exhausted = true;
+        }
     }
     
-    private void GetDamaged()
+    private void GetDamaged(string source)
     {
-        if (damageable)
+        if (alive)
         {
-            damageable = false;
-            health--;
-            animator.Play(DAMAGE_NAME);
-            StartCoroutine(Undamageable());
-        }
-        if(health <= 0)
-        {
-            StartCoroutine(Die());
+            if (damageable)
+            {
+                damageable = false;
+                health--;
+                onHealthUpdate?.Invoke();
+                animator.Play(DAMAGE_NAME);
+                StartCoroutine(Undamageable());
+            }
+            if (health <= 0)
+            {
+                StartCoroutine(Die(source));
+                StartCoroutine(ScreenFade.Instance.FadeOut(1));
+            }
         }
     }
 
@@ -80,13 +132,19 @@ public class PlayerInteraction : MonoBehaviour
         damageable = true;
     }
 
-    private IEnumerator Die()
+    private IEnumerator Die(string source)
     {
-        rb.bodyType = RigidbodyType2D.Static;
-        animator.Play(DEATH_NAME);
-        yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
-        Destroy(gameObject);
-        DataManager.Instance.Die();
+        if (alive)
+        {
+            alive = false;
+            Controllable = false;
+            rb.bodyType = RigidbodyType2D.Static;
+            animator.Play(DEATH_NAME);
+            AnalyticsManager.Instance.DeathEvent(DataManager.Instance.day,source);
+            yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
+            onDeath?.Invoke();
+            gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -95,7 +153,10 @@ public class PlayerInteraction : MonoBehaviour
         {
             fireproofTime -= Time.deltaTime;
             if (fireproofTime < 0) fireproofTime = 0;
+            onFireproofUpdate?.Invoke(fireproofTime);
+            if (fireproofTime == 0) onFireproofEnd?.Invoke();
         }
+        if (alive && overlap.Overlapping) GetDamaged(overlap.OverlapList[0].gameObject.name);
         if (Controllable)
         {
             if (Input.GetKeyDown(KeyCode.E))
@@ -111,14 +172,35 @@ public class PlayerInteraction : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.F))
             {
-                if (nearLever)
+                if (nearPrism)
+                {
+                    PutPrism(prismGO.gameObject.GetComponent<PrismShard>());
+                }
+                else if (nearLever)
                 {
                     leverGO.GetComponent<Lever>().Toggle();
                 }
                 else if (nearDialogue)
                 {
+                    if (dialogueGO == null)
+                    {
+                        nearDialogue = false;
+                        return;
+                    }
                     DialogueTrigger trigger = dialogueGO.GetComponent<DialogueTrigger>();
+                    if (trigger == null)
+                    {
+                        dialogueGO = null;
+                        nearDialogue = false;
+                        return;
+                    }
                     Dialogue dialogue = trigger.GetCurrentDialogue();
+                    if (dialogue == null)
+                    {
+                        dialogueGO = null;
+                        nearDialogue = false;
+                        return;
+                    }
                     Controllable = false;
                     movement.Controllable = false;
                     void reenable()
@@ -126,7 +208,7 @@ public class PlayerInteraction : MonoBehaviour
                         Controllable = true;
                         movement.Controllable = true;
                         dialogue.onDialogueEnd -= reenable;
-                        if (trigger.tag != "DialogueTrigger") // for the rare case when further dialogue is impossible, i.e. finishing last main sequence and having no fallback dialogue
+                        if (!trigger.CompareTag("DialogueTrigger")) // for the rare case when further dialogue is impossible, i.e. finishing last main sequence and having no fallback dialogue
                         {
                             nearDialogue = false;
                             dialogueGO = null;
@@ -145,7 +227,7 @@ public class PlayerInteraction : MonoBehaviour
                 {
                     nearWaypoint = false;
                     movement.ResetParent();
-                    transform.localPosition = new Vector3(spawnLocation.x, spawnLocation.y, 0); // teleport to spawn (i.e. to Monochrome)
+                    transform.position = new Vector3(spawnLocation.x, spawnLocation.y, 0); // teleport to spawn (i.e. to Monochrome)
                     EnvironmentManager.Instance.SetNewColor(PrismColor.Neutral); // reset color to avoid cheesing
                 }
             }
@@ -162,6 +244,7 @@ public class PlayerInteraction : MonoBehaviour
             }
         }
     }
+
 
     public void Drop()
     {
@@ -213,20 +296,25 @@ public class PlayerInteraction : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Prism":
-                PutPrism(other.gameObject.GetComponent<PrismShard>());
+                nearPrism = true;
+                prismGO = other.gameObject;
                 break;
             case "Spark":
                 AddSpark(other.gameObject);
                 break;
             case "Water":
-                StopAllCoroutines();
-                damageable = true;
-                StartCoroutine(SetInWater(true));
+                StopCoroutine(nameof(SetInWater));
+                ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
+                waterSploosh.name = "WaterSplashParticles";
+                waterSploosh.Play();
+                StartCoroutine(nameof(SetInWater), true);
                 break;
             case "Lava":
-                StopAllCoroutines();
-                damageable = true;
-                StartCoroutine(SetInLava(true));
+                StopCoroutine(nameof(SetInLava));
+                ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
+                lavaSploosh.name = "LavaSplashParticles";
+                lavaSploosh.Play();
+                StartCoroutine(nameof(SetInLava), true);
                 break;
             case "Lever":
                 nearLever = true;
@@ -242,12 +330,19 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             case "Waypoint":
                 nearWaypoint = true;
+                if (alive && health < 2)
+                {
+                    health = 2;
+                    onHealthUpdate?.Invoke();
+                }
                 break;
             case "SparkDoor":
                 other.gameObject.GetComponent<SparkDoor>().Open();
                 break;
-            case "DeadlyDamage":
-                StartCoroutine(Die());
+            case "SaveZone":
+                CanSave = true;
+                health = 3;
+                onHealthUpdate?.Invoke();
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
@@ -260,10 +355,10 @@ public class PlayerInteraction : MonoBehaviour
         switch (other.gameObject.tag)
         {
             case "Lava":
-                if (!IsFireproof()) GetDamaged();
+                if (!IsFireproof()) GetDamaged(other.gameObject.name);
                 break;
             case "Damage":
-                GetDamaged();
+                GetDamaged(other.gameObject.name);
                 break;
         }
     }
@@ -272,13 +367,23 @@ public class PlayerInteraction : MonoBehaviour
     {
         switch (other.gameObject.tag)
         {
+            case "Prism":
+                nearPrism = false;
+                prismGO = null;
+                break;
             case "Water":
-                StopAllCoroutines();
-                StartCoroutine(SetInWater(false));
+                StopCoroutine(nameof(SetInWater));
+                ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
+                waterSploosh.name = "WaterSplashParticles";
+                waterSploosh.Play();
+                StartCoroutine(nameof(SetInWater), false);
                 break;
             case "Lava":
-                StopAllCoroutines();
-                StartCoroutine(SetInLava(false));
+                StopCoroutine(nameof(SetInLava));
+                ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
+                lavaSploosh.name = "LavaSplashParticles";
+                lavaSploosh.Play();
+                StartCoroutine(nameof(SetInLava), false);
                 break;
             case "Lever":
                 nearLever = false;
@@ -295,12 +400,16 @@ public class PlayerInteraction : MonoBehaviour
             case "Waypoint":
                 nearWaypoint = false;
                 break;
+            case "SaveZone":
+                CanSave = false;
+                break;
         }
     }
 
     public void ApplyFireproof(float seconds)
     {
         fireproofTime = seconds;
+        onFireproofApply?.Invoke(fireproofTime);
     }
 
     public bool IsFireproof()
@@ -317,6 +426,6 @@ public class PlayerInteraction : MonoBehaviour
     IEnumerator SetInLava(bool isInLava)
     {
         yield return new WaitForSeconds(0.1f);
-        movement.SetInWater(isInLava);
+        movement.SetInLava(isInLava);
     }
 }

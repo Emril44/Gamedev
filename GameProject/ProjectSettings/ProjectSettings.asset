@@ -749,11 +749,11 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 
+  cloudProjectId: 357eeb65-718c-43d1-8667-d2b350175953
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: Prismatic
+  organizationId: gamedev-prismatic
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   playerDataPath: 

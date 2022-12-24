@@ -1,8 +1,14 @@
+using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SavesManager : MonoBehaviour
 {
+    [SerializeField] private bool forceLoadNewGame;
     public static SavesManager Instance { get; private set; }
+    private SaveHeader[] saveHeaders = new SaveHeader[4]; // lightweight UI-targeted containers with core information about saves
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -12,57 +18,200 @@ public class SavesManager : MonoBehaviour
         else
         {
             Instance = this;
+            DontDestroyOnLoad(this);
         }
+        for (int i = 0; i < saveHeaders.Length; i++)
+        {
+            string savePath = Application.persistentDataPath + "/Saves/" + (i == 0 ? "Autosave" : "Save " + i);
+            DataManagerSerializedData data = LoadDataManager(savePath);
+            saveHeaders[i] = data == null ? null : new SaveHeader(data);
+        }
+    }
+
+    private void Start()
+    {
+        if (forceLoadNewGame)
+        {
+            DataManager.Instance.Deserialize(null);
+            EnvironmentManager.Instance.Deserialize(null);
+            QuestManager.Instance.Deserialize(null);
+        }
+    }
+
+    public bool HasSave(int index)
+    {
+        return saveHeaders[index] != null;
     }
 
     public bool HasSaves()
     {
-        if (Autosave() != null)
+        for (int i = 0; i < saveHeaders.Length; i++)
         {
-            return true;
-        }
-        foreach(var save in Saves())
-        {
-            if (save != null)
-            {
-                return true;
-            }
+            if (HasSave(i)) return true;
         }
         return false;
     }
     
-    public Save Autosave()
+    public void Autosave()
     {
-        return new Save(17252, 34, 247);
+        Save(0);
+    }
+
+    public void Save(int saveIndex)
+    {
+        //if (SceneManager.GetActiveScene().name != "GameScene") throw new InvalidOperationException("Trying to save game progress not in game scene");
+        string savePath = Application.persistentDataPath + "/Saves/" + (saveIndex == 0 ? "Autosave" : "Save " + saveIndex);
+        if (!HasSave(saveIndex)) Directory.CreateDirectory(savePath);
+        saveHeaders[saveIndex] = new SaveHeader(SaveDataManager(savePath)); // simultenously write into file and update the header
+        SaveEnvironmentManager(savePath);
+        SaveQuestManager(savePath);
     }
     
-    public Save[] Saves()
+    public void LoadNewGame()
     {
-        return new Save[] { null, null, new Save(1722, 4, 27) };
+        void ProcessSceneLoad(Scene scene, LoadSceneMode mode)
+        {
+            DataManager.Instance.Deserialize(null);
+            EnvironmentManager.Instance.Deserialize(null);
+            QuestManager.Instance.Deserialize(null);
+            Time.timeScale = 1;
+            SceneManager.sceneLoaded -= ProcessSceneLoad;
+        }
+        SceneManager.sceneLoaded += ProcessSceneLoad;
+        SceneManager.LoadSceneAsync("GameScene");
     }
 
-    public void NewGame(int i)
+    public void Load(int saveIndex)
     {
-        Debug.Log("New game on slot #" + i);
+        //if (SceneManager.GetActiveScene().name != "GameScene") throw new InvalidOperationException("Trying to load game progress not in game scene");
+        string savePath = Application.persistentDataPath + "/Saves/" + (saveIndex == 0 ? "Autosave" : "Save " + saveIndex);
+        if (!HasSave(saveIndex))
+        {
+            Debug.Log("Unable to load save " + saveIndex + ", save will not be loaded");
+            return;
+        }
+        DataManagerSerializedData dataManager = LoadDataManager(savePath);
+        EnvironmentManagerSerializedData environmentManager = LoadEnvironmentManager(savePath);
+        QuestManagerSerializedData questManager = LoadQuestManager(savePath);
+        if (dataManager == null || environmentManager == null || questManager == null)
+        {
+            Debug.Log("Corrupted save " + saveIndex + ", save will not be loaded");
+            Directory.Delete(savePath);
+            return;
+        }
+        saveHeaders[saveIndex] = new SaveHeader(dataManager); // regenerate header just in case
+        void ProcessSceneLoad(Scene scene, LoadSceneMode mode)
+        {
+            DataManager.Instance.Deserialize(dataManager);
+            EnvironmentManager.Instance.Deserialize(environmentManager);
+            QuestManager.Instance.Deserialize(questManager);
+            Time.timeScale = 1;
+            SceneManager.sceneLoaded -= ProcessSceneLoad;
+        }
+        SceneManager.sceneLoaded += ProcessSceneLoad;
+        SceneManager.LoadSceneAsync("GameScene");
     }
 
-    public void RemoveSave(int i)
+    private DataManagerSerializedData SaveDataManager(string savePath)
     {
-        Debug.Log("Removing save #" + i);
+        DataManagerSerializedData data = DataManager.Instance.Serialize();
+        string path = savePath + "/_1.prism";
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(path, FileMode.Create);
+        formatter.Serialize(stream, data);
+        stream.Close();
+        return data;
     }
 
-    public void Load(int i)
+    private EnvironmentManagerSerializedData SaveEnvironmentManager(string savePath)
     {
-        Debug.Log("Loading save #" + i);
+        EnvironmentManagerSerializedData data = EnvironmentManager.Instance.Serialize();
+        string path = savePath + "/_2.prism";
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(path, FileMode.Create);
+        formatter.Serialize(stream, data);
+        stream.Close();
+        return data;
     }
 
-    public void Save()
+    private QuestManagerSerializedData SaveQuestManager(string savePath)
     {
-        // ...
+        QuestManagerSerializedData data = QuestManager.Instance.Serialize();
+        string path = savePath + "/_3.prism";
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream stream = new FileStream(path, FileMode.Create);
+        formatter.Serialize(stream, data);
+        stream.Close();
+        return data;
     }
 
-    public void Die()
+    private DataManagerSerializedData LoadDataManager(string savePath)
     {
-        //
+        string path = savePath + "/_1.prism";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            DataManagerSerializedData data = formatter.Deserialize(stream) as DataManagerSerializedData;
+            stream.Close();
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    private EnvironmentManagerSerializedData LoadEnvironmentManager(string savePath)
+    {
+        string path = savePath + "/_2.prism";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            EnvironmentManagerSerializedData data = formatter.Deserialize(stream) as EnvironmentManagerSerializedData;
+            stream.Close();
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private QuestManagerSerializedData LoadQuestManager(string savePath)
+    {
+        string path = savePath + "/_3.prism";
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+            QuestManagerSerializedData data = formatter.Deserialize(stream) as QuestManagerSerializedData;
+            stream.Close();
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public SaveHeader[] SaveHeaders()
+    {
+        SaveHeader[] saveHeaders = new SaveHeader[4];
+        this.saveHeaders.CopyTo(saveHeaders, 0);
+        return saveHeaders;
+    }
+
+    public void RemoveSave(int saveIndex)
+    {
+        string savePath = Application.persistentDataPath + "/Saves/" + (saveIndex == 0 ? "Autosave" : "Save " + saveIndex);
+        for (int i = 1; i <= 3; i++)
+        {
+            string path = savePath + "/_" + i + ".prism";
+            if (File.Exists(path)) File.Delete(path);
+        }
+        Directory.Delete(savePath);
+        saveHeaders[saveIndex] = null;
     }
 }

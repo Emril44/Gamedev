@@ -1,42 +1,93 @@
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [SerializeField] private List<Dialogue> dialogueList; // main sequence of one-time dialogues. each interaction with the trigger starts the first dialogue and removes it from the list
-    [SerializeField] private Dialogue fallbackDialogue; // one dialogue that will keep repeating after the main sequence was finished
+    [SerializeField] private List<DialogueBatch> batches = new List<DialogueBatch>(); // predefined dialogue states, indexed by this list (used in saves)
+    private Dictionary<DialogueBatch, int> batchesToIds = new Dictionary<DialogueBatch, int>();
+    private int batchIndex;
+    private DialogueBatch batch;
+    private int dialogueIndex;
 
     public void Awake()
     {
-        if (dialogueList.Count == 0 && fallbackDialogue == null) gameObject.tag = "Untagged";
+        batchIndex = 0;
+        batch = batches[batchIndex];
+        dialogueIndex = 0;
+        if (dialogueIndex >= batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        for (int i = 0; i < batches.Count; i++) batchesToIds.Add(batches[i], i);
     }
 
-    public void TriggerDialogue()
+    public Dialogue TriggerDialogue()
     {
-        if (dialogueList.Count > 0)
+        if (dialogueIndex < batch.dialogueList.Count)
         {
-            DialogueManager.Instance.GetTriggered(dialogueList.First());
-            dialogueList.RemoveAt(0);
-            if (dialogueList.Count == 0 && fallbackDialogue == null) gameObject.tag = "Untagged"; // remove DialogueTrigger tag from the base object if the trigger has no dialogues
+            Dialogue dialogue = batch.dialogueList[dialogueIndex];
+            DialogueManager.Instance.GetTriggered(dialogue);
+            dialogueIndex++;
+            if (dialogueIndex >= batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged"; // remove trigger if there are no dialogues and no fallback dialogue left
+            return dialogue;
         }
         else
         {
-            DialogueManager.Instance.GetTriggered(fallbackDialogue);
+            Dialogue dialogue = batch.fallbackDialogue;
+            DialogueManager.Instance.GetTriggered(dialogue);
+            return dialogue;
         }
     }
 
-    public void SetDialogueData(List<Dialogue> dialogueList, Dialogue fallbackDialogue)
+    public int GetBatchIndex()
     {
-        this.dialogueList = dialogueList;
-        this.fallbackDialogue = fallbackDialogue;
-        if (dialogueList.Count > 0 || fallbackDialogue != null) gameObject.tag = "DialogueTrigger";
-        else gameObject.tag = "Untagged";
+        return batchIndex;
+    }
+
+    public void SetBatchIndex(int index)
+    {
+        batchIndex = index;
+        batch = batches[index];
+        dialogueIndex = 0;
+        if (dialogueIndex >= batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        else gameObject.tag = "DialogueTrigger";
+    }
+
+    public void SetBatch(DialogueBatch batch)
+    {
+        if (!batchesToIds.ContainsKey(batch)) throw new ArgumentException("Unknown dialogue batch");
+        SetBatchIndex(batchesToIds[batch]);
+    }
+
+    public int GetDialogueIndex()
+    {
+        return dialogueIndex;
+    }
+
+    public void SetDialogueIndex(int index)
+    {
+        batchIndex = index;
+        if (dialogueIndex >= batch.dialogueList.Count && batch.fallbackDialogue == null) gameObject.tag = "Untagged";
+        else gameObject.tag = "DialogueTrigger";
     }
 
     public Dialogue GetCurrentDialogue()
     {
-        if (dialogueList.Count > 0) return dialogueList.First();
-        return fallbackDialogue;
+        if (dialogueIndex < batch.dialogueList.Count) return batch.dialogueList[dialogueIndex];
+        return batch.fallbackDialogue;
+    }
+
+    public DialogueBatch GetBatchAtIndex(int i)
+    {
+        return batches[i];
+    }
+
+    public DialogueTriggerSerializedData Serialize()
+    {
+        return new DialogueTriggerSerializedData(batchIndex, dialogueIndex);
+    }
+
+    public void Deserialize(DialogueTriggerSerializedData data)
+    {
+        SetBatchIndex(data.dialogueBatchIndex);
+        SetDialogueIndex(data.dialogueIndex);
     }
 }

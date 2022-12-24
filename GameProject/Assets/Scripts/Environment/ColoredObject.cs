@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.U2D;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class ColoredObject : MonoBehaviour
@@ -6,6 +7,8 @@ public class ColoredObject : MonoBehaviour
     [SerializeField] private PrismColor color;
     private bool isDynamic = false;
     private Rigidbody2D rb;
+    private Color actualColor;
+    private static Color locked = new(0.1132075f, 0.1132075f, 0.1132075f, 1);
 
     private void Awake()
     {
@@ -14,6 +17,13 @@ public class ColoredObject : MonoBehaviour
         {
             isDynamic = true;
         }
+        actualColor = GetComponent<SpriteShapeRenderer>().color;
+    }
+
+    public void SetColored(bool colored)
+    {
+        if (colored) GetComponent<SpriteShapeRenderer>().color = actualColor;
+        else GetComponent<SpriteShapeRenderer>().color = locked;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

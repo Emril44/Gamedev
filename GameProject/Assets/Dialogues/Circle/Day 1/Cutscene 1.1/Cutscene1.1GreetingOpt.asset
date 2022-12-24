@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8ce10a27bc5ad44bf61bab27a59fd5, type: 3}
+  m_Name: Cutscene1.1GreetingOpt
+  m_EditorClassIdentifier: 
+  separator: 0
+  options:
+  - option: "Who are you?+\u0422\u0438 \u0445\u0442\u043E?"
+    optionBranch: {fileID: 11400000, guid: dd107a890e8193b44a380c18a43d9363, type: 2}
+  - option: "How did you get here?+\u042F\u043A \u0442\u0438 \u0442\u0443\u0442 \u043E\u043F\u0438\u043D\u0438\u043B\u0430\u0441\u044F?"
+    optionBranch: {fileID: 11400000, guid: 71e7f41a048970946bc214aa6c798621, type: 2}
+  - option: "Well, why not.+\u0410 \u0447\u043E\u043C \u0431\u0438 \u0439 \u043D\u0456."
+    optionBranch: {fileID: 11400000, guid: b0d241a2c0a3743448ee6ef3ff7649e9, type: 2}

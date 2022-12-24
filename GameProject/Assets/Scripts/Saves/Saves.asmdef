@@ -1,3 +1,18 @@
 {
-	"name": "Saves"
+    "name": "Saves",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a4c1b5c4cfb984d4eba5caafab178c53",
+        "GUID:fe7071b4d6f12f5429474d1cd7e499e7",
+        "GUID:203f7eeb196dda74185f3e6fe717b153"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

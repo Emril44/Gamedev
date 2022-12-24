@@ -8,6 +8,7 @@ public class MovableObject : MonoBehaviour
     [NonSerialized] public bool Grabbed;
     [SerializeField] private float resetDelay;
     [SerializeField] private bool grabbable;
+    [SerializeField] private OverlapHandler overlap;
     private Transform baseParent;
     private Vector3 defPosition; // position by default
     private Vector3 defScale; // scale by default
@@ -16,6 +17,7 @@ public class MovableObject : MonoBehaviour
 
     private void Awake()
     {
+        
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Static;
         baseParent = transform.parent;
@@ -44,17 +46,23 @@ public class MovableObject : MonoBehaviour
     {
         if (timeFromMoveStart >= 0 && !Grabbed)
         {
+            
             timeFromMoveStart += Time.deltaTime;
-            if (timeFromMoveStart >= resetDelay)
-            {
-                transform.position = defPosition;
-                transform.localScale = defScale;
-                transform.rotation = defRotation;
-                timeFromMoveStart = -1;
-                gameObject.tag = "Movable";
-                rb.bodyType = RigidbodyType2D.Static;
-            }
+            if (overlap.Overlapping || timeFromMoveStart >= resetDelay) Reset();
         }
+    }
+
+    private void Reset()
+    {
+        StartCoroutine(ScreenFade.Instance.FadeOut(5));
+        transform.position = defPosition;
+        transform.localScale = defScale;
+        transform.rotation = defRotation;
+        timeFromMoveStart = -1;
+        gameObject.tag = "Movable";
+        rb.bodyType = RigidbodyType2D.Static;
+        // play sound
+        StartCoroutine(ScreenFade.Instance.FadeIn(5));
     }
 
     public void StartMove()
@@ -69,7 +77,7 @@ public class MovableObject : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Moving"))
         {
-            transform.parent = collision.transform;
+            transform.SetParent(collision.transform, true);
         }
     }
 
@@ -77,7 +85,7 @@ public class MovableObject : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Moving"))
         {
-            transform.parent = baseParent;
+            transform.SetParent(baseParent, true);
         }
     }
 }

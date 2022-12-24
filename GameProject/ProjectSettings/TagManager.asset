@@ -7,7 +7,6 @@ TagManager:
   - Prism
   - Spark
   - Door
-  - DeadlyDamage
   - Grabbable
   - Water
   - Lever
@@ -18,15 +17,16 @@ TagManager:
   - Damage
   - Waypoint
   - Moving
+  - SaveZone
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Ground
-  - 
+  - NPC
   - 
   - 
   - 

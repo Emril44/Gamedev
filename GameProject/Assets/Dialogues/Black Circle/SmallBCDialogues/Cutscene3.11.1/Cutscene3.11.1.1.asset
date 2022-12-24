@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
+  m_Name: Cutscene3.11.1.1
+  m_EditorClassIdentifier: 
+  separator: 0
+  character: 4
+  text:
+  - There's nothing to look here.
+  - Just the most unlucky black circle in these mines doing its job.
+  - Firstly, I never even wanted to work here! My parents chose this place for me..
+  - 'Secondly, that weird stranger was stealing my sparks all morning, and now there''s
+    another one? '
+  - "And a rectangle! I hate rectangles!\r"
+  - "Just leave me alone in my misery.\r"
+  next: {fileID: 0}

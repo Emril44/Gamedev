@@ -1,16 +1,34 @@
+using System;
+
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    public bool Controllable;
+    private bool controllable;
+    public bool Controllable
+    { 
+        get
+        {
+            return controllable;
+        }
+        set
+        {
+            controllable = value;
+            if (!value) rb.velocity = new Vector2(rb.velocity.x / 10, rb.velocity.y);
+        }
+    }
     [SerializeField] private float movementSpeed = 14f;
     [SerializeField] private float jumpVelocity = 14f;
     [SerializeField] private float outOfWaterMultiplier = 1.6f;
     [SerializeField] private float outOfLavaMultiplier = 1.4f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private Collider2D feetCollider;
+    [Range(0f, 0.5f)]
+    [SerializeField] private float coyoteThreshold = 0.1f; // time for which the player can still jump after leaving solid ground
+    private float nonGroundedTime = 1.5f;
+    private bool grounded;
     private Transform baseParent; // default parent when player is not moving synchronously with some other object, e.g. a moving platform
     private Rigidbody2D rb;
     private bool inWater = false;
@@ -21,13 +39,28 @@ public class PlayerMovement : MonoBehaviour
     private Animator animator;
     private const string JUMP_NAME = "Player_Jump";
 
+    public static PlayerMovement Instance { get; private set; }
+
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
         rb = GetComponent<Rigidbody2D>();
         Controllable = true;
         baseParent = transform.parent;
 
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        grounded = IsGrounded();
     }
 
     public void SetInWater(bool inWater)
@@ -58,16 +91,24 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private bool CanJump()
+    private bool IsGrounded()
     {
         var colliders = new List<Collider2D>();
         var filter = new ContactFilter2D
         {
             useTriggers = false,
+            useLayerMask = true,
             layerMask = groundLayer,
         };
         feetCollider.OverlapCollider(filter, colliders);
-        return colliders.Count > 1;
+        return colliders.Count > 0;
+    }
+
+    private void UpdateNonGroundedTime()
+    {
+        if (grounded) nonGroundedTime = 0;
+        else nonGroundedTime += Time.fixedDeltaTime;
+
     }
 
     void FixedUpdate()
@@ -83,11 +124,12 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
+                UpdateNonGroundedTime();
                 float horizontalMove = Input.GetAxis("Horizontal");
                 float verticalMove = rb.velocity.y;
-                if (Input.GetAxis("Jump") > 0 && CanJump() && !animator.GetCurrentAnimatorStateInfo(0).IsName(JUMP_NAME))
+                if (Input.GetAxis("Jump") > 0 && nonGroundedTime <= coyoteThreshold && !animator.GetCurrentAnimatorStateInfo(0).IsName(JUMP_NAME))
                 {
-                    //transform.parent = baseParent;
+                    ResetParent();
                     verticalMove = jumpVelocity;
                     animator.Play(JUMP_NAME);
                 }
@@ -120,14 +162,18 @@ public class PlayerMovement : MonoBehaviour
 
     public void ResetParent()
     {
-        transform.parent = baseParent;
+        transform.SetParent(baseParent, true);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Moving"))
         {
-            transform.parent = collision.transform;
+            transform.SetParent(collision.transform, true);
+        }
+        if ((1 << collision.gameObject.layer & groundLayer.value) != 0)
+        {
+            grounded = IsGrounded(); // update grounded state when entering collision with ground objects
         }
     }
 
@@ -136,6 +182,10 @@ public class PlayerMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("Moving"))
         {
             ResetParent();
+        }
+        if ((1 << collision.gameObject.layer & groundLayer.value) != 0)
+        {
+            grounded = IsGrounded(); // update grounded state when exiting collision with ground objects
         }
     }
 

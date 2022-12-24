@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd8ce10a27bc5ad44bf61bab27a59fd5, type: 3}
+  m_Name: Cutscene3.2O1
+  m_EditorClassIdentifier: 
+  separator: 0
+  options:
+  - option: .....+.....
+    optionBranch: {fileID: 11400000, guid: 1d3876eb620b1fe4e9db16cd4c7f2778, type: 2}
+  - option: .....+.....
+    optionBranch: {fileID: 11400000, guid: 1d3876eb620b1fe4e9db16cd4c7f2778, type: 2}
+  - option: "Really now?+\u0421\u0435\u0440\u0439\u043E\u0437\u043D\u043E?"
+    optionBranch: {fileID: 11400000, guid: bd3c0c38be1e6d642991c6f9f3b0accb, type: 2}

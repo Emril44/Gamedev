@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d812f2b2f889fb74d8482c4c498cc2bb, type: 3}
+  m_Name: BasegameSkinpack
+  m_EditorClassIdentifier: 
+  separator: 43
+  packname: "Base Game+\u0411\u0430\u0437\u043E\u0432\u0430 \u0413\u0440\u0430"
+  <Skins>k__BackingField:
+  - m_AssetGUID: 07dc61a965242c44cb9d5f95cf3dd3bc
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: f92f7b5b337f09546a0884e4669c5529
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 8cf8bbd682b94194bb3783af6e9094ff
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

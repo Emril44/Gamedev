@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdcdd68e1fe504c49b7f5f5ad261652f, type: 3}
+  m_Name: Day2Main2
+  m_EditorClassIdentifier: 
+  separator: 43
+  <Title>k__BackingField: "Seeing crimson+\u0411\u0430\u0447\u0430\u0447\u0438 \u0431\u0430\u0433\u0440\u044F\u043D\u0438\u0439"
+  <Description>k__BackingField: "Black squares stole Circle. They. Will. Pay.+\u0427\u043E\u0440\u043D\u0456
+    \u043A\u0432\u0430\u0434\u0440\u0430\u0442\u0438 \u0432\u0438\u043A\u0440\u0430\u043B\u0438
+    \u041A\u043E\u043B\u043E. \u0412\u043E\u043D\u0438. \u0417\u0430\u043F\u043B\u0430\u0442\u044F\u0442\u044C."
+  <Objectives>k__BackingField:
+  - {fileID: 11400000, guid: f1f41087358df9542be5552a4e8e0f31, type: 2}
+  <RequisiteObjectives>k__BackingField: 1
+  <Prerequisites>k__BackingField: []
+  <NextQuests>k__BackingField: []

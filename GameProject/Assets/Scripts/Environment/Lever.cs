@@ -47,21 +47,21 @@ public abstract class Lever : MonoBehaviour
             time += Time.deltaTime;
             if (isOn)
             {
-                lever.transform.rotation = Quaternion.Lerp(lever.transform.rotation, leverRotation[0], time/50);
+                lever.transform.localRotation = Quaternion.Lerp(lever.transform.localRotation, leverRotation[0], time/50);
             }
             else
             {
-                lever.transform.rotation = Quaternion.Lerp(lever.transform.rotation, leverRotation[1], time/50);
+                lever.transform.localRotation = Quaternion.Lerp(lever.transform.localRotation, leverRotation[1], time/50);
             }
             yield return null;
         }
         if (isOn)
         {
-            lever.transform.rotation = leverRotation[0];
+            lever.transform.localRotation = leverRotation[0];
         }
         else
         {
-            lever.transform.rotation = leverRotation[1];
+            lever.transform.localRotation = leverRotation[1];
         }
     }
 }
