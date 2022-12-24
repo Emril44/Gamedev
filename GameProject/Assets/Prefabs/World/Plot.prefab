@@ -324,7 +324,7 @@ MonoBehaviour:
   notestone: {fileID: 5986864129696779594}
   circle: {fileID: 4154857879650500450}
   notestoneNextBatch: {fileID: 11400000, guid: 5f7a03900940e0e46a0ede56c5d0e4f5, type: 2}
-  circleNextBatch: {fileID: 0}
+  circleNextBatch: {fileID: 11400000, guid: 22d55894de1f70e4e82b1c2db9ad1134, type: 2}
 --- !u!1 &3696811830443291062
 GameObject:
   m_ObjectHideFlags: 0
