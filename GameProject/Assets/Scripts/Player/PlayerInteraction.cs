@@ -182,7 +182,18 @@ public class PlayerInteraction : MonoBehaviour
                 }
                 else if (nearDialogue)
                 {
+                    if (dialogueGO == null)
+                    {
+                        nearDialogue = false;
+                        return;
+                    }
                     DialogueTrigger trigger = dialogueGO.GetComponent<DialogueTrigger>();
+                    if (trigger == null)
+                    {
+                        dialogueGO = null;
+                        nearDialogue = false;
+                        return;
+                    }
                     Dialogue dialogue = trigger.GetCurrentDialogue();
                     Controllable = false;
                     movement.Controllable = false;
