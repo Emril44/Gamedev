@@ -1,28 +1,38 @@
+using System.Collections;
 using UnityEngine;
 
-public class QuestDay1Main1 : Quest
+public class QuestDay2Main1 : Quest
 {
     [SerializeField] private Cutscene[] cutscenes;
     [SerializeField] private NPC notestone;
     [SerializeField] private NPC circle;
+    [SerializeField] private DialogueBatch circleInitBatch;
     [SerializeField] private DialogueBatch notestoneNextBatch;
-    [SerializeField] private DialogueBatch circleNextBatch;
 
     protected override void FirstEnableSequence()
     {
-        StartCoroutine(cutscenes[0].Play());
+        StartCoroutine(Intro());
+    }
+
+    private IEnumerator Intro()
+    {
+        yield return cutscenes[0].Play();
+        yield return cutscenes[1].Play();
     }
 
     protected override void ActOnObjective(int objective)
     {
         switch (objective)
         {
+            case 0:
+                circle.SetDialogueBatch(circleInitBatch);
+                break;
             case 1:
                 notestone.SetDialogueBatch(notestoneNextBatch);
-                circle.SetDialogueBatch(circleNextBatch);
-                StartCoroutine(cutscenes[1].Play());
+                StartCoroutine(cutscenes[2].Play());
                 break;
         }
     }
 
 }
+
