@@ -76,6 +76,12 @@ public class MenuUIManager : MonoBehaviour
         catch { }
     }
 
+    IEnumerator SetSkin()
+    {
+        yield return SkinManager.Instance.LoadOnlyChosenSkin();
+        gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = ((Skin)SkinManager.Instance.GetChosenSkinReference().Asset).Sprite;
+    }
+
     private void Start()
     {
         try
@@ -98,6 +104,7 @@ public class MenuUIManager : MonoBehaviour
         {
             loadButton.interactable = false;
         }
+        StartCoroutine(SetSkin());
     }
 
     private void Update()
@@ -551,6 +558,7 @@ public class MenuUIManager : MonoBehaviour
     {
         V.SetActive(true);
         SkinManager.Instance.SetChosenSkinReference(pack.Skins[i]);
+        gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = ((Skin)pack.Skins[i].Asset).Sprite;
         V.transform.SetParent(button.transform,false);
         V.transform.localPosition = new Vector3(93,-212);
         V.transform.localScale = new Vector3(3,3,3);
