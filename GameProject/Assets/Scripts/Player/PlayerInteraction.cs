@@ -195,6 +195,12 @@ public class PlayerInteraction : MonoBehaviour
                         return;
                     }
                     Dialogue dialogue = trigger.GetCurrentDialogue();
+                    if (dialogue == null)
+                    {
+                        dialogueGO = null;
+                        nearDialogue = false;
+                        return;
+                    }
                     Controllable = false;
                     movement.Controllable = false;
                     void reenable()
