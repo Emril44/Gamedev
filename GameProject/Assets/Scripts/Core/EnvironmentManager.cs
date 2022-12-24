@@ -16,7 +16,6 @@ public class EnvironmentManager : MonoBehaviour
     [Header("NPCs")]
     [SerializeField] private List<NPC> npcs; // objects should have the NPC (or a derived) component
     public PrismColor CurrentColor { get; private set; }
-    static Color Locked = new(0.1132075f, 0.1132075f, 0.1132075f, 1);
 
     public static EnvironmentManager Instance { get; private set; }
     private void Awake()
@@ -99,7 +98,7 @@ public class EnvironmentManager : MonoBehaviour
         }
     }
 
-    void ActivateColoredObjects()
+    public void ActivateColoredObjects()
     {
         coloredObjectsPool = new Queue<ColoredObject>();
         foreach (ColoredObject obj in FindObjectsOfType<ColoredObject>())
@@ -108,11 +107,7 @@ public class EnvironmentManager : MonoBehaviour
             {
                 coloredObjectsPool.Enqueue(obj);
             }
-            else
-            {
-                obj.GetComponent<SpriteShapeRenderer>().color = Locked;
-                //TODO: disable?
-            }
+            obj.SetColored(DataManager.Instance.unlockedColors >= (int)obj.getColor());
         }
     }
 

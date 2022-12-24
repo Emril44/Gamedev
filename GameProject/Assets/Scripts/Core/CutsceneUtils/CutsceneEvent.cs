@@ -60,6 +60,7 @@ public class CutsceneEvent
                 break;
             case EventType.UnlockColor:
                 DataManager.Instance.UnlockColor();
+                EnvironmentManager.Instance.ActivateColoredObjects();
                 yield return null;
                 break;
             case EventType.FadeIn:
@@ -95,6 +96,7 @@ public class CutsceneEvent
                 break;
             case EventType.UnlockColor:
                 DataManager.Instance.UnlockColor();
+                EnvironmentManager.Instance.ActivateColoredObjects();
                 break;
         }
     }

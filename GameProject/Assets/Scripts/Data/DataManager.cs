@@ -20,8 +20,8 @@ public class DataManager : MonoBehaviour
             Instance = this;
         }
         sparksAmount = 0;
-        unlockedColors = 1;
-        day = 0;
+        unlockedColors = 0;
+        day = 1;
     }
 
     public DataManagerSerializedData Serialize()
