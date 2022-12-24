@@ -62,10 +62,8 @@ public class MenuUIManager : MonoBehaviour
         var no = yesNoInstance.transform.GetChild(1).GetChild(2).gameObject;
         no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });
         V = new GameObject("V");
-        V.AddComponent<SpriteRenderer>().sprite = vSprite;
+        V.AddComponent<Image>().sprite = vSprite;
         V.SetActive(false);
-        V.transform.localScale = new Vector2(0.09f, 0.09f);
-        V.GetComponent<SpriteRenderer>().sortingOrder = 150;
         try
         {
             PlayerInteraction.Instance.onDeath += delegate { ShowDeathScreen(); };
@@ -505,7 +503,7 @@ public class MenuUIManager : MonoBehaviour
         }
         var block0 = blockInstance.transform.GetChild(1);
         block0.GetChild(0).gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
-        block0.GetChild(0).gameObject.GetComponent<Button>().onClick.AddListener(() => { V.transform.parent = null; ShowSkinpacks(false); V.SetActive(false); });
+        block0.GetChild(0).gameObject.GetComponent<Button>().onClick.AddListener(() => { V.transform.SetParent(null, false); ShowSkinpacks(false); V.SetActive(false); });
         var block = new GameObject("Appearance");
         block.transform.SetParent(block0, false);
         var layout = Instantiate(this.skinsScroll, block.transform).transform.GetChild(1).GetChild(0);
@@ -527,7 +525,7 @@ public class MenuUIManager : MonoBehaviour
                     skinButton.GetComponent<Button>().interactable = ((Skin)pack.Skins[r * 4 + i].Asset).IsAvailable();
                     skinButton.GetComponent<Image>().sprite = sprites[r * 4 + i];
                     skinButton.GetComponent<Image>().color = Color.white;
-                    int j = i;
+                    int j = r * 4 + i;
                     skinButton.GetComponent<Button>().onClick.AddListener(delegate { SetV(skinButton, j, pack); });
                 }
                 else
@@ -538,7 +536,10 @@ public class MenuUIManager : MonoBehaviour
         }
         if (pack.Skins.Contains(SkinManager.Instance.GetChosenSkinReference()))
         {
-            SetV(layout.GetChild((pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()) / 4)).GetChild(pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()) % 4).gameObject, pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()), pack);
+            SetV(layout.GetChild(
+                pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()) / 4).GetChild(pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()) % 4).gameObject, 
+                pack.Skins.IndexOf(SkinManager.Instance.GetChosenSkinReference()), 
+                pack);
         }
         for (int i = sprites.Length / 4 + 1; i <= 7; i++)
         {
@@ -550,14 +551,9 @@ public class MenuUIManager : MonoBehaviour
     {
         V.SetActive(true);
         SkinManager.Instance.SetChosenSkinReference(pack.Skins[i]);
-        V.transform.parent = button.transform;
-        V.transform.localPosition = new Vector3(193,-235);
-    }
-    public void SetV(GameObject button)
-    {
-        V.SetActive(true);
-        V.transform.parent = button.transform;
-        V.transform.localPosition = new Vector3(193, -235);
+        V.transform.SetParent(button.transform,false);
+        V.transform.localPosition = new Vector3(93,-212);
+        V.transform.localScale = new Vector3(3,3,3);
     }
 
     public void ShowSettingsScreen()
