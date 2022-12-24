@@ -344,7 +344,7 @@ public class MenuUIManager : MonoBehaviour
         {
             var card = Instantiate(newSave, s.transform);
             card.transform.localPosition = card.transform.localPosition + new Vector3(-246, 425);
-            card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log("Save autosave"); SavesManager.Instance.Save(0); RemoveBlock(); });
+            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Save(0); RemoveBlock(); });
         }
         var l = Instantiate(line, s.transform);
         l.transform.localPosition = l.transform.localPosition + new Vector3(0, -375);
@@ -454,7 +454,8 @@ public class MenuUIManager : MonoBehaviour
         int minutes = (seconds - hours*3600)/ 60;
         string m = minutes >= 10 ? minutes.ToString() : 0 + minutes.ToString();
         seconds = seconds - hours * 3600 - minutes * 60;
-        return $"{h}{m}:{seconds}";
+        string s = seconds >= 10 ? seconds.ToString() : 0 + seconds.ToString();
+        return $"{h}{m}:{s}";
     }
 
     public void SetYesNo(string message, UnityEngine.Events.UnityAction onYes)

@@ -6,7 +6,6 @@ public class DataManager : MonoBehaviour
     public event Action onSparksUpdate;
     public int sparksAmount { get; private set; }
     public int unlockedColors { get; private set; }
-    //TODO: day
     public int day;
     private int timePlayed;
     private float startTime;
@@ -23,13 +22,12 @@ public class DataManager : MonoBehaviour
         }
         sparksAmount = 0;
         unlockedColors = 0;
-        day = 1;
         startTime = Time.time;
     }
 
     public DataManagerSerializedData Serialize()
     {
-        return new DataManagerSerializedData(sparksAmount, unlockedColors, timePlayed + (int)(Time.time - startTime));
+        return new DataManagerSerializedData(sparksAmount, unlockedColors, timePlayed + (int)(Time.time - startTime), day);
     }
 
     public void Deserialize(DataManagerSerializedData data)
