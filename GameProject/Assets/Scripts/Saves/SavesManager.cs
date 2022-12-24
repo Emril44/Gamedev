@@ -74,6 +74,7 @@ public class SavesManager : MonoBehaviour
             DataManager.Instance.Deserialize(null);
             EnvironmentManager.Instance.Deserialize(null);
             QuestManager.Instance.Deserialize(null);
+            Time.timeScale = 1;
             SceneManager.sceneLoaded -= ProcessSceneLoad;
         }
         SceneManager.sceneLoaded += ProcessSceneLoad;
@@ -104,6 +105,7 @@ public class SavesManager : MonoBehaviour
             DataManager.Instance.Deserialize(dataManager);
             EnvironmentManager.Instance.Deserialize(environmentManager);
             QuestManager.Instance.Deserialize(questManager);
+            Time.timeScale = 1;
             SceneManager.sceneLoaded -= ProcessSceneLoad;
         }
         SceneManager.sceneLoaded += ProcessSceneLoad;

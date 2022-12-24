@@ -39,7 +39,6 @@ public class MenuUIManager : MonoBehaviour
     private bool paused = false;
     private Vector3[] baseButtonPos;
     private GameObject V;
-    private bool cutscenePlaying = false;
 
     public static MenuUIManager Instance { get; private set; }
     private void Awake()
@@ -101,17 +100,6 @@ public class MenuUIManager : MonoBehaviour
         {
             loadButton.interactable = false;
         }
-        try
-        {
-            EnvironmentManager.Instance.onCutsceneStart  += delegate{ cutscenePlaying = true; 
-                if(paused)
-                {
-                    Pause();
-                }
-            };
-            EnvironmentManager.Instance.onCutsceneFinish += delegate{ cutscenePlaying = false; };
-        }
-        catch { }
     }
 
     private void Update()
@@ -124,12 +112,9 @@ public class MenuUIManager : MonoBehaviour
     
     public void Pause()
     {
-        if (cutscenePlaying)
+        if (EnvironmentManager.Instance.CutsceneRunning)
         {
-            if (!paused)
-            {
-                return;
-            }
+            return;
         }
         if (SavesManager.Instance.HasSaves())
         {

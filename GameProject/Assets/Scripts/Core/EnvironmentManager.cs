@@ -6,7 +6,8 @@ using UnityEngine.U2D;
 
 public class EnvironmentManager : MonoBehaviour
 {
-    public Action onColorChange, onCutsceneStart, onCutsceneFinish;
+    public Action onColorChange;
+    public bool CutsceneRunning;
     private Queue<ColoredObject> coloredObjectsPool;
     [Header("Spark-giving objects")]
     [SerializeField] private List<GameObject> sparks; // listed separately from generic objects simply for editing convenience
@@ -28,12 +29,6 @@ public class EnvironmentManager : MonoBehaviour
         {
             Instance = this;
         }
-    }
-
-    public void NotifyCutscenePlaying(bool playing)
-    {
-        if (playing) onCutsceneStart?.Invoke();
-        else onCutsceneFinish?.Invoke();
     }
     
     private void Start()
