@@ -7,7 +7,7 @@ using UnityEngine.U2D;
 public class EnvironmentManager : MonoBehaviour
 {
     public Action onColorChange;
-    public bool CutsceneRunning;
+    [NonSerialized] public bool CutsceneRunning;
     private Queue<ColoredObject> coloredObjectsPool;
     [Header("Spark-giving objects")]
     [SerializeField] private List<GameObject> sparks; // listed separately from generic objects simply for editing convenience
