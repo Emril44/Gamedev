@@ -64,10 +64,10 @@ public class CutsceneEvent
                 yield return null;
                 break;
             case EventType.FadeIn:
-                yield return null; // TODO when effect is available
+                yield return ScreenFade.Instance.FadeIn(1);
                 break;
             case EventType.FadeOut:
-                yield return null; // TODO when effect is available
+                yield return ScreenFade.Instance.FadeOut(1);
                 break;
             case EventType.DisplayText:
                 yield return DialogueManager.Instance.DisplayTextCoroutine(displayText, time);
