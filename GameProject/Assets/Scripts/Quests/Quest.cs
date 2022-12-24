@@ -10,10 +10,14 @@ public abstract class Quest : MonoBehaviour
     [SerializeField] private QuestData questData;
 
     private int currentObjective = 0;
-    private void Start()
+
+    public void OnFirstEnable()
     {
         if (currentObjective == questData.RequisiteObjectives) onStart?.Invoke();
+        FirstEnableSequence();
     }
+
+    protected abstract void FirstEnableSequence();
 
     private void OnEnable()
     {

@@ -7,6 +7,12 @@ public class QuestDay1Main2 : Quest
     [SerializeField] private Cutscene[] cutscenes;
     [SerializeField] private NPC druid;
     [SerializeField] private DialogueBatch[] druidBatches; // Druid's dialogue batches in order
+
+    protected override void FirstEnableSequence()
+    {
+        StartCoroutine(cutscenes[0].Play());
+    }
+
     protected override void ActOnObjective(int objective)
     {
         switch (objective)
@@ -21,11 +27,6 @@ public class QuestDay1Main2 : Quest
                 StartCoroutine(cutscenes[1].Play());
                 break;
         }
-    }
-
-    private void Start()
-    {
-        StartCoroutine(cutscenes[0].Play());
     }
 
 }

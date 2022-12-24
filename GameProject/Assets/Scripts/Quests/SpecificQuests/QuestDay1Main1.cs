@@ -7,6 +7,12 @@ public class QuestDay1Main1 : Quest
     [SerializeField] private NPC circle;
     [SerializeField] private DialogueBatch notestoneNextBatch;
     [SerializeField] private DialogueBatch circleNextBatch;
+
+    protected override void FirstEnableSequence()
+    {
+        StartCoroutine(cutscenes[0].Play());
+    }
+
     protected override void ActOnObjective(int objective)
     {
         switch (objective)
@@ -17,11 +23,6 @@ public class QuestDay1Main1 : Quest
                 circle.SetDialogueBatch(circleNextBatch);
                 break;
         }
-    }
-
-    private void Start()
-    {
-        StartCoroutine(cutscenes[0].Play());
     }
 
 }

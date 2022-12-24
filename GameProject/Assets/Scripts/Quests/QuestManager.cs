@@ -41,6 +41,7 @@ public class QuestManager : MonoBehaviour
         if (data == null)
         {
             AddAvailableQuest(0); // make first quest available when starting a new game
+            quests[0].OnFirstEnable(); // Properly trigger first enable for the first quest when starting a new game
             return;
         }
         completedQuests = data.completedQuests;
@@ -84,7 +85,12 @@ public class QuestManager : MonoBehaviour
                             break;
                         }
                     }
-                    if (legal) AddAvailableQuest(IdByQuestData(data));
+                    if (legal)
+                    {
+                        int id = IdByQuestData(data);
+                        AddAvailableQuest(id);
+                        quests[id].OnFirstEnable(); // Properly trigger first enable for quests acquired during this session (i.e. not the ones loaded from saves)
+                    }
                 }
             }
             quest.onComplete += CompleteQuest;
