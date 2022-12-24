@@ -388,7 +388,7 @@ public class MenuUIManager : MonoBehaviour
         {
             var card = SaveCard(autosaveString, autosave, s.transform, 0);
             card.GetComponent<Button>().onClick.RemoveAllListeners();
-            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(0); }); 
+            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(0); Time.timeScale = 1; }); 
         }
         else
         {
@@ -411,7 +411,7 @@ public class MenuUIManager : MonoBehaviour
                     card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
                 }
                 int n = j;
-                card.GetComponent<Button>().onClick.AddListener(() => { Debug.Log($"Load {n}"); SavesManager.Instance.Load(n); });
+                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(n);Time.timeScale = 1; });
             }
             else
             {
