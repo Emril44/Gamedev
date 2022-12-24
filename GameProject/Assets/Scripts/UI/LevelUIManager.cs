@@ -79,51 +79,7 @@ public class LevelUIManager : MonoBehaviour
         var healthbarText = healthbar.transform.GetChild(2).GetChild(0).GetChild(0).gameObject;
         healthbarText.GetComponent<TextMeshProUGUI>().text = newHealth.ToString();
     }
-
-    /*
-    public void ShowLeverLook(Vector3 position)
-    {
-        leverLookInstance.SetActive(true);
-        leverLookInstance.transform.position = position + new Vector3(0, -1.2f);
-        var image = leverLookInstance.transform.GetComponentInChildren<Image>();
-        var text = leverLookInstance.transform.GetComponentInChildren<TextMeshProUGUI>();
-        StartCoroutine(FadeIn(leverLookInstance, image, 0.57f, text, position));
-    }
-
-    public void HideLeverLook()
-    {
-        var image = leverLookInstance.transform.GetComponentInChildren<Image>();
-        var text = leverLookInstance.transform.GetComponentInChildren<TextMeshProUGUI>();
-        StopCoroutine("ShowLeverLook");
-        StartCoroutine(FadeOut(leverLookInstance, image, 0.57f, text, leverLookInstance.transform.position + new Vector3(0, -2.6f)));
-    }
     
-    
-    IEnumerator FadeOut(GameObject instance, Image image, float imageBaseA, TextMeshProUGUI text, Vector3 position)
-    {
-        isCoroutineRunning = true;
-        float time = 0;
-        while (time < 0.6f)
-        {
-            time += Time.deltaTime;
-            image.color = new Color(1, 1, 1, image.color.a - Time.deltaTime);
-            text.color = new Color(text.color.r, text.color.g, text.color.b, text.color.a - Time.deltaTime * (1/ imageBaseA));
-            instance.transform.position = Vector3.Lerp(instance.transform.position, position, Time.deltaTime*2f);
-            yield return null;
-        }
-        instance.SetActive(false);
-        if (questCoroutines.Count > 0)
-        {
-            StartCoroutine(questCoroutines.Dequeue());
-        }
-        else
-        {
-            isCoroutineRunning = false;
-        }
-        yield return null;
-    }
-    */
-
     IEnumerator FadeIn(GameObject instance, Image image, float imageTargetA, TextMeshProUGUI text, Vector3 position, float duration)
     {
         isCoroutineRunning = true;
@@ -268,7 +224,7 @@ public class LevelUIManager : MonoBehaviour
         quest.GetCurrentObjective().onComplete += () => { EnqueMove(StrikeText(objectiveTMP), MoveToNextObjective(objectiveTMP, quest)); };
 
         activeQuests.Add(quest);
-        //quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };
+        quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };
         quest.onComplete += () => { RemoveQuestCard(quest); };
     }
 
@@ -281,7 +237,15 @@ public class LevelUIManager : MonoBehaviour
     
     private void UpdateQuestText(Quest quest, TextMeshProUGUI objectiveTMP)
     {
-        objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
+        if (quest.GetCurrentObjective() == null)
+            return;
+        if (quest.GetCurrentObjective().GetType() == typeof(SparksObjective))
+        {
+            if (objectiveTMP.text.Substring(0, 5) == quest.GetCurrentObjective().LocalizedMessage().Substring(0, 5))
+            {
+                objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
+            }   
+        }
     }
 
     private void UpdateQuestTexts(Quest quest, TextMeshProUGUI[] objectiveTMPs)

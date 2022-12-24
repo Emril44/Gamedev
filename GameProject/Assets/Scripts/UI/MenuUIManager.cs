@@ -78,8 +78,11 @@ public class MenuUIManager : MonoBehaviour
 
     IEnumerator SetSkin()
     {
-        yield return SkinManager.Instance.LoadOnlyChosenSkin();
-        gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = ((Skin)SkinManager.Instance.GetChosenSkinReference().Asset).Sprite;
+        if (SceneManager.GetActiveScene().name == "MainMenu")
+        {
+            yield return SkinManager.Instance.LoadOnlyChosenSkin();
+            gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = ((Skin)SkinManager.Instance.GetChosenSkinReference().Asset).Sprite;
+        }
     }
 
     private void Start()
