@@ -97,8 +97,13 @@ public class PlayerInteraction : MonoBehaviour
 
     void AddSpark(GameObject spark)
     {
-        DataManager.Instance.AddSpark();
-        spark.SetActive(false);
+        Spark sp = spark.GetComponent<Spark>();
+        if (!sp.Exhausted)
+        {
+            DataManager.Instance.AddSpark();
+            spark.SetActive(false);
+            sp.Exhausted = true;
+        }
     }
     
     private void GetDamaged(string source)
