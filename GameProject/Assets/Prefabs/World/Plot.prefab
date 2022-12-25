@@ -387,7 +387,7 @@ MonoBehaviour:
   notestone: {fileID: 5986864129696779594}
   circle: {fileID: 4154857879650500450}
   notestoneNextBatch: {fileID: 11400000, guid: 5f7a03900940e0e46a0ede56c5d0e4f5, type: 2}
-  circleNextBatch: {fileID: 11400000, guid: 22d55894de1f70e4e82b1c2db9ad1134, type: 2}
+  circleNextBatch: {fileID: 11400000, guid: 7da6569b34fe4af4283df22c895df422, type: 2}
 --- !u!1 &3670580477485579199
 GameObject:
   m_ObjectHideFlags: 0
@@ -604,7 +604,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5055923081228846405}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.53, y: -0.13000011, z: -0.025961481}
+  m_LocalPosition: {x: -6.53, y: -0.21, z: -0.025961481}
   m_LocalScale: {x: 0.7, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2880,7 +2880,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3865006718311826970, guid: 8658b39657f460746841cf97b92d9951, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.13
+      value: -0.21
       objectReference: {fileID: 0}
     - target: {fileID: 3865006718311826970, guid: 8658b39657f460746841cf97b92d9951, type: 3}
       propertyPath: m_LocalRotation.x

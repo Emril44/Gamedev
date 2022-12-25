@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   separator: 0
   options:
-  - option: ...
+  - option: ...+...
     optionBranch: {fileID: 11400000, guid: 8110268f5073a8f46833904854e170e9, type: 2}
   - option: "(Is Druid serious?)+(\u0427\u0438 \u0414\u0440\u0443\u0457\u0434 \u0441\u0435\u0440\u0439\u043E\u0437\u043D\u043E?)"
     optionBranch: {fileID: 11400000, guid: 8110268f5073a8f46833904854e170e9, type: 2}

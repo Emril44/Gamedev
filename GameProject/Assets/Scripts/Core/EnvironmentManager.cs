@@ -7,6 +7,10 @@ public class EnvironmentManager : MonoBehaviour
     public Action onColorChange;
     [NonSerialized] public bool CutsceneRunning;
     private Queue<ColoredObject> coloredObjectsPool;
+    [Header("Colored BG Management")]
+    [SerializeField] private SpriteRenderer background;
+    [SerializeField] private Color[] colors;
+    [SerializeField] private GameObject[] cracks;
     [Header("Spark-giving objects")]
     [SerializeField] private List<GameObject> sparks; // listed separately from generic objects simply for editing convenience
     [Header("Other dynamic objects")]
@@ -59,27 +63,12 @@ public class EnvironmentManager : MonoBehaviour
 
     private void ChangeBackground(PrismColor color)
     {
-        Color Neutral = new(0.5294118f, 0.5137255f, 0.5137255f, 1);
-        Color Denial = new(0.3032483f, 0.6037736f, 0.2187255f, 1);
-        Color Anger = new(0.5960785f, 0.172549f, 0.07058824f, 1);
-        Color Bargaining = new(0.5754717f, 0.4684523f, 0.1161801f, 1);
-        //TODO:...
-        CamMovement.Instance.mainCam.clearFlags = CameraClearFlags.SolidColor;
-        switch((int) color)
+        background.color = colors[(int)color];
+        foreach (GameObject go in cracks)
         {
-            case 1:
-                CamMovement.Instance.mainCam.backgroundColor = Denial;
-                break;
-            case 2:
-                CamMovement.Instance.mainCam.backgroundColor = Anger;
-                break;
-            case 3:
-                CamMovement.Instance.mainCam.backgroundColor = Bargaining;
-                break;
-            default:
-                CamMovement.Instance.mainCam.backgroundColor = Neutral;
-                break;
+            go.SetActive(false);
         }
+        cracks[(int)color].SetActive(true);
     }
 
     public void SetNewColor(PrismColor color)

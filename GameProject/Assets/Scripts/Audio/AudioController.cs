@@ -4,10 +4,15 @@ using UnityEngine.SceneManagement;
 
 public class AudioController : MonoBehaviour
 {
-    public AudioSource source;
+    private AudioSource source;
     private float volume = 1;
     private bool crossFading = false;
     [SerializeField] private AudioClip defaultClip; // monochrome and menu clip
+    [SerializeField] private float distortionEffectTime;
+    [Range(0, 1)]
+    [SerializeField] private float distortionEffectDistortion;
+    private AudioDistortionFilter distortion;
+    private AudioSource fadeOutSource;
 
     public static AudioController Instance { get; private set; }
     private void Awake()
@@ -22,11 +27,40 @@ public class AudioController : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this);
         }
+        source = GetComponent<AudioSource>();
         UpdateVolume();
         SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
         {
             ChangeBGM(defaultClip);
         };
+    }
+
+    public IEnumerator SetDistorted(bool distorted)
+    {
+        float time = 0;
+        if (distorted)
+        {
+            distortion = gameObject.AddComponent<AudioDistortionFilter>();
+            distortion.distortionLevel = 0;
+            while (time < distortionEffectTime)
+            {
+                yield return new WaitForFixedUpdate();
+                time += Time.fixedDeltaTime;
+                distortion.distortionLevel = Mathf.Lerp(0, distortionEffectDistortion, time / distortionEffectTime);
+            }
+            distortion.distortionLevel = 1;
+        }
+        else
+        {
+            while (time < distortionEffectTime)
+            {
+                yield return new WaitForFixedUpdate();
+                time += Time.fixedDeltaTime;
+                distortion.distortionLevel = Mathf.Lerp(distortionEffectDistortion, 0, time / distortionEffectTime);
+            }
+            distortion.distortionLevel = 0;
+            Destroy(distortion);
+        }
     }
 
     public void UpdateVolume()
@@ -41,7 +75,6 @@ public class AudioController : MonoBehaviour
         {
             return;
         }
-
 
         StartCoroutine(Crossfade(newBGM));
     }

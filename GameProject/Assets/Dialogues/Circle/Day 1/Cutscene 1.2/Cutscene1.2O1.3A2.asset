@@ -15,5 +15,7 @@ MonoBehaviour:
   separator: 0
   character: -1
   text:
-  - Well, that was reassuring.
+  - "Well, that was reassuring.+\u0426\u0435 \u0432\u0441\u0435\u043B\u044F\u0454
+    \u0432\u043F\u0435\u0432\u043D\u0435\u043D\u0456\u0441\u0442\u044C, \u0435\u0433\u0435
+    \u0436?"
   next: {fileID: 0}

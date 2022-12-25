@@ -61,6 +61,10 @@ public class CutsceneEventDrawer : PropertyDrawer
                     line = GetNextLineRect(line);
                     EditorGUI.PropertyField(line, property.FindPropertyRelative("color"));
                     break;
+                case CutsceneEvent.EventType.SetBGMDistortion:
+                    line = GetNextLineRect(line);
+                    EditorGUI.PropertyField(line, property.FindPropertyRelative("setToDistorted"));
+                    break;
             }
             EditorGUI.indentLevel--;
 
@@ -82,6 +86,7 @@ public class CutsceneEventDrawer : PropertyDrawer
             CutsceneEvent.EventType.SetActivity => GetHeightByLines(3) + EditorGUI.GetPropertyHeight(property.FindPropertyRelative("targets")) + EditorGUIUtility.standardVerticalSpacing,
             CutsceneEvent.EventType.SetPosition => GetHeightByLines(4),
             CutsceneEvent.EventType.ChangeColor => GetHeightByLines(3),
+            CutsceneEvent.EventType.SetBGMDistortion => GetHeightByLines(3),
             _ => GetHeightByLines(2),
         };
     }

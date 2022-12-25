@@ -18,7 +18,8 @@ public class CutsceneEvent
         FadeOut,
         FadeIn,
         DisplayText,
-        ChangeColor
+        ChangeColor,
+        SetBGMDistortion
     }
 
     public EventType Type { get { return type;  } }
@@ -34,6 +35,7 @@ public class CutsceneEvent
     [SerializeField] private bool setTargetToActive = true;
     [SerializeField] private GameObject[] targets; // for activity management, because it can be reasonably done in bulk
     [SerializeField] private PrismColor color;
+    [SerializeField] private bool setToDistorted;
 
     public IEnumerator Run()
     {
@@ -73,6 +75,9 @@ public class CutsceneEvent
             case EventType.ChangeColor:
                 EnvironmentManager.Instance.SetNewColor(color);
                 yield break;
+            case EventType.SetBGMDistortion:
+                yield return AudioController.Instance.SetDistorted(setToDistorted);
+                break;
             default:
                 yield break;
         }

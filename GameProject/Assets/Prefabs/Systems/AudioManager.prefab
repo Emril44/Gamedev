@@ -141,5 +141,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36dbd73256f9a2348aedc61030dadf52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  source: {fileID: 3436531380093248819}
   defaultClip: {fileID: 8300000, guid: 5e2f0b4c0faea3d42af4dc7f2ad4ae66, type: 3}
+  distortionEffectTime: 1.5
+  distortionEffectDistortion: 1

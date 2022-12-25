@@ -15,6 +15,7 @@ MonoBehaviour:
   separator: 0
   character: 1
   text:
-  - On the other hand...
-  - Maybe let's leave that for another day.
+  - "On the other hand...+\u0417 \u0456\u043D\u0448\u043E\u0433\u043E \u0431\u043E\u043A\u0443..."
+  - "Maybe let's leave that for another day.+\u041B\u0438\u0448\u0456\u043C\u043E
+    \u0446\u0435 \u043D\u0430 \u0456\u043D\u0448\u0438\u0439 \u0440\u0430\u0437."
   next: {fileID: 0}
