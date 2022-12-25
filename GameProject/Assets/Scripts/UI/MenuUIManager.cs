@@ -247,7 +247,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void GoToMenu()
     {
-        SetYesNo("Are you sure you want to go to the menu?+Вийти до головного меню?", () => { SceneManager.LoadScene("MainMenu"); });
+        SetYesNo("Are you sure you want to go to the menu?+Вийти до головного меню?", () => { SavesManager.Instance.ExitToMenu(); });
     }
     
     public void ChangeLanguage()
@@ -602,7 +602,7 @@ public class MenuUIManager : MonoBehaviour
         {
             volume.value = 1;
         }
-        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); });
+        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); AudioController.Instance.UpdateVolume(); });
         ShowBlock();
     }
 
@@ -693,7 +693,7 @@ public class MenuUIManager : MonoBehaviour
             }
         },
         "Autosave+Автозбереження",
-        delegate { SceneManager.LoadScene("MainMenu"); },
+        delegate { SavesManager.Instance.ExitToMenu(); },
         "Main Menu+Головне меню"
         );
     }

@@ -22,6 +22,7 @@ public class DataManager : MonoBehaviour
         }
         sparksAmount = 0;
         unlockedColors = 0;
+        day = 1;
         startTime = Time.time;
     }
 

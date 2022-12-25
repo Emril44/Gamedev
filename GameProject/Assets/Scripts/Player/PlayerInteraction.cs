@@ -18,7 +18,6 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
     [SerializeField] private Collider2D bodyCollider;
-    private bool isGrabbing = false;
     private bool nearLever = false;
     private bool nearPrism = false;
     private bool nearDialogue = false;
@@ -29,7 +28,6 @@ public class PlayerInteraction : MonoBehaviour
     private GameObject dialogueGO;
     private GameObject movableGO;
     private Transform oldParent;
-    private GameObject grabbedObject;
     [field: SerializeField] public int health { get; private set; } = 3;
     [SerializeField] private float undamageableTime = 0.65f;
     [SerializeField] private OverlapHandler overlap;
@@ -159,17 +157,6 @@ public class PlayerInteraction : MonoBehaviour
         if (alive && overlap.Overlapping) GetDamaged(overlap.OverlapList[0].gameObject.name);
         if (Controllable)
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                if (isGrabbing)
-                {
-                    Drop();
-                }
-                else
-                {
-                    Grab();
-                }
-            }
             if (Input.GetKeyDown(KeyCode.F))
             {
                 if (nearPrism)
@@ -245,52 +232,6 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-
-    public void Drop()
-    {
-        if (isGrabbing)
-        {
-            isGrabbing = false;
-            grabbedObject.transform.localPosition = new Vector3(transform.localScale.x + 0.3f, 0.2f);
-            grabbedObject.transform.parent = oldParent;
-            grabbedObject.GetComponent<Rigidbody2D>().simulated = true;
-            grabbedObject.GetComponent<Collider2D>().enabled = true;
-            grabbedObject.GetComponent<MovableObject>().Grabbed = false;
-            grabbedObject = null;
-        }
-    }
-
-    public GameObject GetGrabbed()
-    {
-        return grabbedObject;
-    }
-
-    private void Grab()
-    {
-        var colliders = new List<Collider2D>();
-        var filter = new ContactFilter2D
-        {
-            useTriggers = true
-        };
-        bodyCollider.OverlapCollider(filter, colliders);
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider.gameObject.CompareTag("Grabbable"))
-            {
-                grabbedObject = collider.gameObject;
-                oldParent = grabbedObject.transform.parent;
-                grabbedObject.transform.SetParent(transform);
-                grabbedObject.GetComponent<Collider2D>().enabled = false;
-                grabbedObject.GetComponent<Rigidbody2D>().simulated = false;
-                grabbedObject.transform.localPosition = Vector3.zero;
-                collider.attachedRigidbody.velocity = Vector2.zero;
-                isGrabbing = true;
-                grabbedObject.GetComponent<MovableObject>().Grabbed = true;
-                break;
-            }
-        }
-    }
-
     void OnTriggerEnter2D(Collider2D other)
     {
         switch (other.gameObject.tag)
@@ -343,6 +284,7 @@ public class PlayerInteraction : MonoBehaviour
                 CanSave = true;
                 health = 3;
                 onHealthUpdate?.Invoke();
+                onCanSaveUpdate?.Invoke(true);
                 break;
             default:
                 //Debug.Log("No interaction with " + other.gameObject.tag);
@@ -402,6 +344,7 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             case "SaveZone":
                 CanSave = false;
+                onCanSaveUpdate?.Invoke(false);
                 break;
         }
     }

@@ -57,6 +57,10 @@ public class CutsceneEventDrawer : PropertyDrawer
                     line = GetNextLineRect(line);
                     EditorGUI.PropertyField(line, property.FindPropertyRelative("time"), new GUIContent("Display Time"));
                     break;
+                case CutsceneEvent.EventType.ChangeColor:
+                    line = GetNextLineRect(line);
+                    EditorGUI.PropertyField(line, property.FindPropertyRelative("color"));
+                    break;
             }
             EditorGUI.indentLevel--;
 
@@ -77,6 +81,7 @@ public class CutsceneEventDrawer : PropertyDrawer
             CutsceneEvent.EventType.Wait => GetHeightByLines(3),
             CutsceneEvent.EventType.SetActivity => GetHeightByLines(3) + EditorGUI.GetPropertyHeight(property.FindPropertyRelative("targets")) + EditorGUIUtility.standardVerticalSpacing,
             CutsceneEvent.EventType.SetPosition => GetHeightByLines(4),
+            CutsceneEvent.EventType.ChangeColor => GetHeightByLines(3),
             _ => GetHeightByLines(2),
         };
     }

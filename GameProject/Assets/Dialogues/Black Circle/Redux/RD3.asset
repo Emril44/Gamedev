@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene3.8.1.2
+  m_Name: RD3
   m_EditorClassIdentifier: 
   separator: 0
   character: -1
   text:
-  - Black circles gather around Rectangle to look at the sparks.
-  next: {fileID: 11400000, guid: 99ac3e783c63a78439c31f834d493d6a, type: 2}
+  - Black Circle is completely ignoring Rectangle now.
+  next: {fileID: 0}

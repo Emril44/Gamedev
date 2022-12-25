@@ -44,5 +44,160 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcea6444cd5d2ff4ab48f1afb957f21e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skipAhead: 0
   NPCParticipants: []
-  events: []
+  events:
+  - type: 0
+    dialogue: {fileID: 11400000, guid: 5441617127f97294cb7dc0470ce485f2, type: 2}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: 
+    time: 0
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets: []
+    color: 0
+  - type: 8
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: 
+    time: 0
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets: []
+    color: 0
+  - type: 5
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: 
+    time: 1
+    target: {fileID: 0}
+    setTargetToActive: 1
+    targets:
+    - {fileID: 0}
+    color: 0
+  - type: 6
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: "She is not with us anymore.+\u0412\u043E\u043D\u0430 \u0431\u0456\u043B\u044C\u0448\u0435
+      \u043D\u0435 \u0437 \u043D\u0430\u043C\u0438."
+    time: 2
+    target: {fileID: 0}
+    setTargetToActive: 1
+    targets:
+    - {fileID: 0}
+    color: 0
+  - type: 9
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: 
+    time: 2
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    color: 0
+  - type: 4
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: 
+    time: 0
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets:
+    - {fileID: 0}
+    color: 0
+  - type: 8
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: 
+    time: 1
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    color: 0
+  - type: 10
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: "She is not with us anymore.+\u0412\u043E\u043D\u0430 \u0431\u0456\u043B\u044C\u0448\u0435
+      \u043D\u0435 \u0437 \u043D\u0430\u043C\u0438."
+    time: 2
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets:
+    - {fileID: 0}
+    color: 0
+  - type: 11
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: "She is not with us anymore.+\u0412\u043E\u043D\u0430 \u0431\u0456\u043B\u044C\u0448\u0435
+      \u043D\u0435 \u0437 \u043D\u0430\u043C\u0438."
+    time: 2
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets:
+    - {fileID: 0}
+    color: 0
+  - type: 6
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: "She is not with us anymore.+\u0412\u043E\u043D\u0430 \u0431\u0456\u043B\u044C\u0448\u0435
+      \u043D\u0435 \u0437 \u043D\u0430\u043C\u0438."
+    time: 2
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets:
+    - {fileID: 0}
+    color: 0
+  - type: 5
+    dialogue: {fileID: 0}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: 
+    time: 0
+    target: {fileID: 0}
+    setTargetToActive: 0
+    targets: []
+    color: 0
+  - type: 9
+    dialogue: {fileID: 11400000, guid: 5441617127f97294cb7dc0470ce485f2, type: 2}
+    character: {fileID: 0}
+    targetLocation: {fileID: 0}
+    velocity: 0
+    displayText: "She is not with us anymore.+\u0412\u043E\u043D\u0430 \u0431\u0456\u043B\u044C\u0448\u0435
+      \u043D\u0435 \u0437 \u043D\u0430\u043C\u0438."
+    time: 2
+    target: {fileID: 0}
+    setTargetToActive: 1
+    targets:
+    - {fileID: 0}
+    color: 0

@@ -51,7 +51,8 @@ public class SkinManager : MonoBehaviour
         {
             foreach (SkinAssetReference skin in pack.Skins)
             {
-                AsyncOperationHandle<Skin> handle = skin.LoadAssetAsync<Skin>();
+                if (skin.Asset != null) continue;
+                AsyncOperationHandle<Skin> handle = skin.LoadAssetAsync<Skin>();   
                 yield return handle;
             }
         }
@@ -59,6 +60,7 @@ public class SkinManager : MonoBehaviour
 
     public IEnumerator LoadOnlyChosenSkin()
     {
+        if (chosenSkin.Asset != null) yield break;
         AsyncOperationHandle<Skin> handle = chosenSkin.LoadAssetAsync<Skin>();
         yield return handle;
     }

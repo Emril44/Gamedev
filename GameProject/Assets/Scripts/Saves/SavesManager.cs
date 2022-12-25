@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -6,14 +7,16 @@ using UnityEngine.SceneManagement;
 
 public class SavesManager : MonoBehaviour
 {
-    [SerializeField] private bool forceLoadNewGame;
+    [SerializeField] private bool forceLoadNewGame; // only for debug, specifically when starting game in GameScene
     public static SavesManager Instance { get; private set; }
     private SaveHeader[] saveHeaders = new SaveHeader[4]; // lightweight UI-targeted containers with core information about saves
+    private bool switchRunning = false;
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
         else
         {
@@ -30,7 +33,7 @@ public class SavesManager : MonoBehaviour
 
     private void Start()
     {
-        if (forceLoadNewGame)
+        if (forceLoadNewGame && SceneManager.GetActiveScene().name.Equals("GameScene"))
         {
             DataManager.Instance.Deserialize(null);
             EnvironmentManager.Instance.Deserialize(null);
@@ -59,7 +62,6 @@ public class SavesManager : MonoBehaviour
 
     public void Save(int saveIndex)
     {
-        //if (SceneManager.GetActiveScene().name != "GameScene") throw new InvalidOperationException("Trying to save game progress not in game scene");
         string savePath = Application.persistentDataPath + "/Saves/" + (saveIndex == 0 ? "Autosave" : "Save " + saveIndex);
         if (!HasSave(saveIndex)) Directory.CreateDirectory(savePath);
         saveHeaders[saveIndex] = new SaveHeader(SaveDataManager(savePath)); // simultenously write into file and update the header
@@ -69,25 +71,20 @@ public class SavesManager : MonoBehaviour
     
     public void LoadNewGame()
     {
-        void ProcessSceneLoad(Scene scene, LoadSceneMode mode)
+        if (!switchRunning) StartCoroutine(SwitchToSceneAndDo("GameScene", () =>
         {
             DataManager.Instance.Deserialize(null);
             EnvironmentManager.Instance.Deserialize(null);
             QuestManager.Instance.Deserialize(null);
-            Time.timeScale = 1;
-            SceneManager.sceneLoaded -= ProcessSceneLoad;
-        }
-        SceneManager.sceneLoaded += ProcessSceneLoad;
-        SceneManager.LoadSceneAsync("GameScene");
+        }));
     }
 
     public void Load(int saveIndex)
     {
-        //if (SceneManager.GetActiveScene().name != "GameScene") throw new InvalidOperationException("Trying to load game progress not in game scene");
         string savePath = Application.persistentDataPath + "/Saves/" + (saveIndex == 0 ? "Autosave" : "Save " + saveIndex);
         if (!HasSave(saveIndex))
         {
-            Debug.Log("Unable to load save " + saveIndex + ", save will not be loaded");
+            Debug.LogError("Unable to load save " + saveIndex + ", save will not be loaded");
             return;
         }
         DataManagerSerializedData dataManager = LoadDataManager(savePath);
@@ -95,21 +92,17 @@ public class SavesManager : MonoBehaviour
         QuestManagerSerializedData questManager = LoadQuestManager(savePath);
         if (dataManager == null || environmentManager == null || questManager == null)
         {
-            Debug.Log("Corrupted save " + saveIndex + ", save will not be loaded");
+            Debug.LogError("Corrupted save " + saveIndex + ", save will not be loaded");
             Directory.Delete(savePath);
             return;
         }
         saveHeaders[saveIndex] = new SaveHeader(dataManager); // regenerate header just in case
-        void ProcessSceneLoad(Scene scene, LoadSceneMode mode)
+        if (!switchRunning) StartCoroutine(SwitchToSceneAndDo("GameScene", () =>
         {
             DataManager.Instance.Deserialize(dataManager);
             EnvironmentManager.Instance.Deserialize(environmentManager);
             QuestManager.Instance.Deserialize(questManager);
-            Time.timeScale = 1;
-            SceneManager.sceneLoaded -= ProcessSceneLoad;
-        }
-        SceneManager.sceneLoaded += ProcessSceneLoad;
-        SceneManager.LoadSceneAsync("GameScene");
+        }));
     }
 
     private DataManagerSerializedData SaveDataManager(string savePath)
@@ -213,5 +206,31 @@ public class SavesManager : MonoBehaviour
         }
         Directory.Delete(savePath);
         saveHeaders[saveIndex] = null;
+    }
+
+    private IEnumerator SwitchToSceneAndDo(string scene, Action action)
+    {
+        Time.timeScale = 1;
+        switchRunning = true;
+        ScreenFade.Instance.SetOverUI(true);
+        yield return ScreenFade.Instance.FadeOut(2);
+        bool loaded = false;
+        void ProcessLoad(Scene s, LoadSceneMode m)
+        {
+            loaded = true;
+            SceneManager.sceneLoaded -= ProcessLoad;
+        }
+        SceneManager.sceneLoaded += ProcessLoad;
+        SceneManager.LoadSceneAsync(scene);
+        yield return new WaitUntil(() => loaded);
+        action();
+        yield return ScreenFade.Instance.FadeIn(2);
+        ScreenFade.Instance.SetOverUI(false);
+        switchRunning = false;
+    }
+
+    public void ExitToMenu()
+    {
+        if (!switchRunning) StartCoroutine(SwitchToSceneAndDo("MainMenu", () => { }));
     }
 }

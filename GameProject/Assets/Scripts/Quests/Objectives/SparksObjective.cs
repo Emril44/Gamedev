@@ -38,5 +38,10 @@ public class SparksObjective : Objective
         return base.LocalizedMessage() + " (" + DataManager.Instance.sparksAmount + "/" + targetCount + ")";
     }
 
+    public string LocalizedMessageBase()
+    {
+        return base.LocalizedMessage();
+    }
+
 }
 

@@ -259,7 +259,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.data[0]
@@ -269,6 +269,14 @@ PrefabInstance:
       propertyPath: batches.Array.data[1]
       value: 
       objectReference: {fileID: 11400000, guid: 33af05da65ffc3242befb190bda1d59f, type: 2}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: ab9980849c5486047bc47c601bc99c7a, type: 2}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: b068b225a43d0c84cb63dfa2a6b1eccc, type: 2}
     - target: {fileID: 3593797973173693372, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: m_Name
       value: DialogueTrigger

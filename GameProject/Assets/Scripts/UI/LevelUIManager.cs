@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class LevelUIManager : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class LevelUIManager : MonoBehaviour
     private int cardsMoving = 0;
     private float fireResistanceFull;
 
-    private void Start()
+    private void OnEnable()
     {
         PlayerInteraction.Instance.onHealthUpdate += delegate { UpdateHealthbar(); };
         if (PlayerInteraction.Instance.IsFireproof())
@@ -52,9 +53,9 @@ public class LevelUIManager : MonoBehaviour
         PlayerInteraction.Instance.onFireproofApply += x => UpdateFireproof(x, x);
         PlayerInteraction.Instance.onFireproofUpdate += x => UpdateFireproof(x);
         PlayerInteraction.Instance.onFireproofEnd += delegate { fireResistance.SetActive(false); };
-        QuestManager.Instance.onQuestStart += q => AddQuestCard(q);
+        QuestManager.Instance.onQuestActivate += q => AddQuestCard(q);
     }
-    
+
     void UpdateFireproof(float full, float current)
     {
         fireResistance.SetActive(true);
@@ -237,14 +238,20 @@ public class LevelUIManager : MonoBehaviour
     
     private void UpdateQuestText(Quest quest, TextMeshProUGUI objectiveTMP)
     {
-        if (quest.GetCurrentObjective() == null)
+        Objective obj = quest.GetCurrentObjective();
+        if (obj == null)
             return;
-        if (quest.GetCurrentObjective().GetType() == typeof(SparksObjective))
+        if (obj.GetType() == typeof(SparksObjective))
         {
-            if (objectiveTMP.text.Substring(0, 5) == quest.GetCurrentObjective().LocalizedMessage().Substring(0, 5))
+            // check if objective base messages are matching
+            SparksObjective objSparks = obj as SparksObjective;
+            string checkAgainst = objSparks.LocalizedMessageBase();
+            string check = objectiveTMP.text;
+            if (check.Length > checkAgainst.Length)
             {
-                objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
-            }   
+                check = check.Substring(0, checkAgainst.Length);
+                if (check.Equals(checkAgainst)) objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
+            }
         }
     }
 

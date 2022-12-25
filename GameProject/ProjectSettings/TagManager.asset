@@ -7,7 +7,6 @@ TagManager:
   - Prism
   - Spark
   - Door
-  - Grabbable
   - Water
   - Lever
   - SparkDoor
@@ -18,6 +17,7 @@ TagManager:
   - Waypoint
   - Moving
   - SaveZone
+  - SavesManager
   layers:
   - Default
   - TransparentFX
@@ -27,7 +27,7 @@ TagManager:
   - UI
   - Ground
   - NPC
-  - 
+  - FX
   - 
   - 
   - 

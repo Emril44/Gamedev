@@ -17,6 +17,5 @@ MonoBehaviour:
   text:
   - "Also? Don\u2019t tell me..."
   - "Actually, it doesn\u2019t matter."
-  - "Actually, it doesn\u2019t matter."
   - "I already found the way, and I\u2019m going to get there first."
   next: {fileID: 0}

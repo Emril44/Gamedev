@@ -152,6 +152,7 @@ public class BlackSquare : MonoBehaviour
         yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
         DataManager.Instance.AddSpark();
         gameObject.SetActive(false);
+        Debug.Log("Square death " + name);
     }
 
     void OnTriggerStay2D(Collider2D other)

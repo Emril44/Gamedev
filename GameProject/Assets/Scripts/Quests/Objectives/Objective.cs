@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public abstract class Objective : ScriptableObject
 {
     public event Action onUpdate;
@@ -8,6 +10,15 @@ public abstract class Objective : ScriptableObject
     public char separator = '+';
     [TextArea(1, 5)]
     [SerializeField] protected string message;
+
+    private void Awake()
+    {
+        SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
+        {
+            onUpdate = null;
+            onComplete = null;
+        };
+    }
 
     protected void Complete()
     {

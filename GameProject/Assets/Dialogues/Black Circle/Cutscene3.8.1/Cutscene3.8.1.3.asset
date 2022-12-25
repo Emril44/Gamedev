@@ -17,5 +17,5 @@ MonoBehaviour:
   text:
   - (Wow.. he actually brought them!)
   - "(That's a lot\u2026 Has he found the Treasure?)"
-  - (As if he could. He probably stole them from somewhere. Anyway, we're rich now!)
+  - (As if he could. He probably stole them from somewhere. Anyway, I'm rich now!)
   next: {fileID: 11400000, guid: 9ee9ac6a520a94a41b01af3591f312fb, type: 2}

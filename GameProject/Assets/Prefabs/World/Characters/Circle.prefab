@@ -178,6 +178,10 @@ PrefabInstance:
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.data[2]
       value: 
+      objectReference: {fileID: 11400000, guid: 18037b2ab64e4974492b3155e61ed4de, type: 2}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[3]
+      value: 
       objectReference: {fileID: 11400000, guid: c62be64167729be42b5bf6cde27aa481, type: 2}
     - target: {fileID: 3593797973173693372, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: m_Name

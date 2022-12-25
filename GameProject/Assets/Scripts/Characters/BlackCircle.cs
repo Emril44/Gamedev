@@ -18,14 +18,14 @@ public class BlackCircle : NPC
 
     private void Awake()
     {
-        UpdateRequirements();
         selfRenderer = gameObject.GetComponent<SpriteRenderer>();
         gateRenderer = gate.GetComponent<SpriteShapeRenderer>();
         finalDialogue = trigger.GetBatchAtIndex(1).dialogueList[0];
     }
 
-    private void OnEnable()
+    private void Start()
     {
+        UpdateRequirements();
         finalDialogue.onDialogueEnd += Disappear;
         DataManager.Instance.onSparksUpdate += UpdateRequirements;
     }

@@ -15,5 +15,5 @@ MonoBehaviour:
   separator: 0
   character: 0
   text:
-  - "Sorry+\u0412\u0438\u0431\u0430\u0447"
+  - "Sorry.+\u0412\u0438\u0431\u0430\u0447."
   next: {fileID: 0}

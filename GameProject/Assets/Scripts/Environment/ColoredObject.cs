@@ -8,7 +8,7 @@ public class ColoredObject : MonoBehaviour
     private bool isDynamic = false;
     private Rigidbody2D rb;
     private Color actualColor;
-    private static Color locked = new(0.1132075f, 0.1132075f, 0.1132075f, 1);
+    private static Color locked = new(0.2264151f, 0.2187255f, 0.2187255f, 1);
 
     private void Awake()
     {

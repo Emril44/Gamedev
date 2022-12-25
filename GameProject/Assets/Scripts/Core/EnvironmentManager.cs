@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public class EnvironmentManager : MonoBehaviour
 {
@@ -55,15 +53,16 @@ public class EnvironmentManager : MonoBehaviour
         foreach (GameObject go in objects) go.SetActive(false);
         foreach (int go in data.activeObjects) objects[go].SetActive(true);
         for (int i = 0; i < npcs.Count; i++) npcs[i].Deserialize(data.npcData[i]);
+        ActivateColoredObjects();
 
     }
 
     private void ChangeBackground(PrismColor color)
     {
         Color Neutral = new(0.5294118f, 0.5137255f, 0.5137255f, 1);
-        Color Denial = new(0.2078431f, 0.8117647f, 0.2235294f, 1);
-        Color Anger = new(0.7921569f, 0.1529412f, 0.1607843f, 1);
-        Color Bargaining = new(0.8666667f, 0.7333333f, 0.1686275f, 1);
+        Color Denial = new(0.3032483f, 0.6037736f, 0.2187255f, 1);
+        Color Anger = new(0.5960785f, 0.172549f, 0.07058824f, 1);
+        Color Bargaining = new(0.5754717f, 0.4684523f, 0.1161801f, 1);
         //TODO:...
         CamMovement.Instance.mainCam.clearFlags = CameraClearFlags.SolidColor;
         switch((int) color)
@@ -126,18 +125,5 @@ public class EnvironmentManager : MonoBehaviour
             }
             coloredObjectsPool.Enqueue(obstacle);
         }
-        var obj = PlayerInteraction.Instance.GetGrabbed();
-        if (obj != null && obj.GetComponent<ColoredObject>().getColor() == color)
-        {
-            obj.SetActive(true);
-            StartCoroutine(DropGrabbed(obj));
-        }
-    }
-
-    IEnumerator DropGrabbed(GameObject obj)
-    {
-        PlayerInteraction.Instance.Drop();
-        yield return new WaitForSeconds(0.5f);
-        obj.SetActive(false);
     }
 }

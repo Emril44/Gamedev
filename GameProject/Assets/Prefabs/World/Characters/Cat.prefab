@@ -326,9 +326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 7928529913700521231}
-  fireproofGrants:
-  - <Dialogue>k__BackingField: {fileID: 0}
-    <Time>k__BackingField: 20
+  fireproofGrants: []
 --- !u!1001 &8136387881582868889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -343,7 +341,7 @@ PrefabInstance:
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 91f7c0553cff21a4580f36a80dd68ee9, type: 2}
+      objectReference: {fileID: 11400000, guid: 22d55894de1f70e4e82b1c2db9ad1134, type: 2}
     - target: {fileID: 3593797973173693372, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: m_Name
       value: DialogueTrigger

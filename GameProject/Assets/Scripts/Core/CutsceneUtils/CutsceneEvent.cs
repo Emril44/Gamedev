@@ -17,7 +17,8 @@ public class CutsceneEvent
         UnlockColor,
         FadeOut,
         FadeIn,
-        DisplayText
+        DisplayText,
+        ChangeColor
     }
 
     public EventType Type { get { return type;  } }
@@ -32,6 +33,7 @@ public class CutsceneEvent
     [SerializeField] private GameObject target;
     [SerializeField] private bool setTargetToActive = true;
     [SerializeField] private GameObject[] targets; // for activity management, because it can be reasonably done in bulk
+    [SerializeField] private PrismColor color;
 
     public IEnumerator Run()
     {
@@ -45,24 +47,20 @@ public class CutsceneEvent
                 break;
             case EventType.CharacterJump:
                 character.Jump(velocity);
-                yield return null;
-                break;
+                yield break;
             case EventType.Wait:
                 yield return new WaitForSeconds(time);
                 break;
             case EventType.SetActivity:
                 foreach(GameObject t in targets) t.SetActive(setTargetToActive);
-                yield return null;
-                break;
+                yield break;
             case EventType.SetPosition:
                 target.transform.position = targetLocation.position;
-                yield return null;
-                break;
+                yield break;
             case EventType.UnlockColor:
                 DataManager.Instance.UnlockColor();
                 EnvironmentManager.Instance.ActivateColoredObjects();
-                yield return null;
-                break;
+                yield break;
             case EventType.FadeIn:
                 yield return ScreenFade.Instance.FadeIn(1);
                 break;
@@ -72,9 +70,11 @@ public class CutsceneEvent
             case EventType.DisplayText:
                 yield return DialogueManager.Instance.DisplayTextCoroutine(displayText, time);
                 break;
+            case EventType.ChangeColor:
+                EnvironmentManager.Instance.SetNewColor(color);
+                yield break;
             default:
-                yield return null;
-                break;
+                yield break;
         }
     }
 
@@ -97,6 +97,9 @@ public class CutsceneEvent
             case EventType.UnlockColor:
                 DataManager.Instance.UnlockColor();
                 EnvironmentManager.Instance.ActivateColoredObjects();
+                break;
+            case EventType.ChangeColor:
+                EnvironmentManager.Instance.SetNewColor(color);
                 break;
         }
     }

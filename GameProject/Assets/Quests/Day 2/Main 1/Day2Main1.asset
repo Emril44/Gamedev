@@ -22,6 +22,7 @@ MonoBehaviour:
   <Objectives>k__BackingField:
   - {fileID: 11400000, guid: e3a65c6ddea90774c94c94db2805e15c, type: 2}
   - {fileID: 11400000, guid: 5283055f44c6380499999c807d763a3e, type: 2}
+  - {fileID: 11400000, guid: 22272e386475f5047a2bc8b0306c3e1d, type: 2}
   <RequisiteObjectives>k__BackingField: 1
   <Prerequisites>k__BackingField: []
   <NextQuests>k__BackingField: []
