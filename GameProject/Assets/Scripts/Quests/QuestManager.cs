@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class QuestManager : MonoBehaviour
     private List<int> completedQuests = new List<int>();
     // Indices of available quests, i.e. quests for which objectives are being tracked (an available quest is not necessarily active in quest menu)
     private List<int> availableQuests = new List<int>();
+    [SerializeField] private Cutscene[] secretCutscenes = new Cutscene[3];
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -26,6 +28,36 @@ public class QuestManager : MonoBehaviour
             Instance = this;
         }
         for (int i = 0; i < quests.Count; i++) questsToIds.Add(quests.ElementAt(i).GetData(), i); // backwards-map QuestData instances to ids of quests
+    }
+
+    private void Start()
+    {
+        DataManager.Instance.onTouchedLettersGathered += (int day) =>
+        {
+            if (!PlayerPrefs.GetString("LettersSkin" + day + "Unlocked", "False").Equals("True"))
+            {
+                PlayerPrefs.SetString("LettersSkin" + day + "Unlocked", "True");
+                StartCoroutine(PlaySecretCutscene(secretCutscenes[day]));
+            }
+        };
+        DataManager.Instance.onSparksUpdate += () =>
+        {
+            if (DataManager.Instance.sparksAmount >= EnvironmentManager.Instance.SparksObjectsCount())
+            {
+                if (!PlayerPrefs.GetString("SparkMasterUnlocked", "False").Equals("True"))
+                {
+                    PlayerPrefs.SetString("SparkMasterUnlocked", "True");
+                    StartCoroutine(PlaySecretCutscene(secretCutscenes[0]));
+                }
+            }
+        };
+    }
+
+    private IEnumerator PlaySecretCutscene(Cutscene cutscene)
+    {
+        PlayerInteraction.Instance.gameObject.GetComponent<MobileCharacter>().SetMobile(false);
+        yield return cutscene.Play();
+        PlayerInteraction.Instance.gameObject.GetComponent<MobileCharacter>().SetMobile(true);
     }
 
     public QuestManagerSerializedData Serialize()

@@ -132,13 +132,19 @@ public class LevelUIManager : MonoBehaviour
         float duration = text.Length * 0.05f;
         while (time < duration)
         {
-            time += Time.deltaTime;
             tmp.text = text.Substring(0, (int)(text.Length * (time / duration)));
             yield return null;
+            time += Time.deltaTime;
         }
+        tmp.text = text;
         questCoroutines.Dequeue();
         isCoroutineRunning = false;
-        quest.GetCurrentObjective().onComplete += () => { EnqueMove(StrikeText(tmp), MoveToNextObjective(tmp, quest)); };
+        void del()
+        {
+            EnqueMove(StrikeText(tmp), MoveToNextObjective(tmp, quest));
+            quest.onObjectiveComplete -= del;
+        }
+        quest.onObjectiveComplete += del;
         TryMoveQueue();
     }
     
@@ -222,7 +228,12 @@ public class LevelUIManager : MonoBehaviour
         objective.transform.localPosition = objective.transform.localPosition + new Vector3(0, -90);
         objective.SetActive(false);
         questCoroutines.Enqueue(FadeIn(objective, objective.transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMP, objective.transform.localPosition + new Vector3(0, 90), 0.7f));
-        quest.GetCurrentObjective().onComplete += () => { EnqueMove(StrikeText(objectiveTMP), MoveToNextObjective(objectiveTMP, quest)); };
+        void del()
+        {
+            EnqueMove(StrikeText(objectiveTMP), MoveToNextObjective(objectiveTMP, quest));
+            quest.onObjectiveComplete -= del;
+        }
+        quest.onObjectiveComplete += del;
 
         activeQuests.Add(quest);
         quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };

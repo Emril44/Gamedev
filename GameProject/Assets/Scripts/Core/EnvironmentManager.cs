@@ -17,6 +17,8 @@ public class EnvironmentManager : MonoBehaviour
     [SerializeField] private List<GameObject> objects;
     [Header("NPCs")]
     [SerializeField] private List<NPC> npcs; // objects should have the NPC (or a derived) component
+    [Header("Letters")]
+    [SerializeField] private List<CrackLetter> letters;
     public PrismColor CurrentColor { get; private set; }
 
     public static EnvironmentManager Instance { get; private set; }
@@ -31,7 +33,12 @@ public class EnvironmentManager : MonoBehaviour
             Instance = this;
         }
     }
-    
+
+    public int SparksObjectsCount()
+    {
+        return sparks.Count;
+    }
+
     private void Start()
     {
         ActivateColoredObjects();
@@ -45,7 +52,15 @@ public class EnvironmentManager : MonoBehaviour
         for (int i = 0; i < objects.Count; i++) if (objects[i].activeSelf) activeObjects.Add(i);
         List<NPCSerializedData> npcData = new List<NPCSerializedData>();
         foreach (NPC npc in npcs) npcData.Add(npc.Serialize());
-        return new EnvironmentManagerSerializedData(activeSparks, activeObjects, npcData);
+        List<int> letterTouchedLists = new();
+        for (int i = 0; i < letters.Count; i++)
+        {
+            if (letters[i].Touched)
+            {
+                letterTouchedLists.Add(i);
+            }
+        }
+        return new EnvironmentManagerSerializedData(activeSparks, activeObjects, npcData, letterTouchedLists);
     }
 
     // if data is null, prepare for new game instead of deserializing
@@ -57,8 +72,11 @@ public class EnvironmentManager : MonoBehaviour
         foreach (GameObject go in objects) go.SetActive(false);
         foreach (int go in data.activeObjects) objects[go].SetActive(true);
         for (int i = 0; i < npcs.Count; i++) npcs[i].Deserialize(data.npcData[i]);
+        foreach (int id in data.letterTouchedLists)
+        {
+            letters[id].Touched = true;
+        }
         ActivateColoredObjects();
-
     }
 
     private void ChangeBackground(PrismColor color)

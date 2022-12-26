@@ -20,6 +20,7 @@ public class QuestDay2Main1 : Quest
         yield return cutscenes[0].Play();
         yield return cutscenes[1].Play();
         GameObject.FindGameObjectWithTag("SavesManager").SendMessage("Autosave");
+        PlayerPrefs.SetString("FlagUAUnlocked", "True");
     }
 
     protected override void ActOnObjective(int objective)

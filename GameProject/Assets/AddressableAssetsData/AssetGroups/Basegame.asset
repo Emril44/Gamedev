@@ -21,6 +21,10 @@ MonoBehaviour:
     m_Address: Skins/Basegame
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 5a1aa3384a5d9d943aeec983185fd6ab
+    m_Address: Skins/Identity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: c4dab84ef15b8ec48ac2abe603705a2f, type: 2}
   m_SchemaSet:

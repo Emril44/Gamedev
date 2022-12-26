@@ -1641,7 +1641,7 @@ RectTransform:
   m_GameObject: {fileID: 1003457269}
   m_LocalRotation: {x: -0, y: -0, z: 0.003639264, w: -0.9999934}
   m_LocalPosition: {x: 0, y: 0, z: -5.9999084}
-  m_LocalScale: {x: 3.5100007, y: 3.5100007, z: 3.51}
+  m_LocalScale: {x: 3.5100014, y: 3.5100014, z: 3.51}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1563263311}
@@ -1649,8 +1649,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.417}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 10, y: -462}
-  m_SizeDelta: {x: -4785.13, y: -2058.54}
+  m_AnchoredPosition: {x: -71.999756, y: -444}
+  m_SizeDelta: {x: -3416.2, y: -2058.54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1003457271
 MonoBehaviour:
@@ -1666,7 +1666,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3622,9 +3622,17 @@ PrefabInstance:
       value: "Autosave+\u0410\u0432\u0442\u043E\u0437\u0431\u0435\u0440\u0435\u0436\u0435\u043D\u043D\u044F"
       objectReference: {fileID: 0}
     - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: defSpritePlayer
+      value: 
+      objectReference: {fileID: 7482667652216324306, guid: 3dc25fac68b05f34fba97865a6d3e6f4, type: 3}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
       propertyPath: languageSettings
       value: 
       objectReference: {fileID: 2268422171933171792, guid: c1572a199fb56614fbe76762d9c995c9, type: 3}
+    - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
+      propertyPath: missingSkinpackSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3833ceb21504b7b4ba0f39c0f6b0f188, type: 3}
     - target: {fileID: 2866511014729259321, guid: 5d60fefbdbda0bf4094f737612ae08ce, type: 3}
       propertyPath: playerSprites.Array.size
       value: 6

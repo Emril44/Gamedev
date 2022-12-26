@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement;
 
 public class SkinManager : MonoBehaviour
 {
@@ -11,17 +13,25 @@ public class SkinManager : MonoBehaviour
     [SerializeField] private bool loadAllOnStart;
     public static SkinManager Instance { get; private set; }
     private SkinAssetReference chosenSkin;
+    public bool Loaded { get; private set; }
 
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
         else
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
+        ResourceManager.ExceptionHandler = (AsyncOperationHandle handle, Exception exception) =>
+        {
+            if (exception.GetType() != typeof(InvalidKeyException))
+                Addressables.LogException(handle, exception);
+        };
         string chosen = PlayerPrefs.GetString("PlayerSkin");
         if (chosen.Equals(""))
         {
@@ -45,24 +55,17 @@ public class SkinManager : MonoBehaviour
         return skinPacks[Int16.Parse(splits[0])].Skins[Int16.Parse(splits[1])];
     }
 
-    public IEnumerator LoadAvailablePacks()
+    private IEnumerator LoadAvailablePacks()
     {
         foreach (SkinPack pack in skinPacks)
         {
             foreach (SkinAssetReference skin in pack.Skins)
             {
-                if (skin.Asset != null) continue;
                 AsyncOperationHandle<Skin> handle = skin.LoadAssetAsync<Skin>();   
                 yield return handle;
             }
         }
-    }
-
-    public IEnumerator LoadOnlyChosenSkin()
-    {
-        if (chosenSkin.Asset != null) yield break;
-        AsyncOperationHandle<Skin> handle = chosenSkin.LoadAssetAsync<Skin>();
-        yield return handle;
+        Loaded = true;
     }
 
     public SkinPack[] SkinPacks()
@@ -90,19 +93,18 @@ public class SkinManager : MonoBehaviour
         Debug.Log("Trying to set chosen skin to a non-existent skin");
     }
 
-    public SkinAssetReference GetChosenSkinReference()
+    public bool IsLoaded(SkinPack skinpack)
     {
-        return chosenSkin;
+        return skinpack.Skins[0].Asset != null;
     }
 
-    public void OnDestroy()
+    public SkinAssetReference GetChosenSkinReference()
     {
-        foreach (SkinPack pack in skinPacks)
+        if (chosenSkin.Asset == null)
         {
-            foreach (SkinAssetReference skin in pack.Skins)
-            {
-                if (skin.Asset != null) skin.ReleaseAsset();
-            }
+            Debug.LogWarning("Pack with skin " + PlayerPrefs.GetString("PlayerSkin") + " is unloaded, resetting chosen skin to default.");
+            SetChosenSkinReference(SkinPacks()[0].Skins[0]);
         }
+        return chosenSkin;
     }
 }

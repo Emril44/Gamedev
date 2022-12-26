@@ -13,7 +13,7 @@ public abstract class Objective : ScriptableObject
 
     private void Awake()
     {
-        SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
+        SceneManager.sceneUnloaded += (Scene scene) =>
         {
             onUpdate = null;
             onComplete = null;

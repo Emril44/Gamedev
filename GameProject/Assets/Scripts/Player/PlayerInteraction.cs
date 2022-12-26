@@ -74,9 +74,8 @@ public class PlayerInteraction : MonoBehaviour
         spawnLocation = transform.position;
     }
 
-    IEnumerator Start()
+    private void Start()
     {
-        yield return SkinManager.Instance.LoadOnlyChosenSkin();
         Skin skin = SkinManager.Instance.GetChosenSkinReference().Asset as Skin;
         if (skin == null)
         {
