@@ -4870,7 +4870,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 639a0edc7796a144bb81bc52f881f8e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5052,6 +5052,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6946353778326226605}
     m_Modifications:
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: ca7cc548665cd5e4598f76387261fad3, type: 2}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8b6511ff1dd42594ca307770a33a5696, type: 2}
     - target: {fileID: 3593797973173693372, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: m_Name
       value: DialogueTrigger

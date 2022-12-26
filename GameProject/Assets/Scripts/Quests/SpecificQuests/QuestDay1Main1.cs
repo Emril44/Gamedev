@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class QuestDay1Main1 : Quest
@@ -10,7 +11,14 @@ public class QuestDay1Main1 : Quest
 
     protected override void FirstEnableSequence()
     {
-        StartCoroutine(cutscenes[0].Play());
+        StartCoroutine(Intro());
+    }
+
+    private IEnumerator Intro()
+    {
+        yield return cutscenes[0].Play();
+        GameObject.FindGameObjectWithTag("SavesManager").SendMessage("Autosave");
+
     }
 
     protected override void ActOnObjective(int objective)

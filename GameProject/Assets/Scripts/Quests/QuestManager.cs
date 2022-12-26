@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 // Stores dynamic macro information about quest progress
 public class QuestManager : MonoBehaviour
 {
-    public Action<Quest> onQuestStart;
+    public Action<Quest> onQuestActivate;
     public static QuestManager Instance { get; private set; }
     // Reliable links to all quests. Quests are identified by their indices in this list, so indices should not change
     [SerializeField] private List<Quest> quests = new List<Quest>();
@@ -15,6 +16,7 @@ public class QuestManager : MonoBehaviour
     private List<int> completedQuests = new List<int>();
     // Indices of available quests, i.e. quests for which objectives are being tracked (an available quest is not necessarily active in quest menu)
     private List<int> availableQuests = new List<int>();
+    [SerializeField] private Cutscene[] secretCutscenes = new Cutscene[3];
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -26,6 +28,36 @@ public class QuestManager : MonoBehaviour
             Instance = this;
         }
         for (int i = 0; i < quests.Count; i++) questsToIds.Add(quests.ElementAt(i).GetData(), i); // backwards-map QuestData instances to ids of quests
+    }
+
+    private void Start()
+    {
+        DataManager.Instance.onTouchedLettersGathered += (int day) =>
+        {
+            if (!PlayerPrefs.GetString("LettersSkin" + day + "Unlocked", "False").Equals("True"))
+            {
+                PlayerPrefs.SetString("LettersSkin" + day + "Unlocked", "True");
+                StartCoroutine(PlaySecretCutscene(secretCutscenes[day]));
+            }
+        };
+        DataManager.Instance.onSparksUpdate += () =>
+        {
+            if (DataManager.Instance.sparksAmount >= EnvironmentManager.Instance.SparksObjectsCount())
+            {
+                if (!PlayerPrefs.GetString("SparkMasterUnlocked", "False").Equals("True"))
+                {
+                    PlayerPrefs.SetString("SparkMasterUnlocked", "True");
+                    StartCoroutine(PlaySecretCutscene(secretCutscenes[0]));
+                }
+            }
+        };
+    }
+
+    private IEnumerator PlaySecretCutscene(Cutscene cutscene)
+    {
+        PlayerInteraction.Instance.gameObject.GetComponent<MobileCharacter>().SetMobile(false);
+        yield return cutscene.Play();
+        PlayerInteraction.Instance.gameObject.GetComponent<MobileCharacter>().SetMobile(true);
     }
 
     public QuestManagerSerializedData Serialize()
@@ -49,10 +81,57 @@ public class QuestManager : MonoBehaviour
         foreach (Quest quest in quests) quest.gameObject.SetActive(false);
         for (int i = 0; i < availableQuests.Count; i++)
         {
-            Quest quest = QuestById(availableQuests[i]);
+            int id = availableQuests[i];
+            Quest quest = QuestById(id);
             quest.SetCurrentObjectiveIndex(data.availableQuestObjectiveIDs[i]);
             quest.gameObject.SetActive(true);
+            if (quest.IsActive()) onQuestActivate?.Invoke(quest);
+            else AddStartDelegate(id);
+            AddCompleteDelegate(id);
+            
         }
+    }
+
+    private void AddStartDelegate(int questId)
+    {
+        Quest quest = quests[questId];
+        void StartQuest()
+        {
+            quest.onStart -= StartQuest;
+            onQuestActivate?.Invoke(quest);
+        }
+        quest.onStart += StartQuest;
+    }
+
+    private void AddCompleteDelegate(int questId)
+    {
+        Quest quest = quests[questId];
+        void CompleteQuest()
+        {
+            completedQuests.Add(questId);
+            quest.onComplete -= CompleteQuest;
+            quest.gameObject.SetActive(false);
+            // add all direct next quests (whose prerequisites are met)
+            foreach (QuestData data in quest.GetData().NextQuests)
+            {
+                bool legal = true;
+                foreach (QuestData req in data.Prerequisites)
+                {
+                    if (!IsQuestCompleted(req))
+                    {
+                        legal = false;
+                        break;
+                    }
+                }
+                if (legal)
+                {
+                    int id = IdByQuestData(data);
+                    AddAvailableQuest(id);
+                    quests[id].OnFirstEnable(); // Properly trigger first enable for quests acquired during this session (i.e. not the ones loaded from saves)
+                }
+            }
+        }
+        quest.onComplete += CompleteQuest;
     }
 
     // Makes a quest available (not yet active in the quest menu)
@@ -63,37 +142,8 @@ public class QuestManager : MonoBehaviour
         {
             availableQuests.Add(id);
             quest.gameObject.SetActive(true);
-            void StartQuest()
-            {
-                quest.onStart -= StartQuest;
-                onQuestStart?.Invoke(quest);
-            }
-            quest.onStart += StartQuest;
-            void CompleteQuest()
-            {
-                completedQuests.Add(id);
-                quest.onComplete -= CompleteQuest;
-                quest.gameObject.SetActive(false);
-                // add all direct next quests (whose prerequisites are met)
-                foreach (QuestData data in quest.GetData().NextQuests)
-                {
-                    bool legal = true;
-                    foreach (QuestData req in data.Prerequisites) {
-                        if (!IsQuestCompleted(req))
-                        {
-                            legal = false;
-                            break;
-                        }
-                    }
-                    if (legal)
-                    {
-                        int id = IdByQuestData(data);
-                        AddAvailableQuest(id);
-                        quests[id].OnFirstEnable(); // Properly trigger first enable for quests acquired during this session (i.e. not the ones loaded from saves)
-                    }
-                }
-            }
-            quest.onComplete += CompleteQuest;
+            AddStartDelegate(id);
+            AddCompleteDelegate(id);
         }
     }
     

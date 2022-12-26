@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec5a413f9f5fd2a4cb003c51af3c3360, type: 3}
-  m_Name: Gray
+  m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
+  m_Name: RD3
   m_EditorClassIdentifier: 
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 546eef0f75aaff94bb6d15b41cebae8c, type: 3}
-  <conditionKeyNames>k__BackingField:
-  - GotGrayEnding
-  <conditionKeyValues>k__BackingField:
-  - True
+  separator: 0
+  character: -1
+  text:
+  - Black Circle is completely ignoring Rectangle now.
+  next: {fileID: 0}

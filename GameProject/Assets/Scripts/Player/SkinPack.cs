@@ -9,6 +9,11 @@ public class SkinPack : ScriptableObject
     [SerializeField] private string packname; // localized names for the player
     [field: SerializeField] public List<SkinAssetReference> Skins { get; private set; }
 
+    private void OnDestroy()
+    {
+        foreach (SkinAssetReference reference in Skins) reference.ReleaseAsset();
+    }
+
     public string LocalizedName()
     {
         return packname.Split(separator)[PlayerPrefs.GetInt("Language")];

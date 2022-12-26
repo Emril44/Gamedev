@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class LevelUIManager : MonoBehaviour
 {
@@ -38,7 +39,7 @@ public class LevelUIManager : MonoBehaviour
     private int cardsMoving = 0;
     private float fireResistanceFull;
 
-    private void Start()
+    private void OnEnable()
     {
         PlayerInteraction.Instance.onHealthUpdate += delegate { UpdateHealthbar(); };
         if (PlayerInteraction.Instance.IsFireproof())
@@ -52,9 +53,9 @@ public class LevelUIManager : MonoBehaviour
         PlayerInteraction.Instance.onFireproofApply += x => UpdateFireproof(x, x);
         PlayerInteraction.Instance.onFireproofUpdate += x => UpdateFireproof(x);
         PlayerInteraction.Instance.onFireproofEnd += delegate { fireResistance.SetActive(false); };
-        QuestManager.Instance.onQuestStart += q => AddQuestCard(q);
+        QuestManager.Instance.onQuestActivate += q => AddQuestCard(q);
     }
-    
+
     void UpdateFireproof(float full, float current)
     {
         fireResistance.SetActive(true);
@@ -131,13 +132,19 @@ public class LevelUIManager : MonoBehaviour
         float duration = text.Length * 0.05f;
         while (time < duration)
         {
-            time += Time.deltaTime;
             tmp.text = text.Substring(0, (int)(text.Length * (time / duration)));
             yield return null;
+            time += Time.deltaTime;
         }
+        tmp.text = text;
         questCoroutines.Dequeue();
         isCoroutineRunning = false;
-        quest.GetCurrentObjective().onComplete += () => { EnqueMove(StrikeText(tmp), MoveToNextObjective(tmp, quest)); };
+        void del()
+        {
+            EnqueMove(StrikeText(tmp), MoveToNextObjective(tmp, quest));
+            quest.onObjectiveComplete -= del;
+        }
+        quest.onObjectiveComplete += del;
         TryMoveQueue();
     }
     
@@ -221,7 +228,12 @@ public class LevelUIManager : MonoBehaviour
         objective.transform.localPosition = objective.transform.localPosition + new Vector3(0, -90);
         objective.SetActive(false);
         questCoroutines.Enqueue(FadeIn(objective, objective.transform.GetChild(0).GetComponent<Image>(), 1, objectiveTMP, objective.transform.localPosition + new Vector3(0, 90), 0.7f));
-        quest.GetCurrentObjective().onComplete += () => { EnqueMove(StrikeText(objectiveTMP), MoveToNextObjective(objectiveTMP, quest)); };
+        void del()
+        {
+            EnqueMove(StrikeText(objectiveTMP), MoveToNextObjective(objectiveTMP, quest));
+            quest.onObjectiveComplete -= del;
+        }
+        quest.onObjectiveComplete += del;
 
         activeQuests.Add(quest);
         quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };
@@ -237,14 +249,20 @@ public class LevelUIManager : MonoBehaviour
     
     private void UpdateQuestText(Quest quest, TextMeshProUGUI objectiveTMP)
     {
-        if (quest.GetCurrentObjective() == null)
+        Objective obj = quest.GetCurrentObjective();
+        if (obj == null)
             return;
-        if (quest.GetCurrentObjective().GetType() == typeof(SparksObjective))
+        if (obj.GetType() == typeof(SparksObjective))
         {
-            if (objectiveTMP.text.Substring(0, 5) == quest.GetCurrentObjective().LocalizedMessage().Substring(0, 5))
+            // check if objective base messages are matching
+            SparksObjective objSparks = obj as SparksObjective;
+            string checkAgainst = objSparks.LocalizedMessageBase();
+            string check = objectiveTMP.text;
+            if (check.Length > checkAgainst.Length)
             {
-                objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
-            }   
+                check = check.Substring(0, checkAgainst.Length);
+                if (check.Equals(checkAgainst)) objectiveTMP.text = quest.GetCurrentObjective().LocalizedMessage();
+            }
         }
     }
 

@@ -16,6 +16,6 @@ MonoBehaviour:
   character: 4
   text:
   - Why are you so impatient?
-  - You should be grateful that we even agreed to help you.
+  - You should be grateful that I even agreed to help you.
   - After all, it was all your fault.
   next: {fileID: 11400000, guid: 0b93ec82d8881034db16b81f9ca281b5, type: 2}

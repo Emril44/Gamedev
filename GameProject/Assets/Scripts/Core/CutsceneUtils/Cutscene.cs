@@ -25,12 +25,11 @@ public class Cutscene : MonoBehaviour
             {
                 cutsceneEvent.Skip();
             }
-            yield return null;
+            yield break;
         }
         else
         {
             EnvironmentManager.Instance.CutsceneRunning = true;
-            bool oldControllable = PlayerInteraction.Instance.Controllable;
             PlayerInteraction.Instance.Controllable = false;
             foreach (MobileCharacter character in NPCParticipants)
             {
@@ -44,7 +43,7 @@ public class Cutscene : MonoBehaviour
             {
                 character.SetMobile(false);
             }
-            PlayerInteraction.Instance.Controllable = oldControllable;
+            PlayerInteraction.Instance.Controllable = true;
             EnvironmentManager.Instance.CutsceneRunning = false;
         }
     }

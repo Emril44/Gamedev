@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene3.8.1.2
+  m_Script: {fileID: 11500000, guid: 5acbcb52695596440b810933b12957ed, type: 3}
+  m_Name: Unwell
   m_EditorClassIdentifier: 
-  separator: 0
-  character: -1
-  text:
-  - Black circles gather around Rectangle to look at the sparks.
-  next: {fileID: 11400000, guid: 99ac3e783c63a78439c31f834d493d6a, type: 2}
+  <dialogueList>k__BackingField: []
+  <fallbackDialogue>k__BackingField: {fileID: 11400000, guid: cf8a7f769fc837a4ba08ca3eac4dd003, type: 2}

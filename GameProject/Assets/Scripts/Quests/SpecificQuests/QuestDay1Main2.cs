@@ -24,6 +24,13 @@ public class QuestDay1Main2 : Quest
             case 2:
                 StartCoroutine(cutscenes[1].Play());
                 break;
+            case 3:
+                druid.SetDialogueBatch(druidBatches[2]);
+                break;
+            case 4:
+                druid.SetDialogueBatch(druidBatches[3]);
+                DataManager.Instance.day++;
+                break;
         }
     }
 

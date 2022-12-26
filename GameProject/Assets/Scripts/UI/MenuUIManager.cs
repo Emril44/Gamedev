@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement;
 
 public class MenuUIManager : MonoBehaviour
 {
@@ -23,7 +21,6 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private GameObject playerSkin;
     [SerializeField] private Sprite vSprite;
     [SerializeField] private GameObject skinsScroll;
-    [SerializeField] private Sprite[] playerSprites;
     private const int LANGUAGES = 2;
     [Header("Saves")]
     [SerializeField] private GameObject line;
@@ -36,6 +33,7 @@ public class MenuUIManager : MonoBehaviour
     [SerializeField] private string saveString;
     [TextArea(1, 5)]
     [SerializeField] private string dayString;
+    [SerializeField] private Sprite missingSkinpackSprite;
     private bool paused = false;
     private Vector3[] baseButtonPos;
     private GameObject V;
@@ -76,16 +74,16 @@ public class MenuUIManager : MonoBehaviour
         catch { }
     }
 
-    IEnumerator SetSkin()
+    private IEnumerator SetSkin()
     {
         if (SceneManager.GetActiveScene().name == "MainMenu")
         {
-            yield return SkinManager.Instance.LoadOnlyChosenSkin();
+            yield return new WaitUntil(() => SkinManager.Instance.Loaded);
             gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = ((Skin)SkinManager.Instance.GetChosenSkinReference().Asset).Sprite;
         }
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         try
         {
@@ -107,7 +105,7 @@ public class MenuUIManager : MonoBehaviour
         {
             loadButton.interactable = false;
         }
-        StartCoroutine(SetSkin());
+        yield return StartCoroutine(SetSkin());
     }
 
     private void Update()
@@ -247,7 +245,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void GoToMenu()
     {
-        SetYesNo("Are you sure you want to go to the menu?+Вийти до головного меню?", () => { SceneManager.LoadScene("MainMenu"); });
+        SetYesNo("Are you sure you want to go to the menu?+Вийти до головного меню?", () => { SavesManager.Instance.ExitToMenu(); });
     }
     
     public void ChangeLanguage()
@@ -337,7 +335,6 @@ public class MenuUIManager : MonoBehaviour
         {
             var card = SaveCard(autosaveString, autosave, s.transform, 0);
             card.GetComponent<Button>().onClick.RemoveAllListeners();
-            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(0); });
             card.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Overwrite autosave?+Перезаписати автозбереження?", delegate { SavesManager.Instance.Save(0); RemoveBlock(); }); });
         }
         else
@@ -483,9 +480,16 @@ public class MenuUIManager : MonoBehaviour
             GameObject s = Instantiate(playerSkin, skinBlock.transform);
             s.transform.localScale = new Vector2(0.3f, 0.3f);
             s.transform.localPosition = new Vector3(-30 + 30 * (i % 3), 17.5f + -40 * (i / 3));
-            s.GetComponent<Button>().onClick.AddListener(() => { ShowAppearanceScreen(skinPack); });
-            var skin = ((Skin)skinPack.Skins[0].Asset);
-            s.GetComponent<Image>().sprite = skin.Sprite;
+            if (SkinManager.Instance.IsLoaded(skinPack))
+            {
+                s.GetComponent<Button>().onClick.AddListener(() => { ShowAppearanceScreen(skinPack); });
+                var skin = (Skin)skinPack.Skins[0].Asset;
+                s.GetComponent<Image>().sprite = skin.Sprite;
+            }
+            else
+            {
+                s.GetComponent<Image>().sprite = missingSkinpackSprite;
+            }
             TextMeshProUGUI t = s.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             t.text = text;
             i++;
@@ -570,6 +574,7 @@ public class MenuUIManager : MonoBehaviour
 
     public void ShowSettingsScreen()
     {
+        Debug.Log("start");
         if (blockInstance.transform.GetChild(1).childCount > 1)
         {
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
@@ -602,7 +607,7 @@ public class MenuUIManager : MonoBehaviour
         {
             volume.value = 1;
         }
-        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); });
+        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); AudioController.Instance.UpdateVolume(); });
         ShowBlock();
     }
 
@@ -693,7 +698,7 @@ public class MenuUIManager : MonoBehaviour
             }
         },
         "Autosave+Автозбереження",
-        delegate { SceneManager.LoadScene("MainMenu"); },
+        delegate { SavesManager.Instance.ExitToMenu(); },
         "Main Menu+Головне меню"
         );
     }

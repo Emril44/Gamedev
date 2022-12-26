@@ -16,7 +16,7 @@ MonoBehaviour:
   options:
   - option: "Who are you?+\u0422\u0438 \u0445\u0442\u043E?"
     optionBranch: {fileID: 11400000, guid: db55b34b5b34e7d41a8e37c9b098713e, type: 2}
-  - option: ...
+  - option: ...+...
     optionBranch: {fileID: 11400000, guid: c255854814b5d5d47b1706b62156e52e, type: 2}
   - option: "Circle!+\u041A\u043E\u043B\u043E!"
     optionBranch: {fileID: 11400000, guid: d9ba665a2f07afc40bb5798682193f3a, type: 2}

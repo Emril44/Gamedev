@@ -204,6 +204,7 @@ Transform:
   - {fileID: 1643232635242571474}
   - {fileID: 1643232636523636926}
   - {fileID: 5392322484566525911}
+  - {fileID: 1542113024662525756}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -227,7 +228,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 639a0edc7796a144bb81bc52f881f8e6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -326,9 +327,69 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 7928529913700521231}
-  fireproofGrants:
-  - <Dialogue>k__BackingField: {fileID: 0}
-    <Time>k__BackingField: 20
+  fireproofGrants: []
+--- !u!1001 &6379649447351904296
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8181464174033525024}
+    m_Modifications:
+    - target: {fileID: 1064834679509145579, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_Name
+      value: PocketLight
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+--- !u!4 &1542113024662525756 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5615917262821015316, guid: de5255fab1c61704782d3c737e59f999, type: 3}
+  m_PrefabInstance: {fileID: 6379649447351904296}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8136387881582868889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -343,7 +404,7 @@ PrefabInstance:
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 91f7c0553cff21a4580f36a80dd68ee9, type: 2}
+      objectReference: {fileID: 11400000, guid: 22d55894de1f70e4e82b1c2db9ad1134, type: 2}
     - target: {fileID: 3593797973173693372, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: m_Name
       value: DialogueTrigger

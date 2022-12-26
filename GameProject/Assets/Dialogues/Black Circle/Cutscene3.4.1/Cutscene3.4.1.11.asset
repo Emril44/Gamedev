@@ -16,6 +16,4 @@ MonoBehaviour:
   character: 4
   text:
   - "More than you probably can collect.\r"
-  - "Hey, enough answering his questions for free. Let's charge fee for every next
-    one.\r"
   next: {fileID: 11400000, guid: 5317575ebc6f2294bbe53d2cc3631271, type: 2}

@@ -5,7 +5,7 @@ using UnityEngine;
 // Class for logical grouping of objectives and processing their completion
 public abstract class Quest : MonoBehaviour
 {
-    public event Action onStart, onComplete, onUpdate;
+    public event Action onStart, onComplete, onUpdate, onObjectiveComplete;
 
     [SerializeField] private QuestData questData;
 
@@ -101,6 +101,7 @@ public abstract class Quest : MonoBehaviour
     // Is called in event of current objective's completion
     private void CompleteCurrentObjective()
     {
+        onObjectiveComplete?.Invoke();
         questData.Objectives[currentObjective].onComplete -= CompleteCurrentObjective;
         questData.Objectives[currentObjective].onUpdate -= UpdateQuest;
         questData.Objectives[currentObjective].SetActive(false); // only deactivate an objective when its parent quest registered completion
