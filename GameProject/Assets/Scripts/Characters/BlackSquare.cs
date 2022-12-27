@@ -57,10 +57,8 @@ public class BlackSquare : MonoBehaviour
 
     private void Reset()
     {
-        // trigger VFX and SFX...
-
+        AudioController.Instance.PlaySFXGlobally("Reset");
         StartCoroutine(ScreenFade.Instance.FadeOut(5));
-        // play sound
         transform.position = origin;
         StartCoroutine(ScreenFade.Instance.FadeIn(5));
     }

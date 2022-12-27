@@ -17,7 +17,6 @@ public class MovableObject : MonoBehaviour
 
     private void Awake()
     {
-        
         rb = GetComponent<Rigidbody2D>();
         rb.bodyType = RigidbodyType2D.Static;
         baseParent = transform.parent;
@@ -54,6 +53,7 @@ public class MovableObject : MonoBehaviour
 
     private void Reset()
     {
+        AudioController.Instance.PlaySFXGlobally("Reset");
         StartCoroutine(ScreenFade.Instance.FadeOut(5));
         transform.position = defPosition;
         transform.localScale = defScale;
@@ -61,7 +61,6 @@ public class MovableObject : MonoBehaviour
         timeFromMoveStart = -1;
         gameObject.tag = "Movable";
         rb.bodyType = RigidbodyType2D.Static;
-        // play sound
         StartCoroutine(ScreenFade.Instance.FadeIn(5));
     }
 

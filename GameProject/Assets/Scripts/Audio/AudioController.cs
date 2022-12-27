@@ -96,13 +96,10 @@ public class AudioController : MonoBehaviour
         }
         Sound sound = namesToSounds[name];
         AudioSource source = gameObject.AddComponent<AudioSource>();
-        if(!source.isPlaying)
-        {
-            source.clip = sound.clip;
-            source.volume = sound.volume;
-            source.outputAudioMixerGroup = SFXGroup;
-            source.Play();
-        }
+        source.clip = sound.clip;
+        source.volume = sound.volume;
+        source.outputAudioMixerGroup = SFXGroup;
+        source.Play();
 
         Destroy(source, sound.clip.length);
     }
