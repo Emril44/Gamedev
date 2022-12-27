@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -116,5 +117,10 @@ public class AudioController : MonoBehaviour
         audioSource.volume = target;
         if (target == 0) audioSource.Stop();
         volumeCoroutines[(int)bgm] = null;
+    }
+
+    public void UpdateEffectsVolume()
+    {
+        throw new NotImplementedException();
     }
 }

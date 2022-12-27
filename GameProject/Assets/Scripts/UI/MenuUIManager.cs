@@ -597,16 +597,27 @@ public class MenuUIManager : MonoBehaviour
         fullscreen.value = fullscreen.options.Select(option => option.text).ToList().IndexOf(Screen.fullScreenMode.ToString());
         fullscreen.onValueChanged.AddListener(delegate { ChangeFullscreen(fullscreen.options[fullscreen.value].text); });
 
-        var volume = settings.transform.GetChild(9).GetComponent<Slider>();
+        var volumeMusic = settings.transform.GetChild(9).GetComponent<Slider>();
         try
         {
-            volume.value = PlayerPrefs.GetFloat("Volume");
+            volumeMusic.value = PlayerPrefs.GetFloat("VolumeMusic");
         }
         catch
         {
-            volume.value = 1;
+            volumeMusic.value = 1;
         }
-        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); AudioController.Instance.UpdateMusicVolume(); });
+        volumeMusic.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("VolumeMusic", volumeMusic.value); AudioController.Instance.UpdateMusicVolume(); });
+        
+        var volumeEffects = settings.transform.GetChild(11).GetComponent<Slider>();
+        try
+        {
+            volumeEffects.value = PlayerPrefs.GetFloat("VolumeEffects");
+        }
+        catch
+        {
+            volumeEffects.value = 1;
+        }
+        volumeEffects.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("VolumeEffects", volumeEffects.value); AudioController.Instance.UpdateEffectsVolume(); });
         ShowBlock();
     }
 
