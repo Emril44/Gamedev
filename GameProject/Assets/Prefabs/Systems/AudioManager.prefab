@@ -59,50 +59,80 @@ MonoBehaviour:
   SFXGroup: {fileID: 8752474335402730695, guid: 853b5be09602927469ab0afbd2adafe9, type: 2}
   sounds:
   - name: Click
-    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    clip: {fileID: 8300000, guid: 2a50e3d1c1cbaf44fb38abdcc3b092af, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
   - name: Jump
     clip: {fileID: 8300000, guid: 3ed04acba552a28459316b9ab969fef1, type: 3}
     volume: 0.5
+    minDistance: 0
+    maxDistance: 0
   - name: TextAppear
     clip: {fileID: 8300000, guid: 86002122354841f4e8d4720c15d12e9e, type: 3}
     volume: 0.6
+    minDistance: 0
+    maxDistance: 0
   - name: CollectSpark
     clip: {fileID: 8300000, guid: 931314dbe43d6c94b850742d6d9da9d0, type: 3}
     volume: 0.9
+    minDistance: 0
+    maxDistance: 0
   - name: UsePrism
     clip: {fileID: 8300000, guid: 50b7ed8ff5c6d4b4aaad10d354243a9a, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
   - name: UnlockColor
     clip: {fileID: 8300000, guid: a79e453cf9873cc45b818158a1f5f69d, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
   - name: Reset
     clip: {fileID: 8300000, guid: ddf9a87c03e44f44b932fc7ac68933a0, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
   - name: StartQuest
     clip: {fileID: 8300000, guid: a56908e9cc7f32a4ab6819bde41bf6e0, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
   - name: FinishQuest
     clip: {fileID: 8300000, guid: cae62eb427f1bf346b7b64304a4487b7, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
   - name: WaterSplashIn
     clip: {fileID: 8300000, guid: 57619855f8c747a4cae01f730663ac1a, type: 3}
     volume: 0.75
+    minDistance: 0
+    maxDistance: 0
   - name: WaterSplashOut
     clip: {fileID: 8300000, guid: 5edf373fcfd641b4596489b939513e36, type: 3}
     volume: 0.75
+    minDistance: 0
+    maxDistance: 0
   - name: LavaSplashIn
     clip: {fileID: 8300000, guid: b13b7ba34e715fd4bb44171e6c3c0fc9, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
   - name: LavaSplashOut
     clip: {fileID: 8300000, guid: 5281b59e068bdba4fb9878f5e3b69b05, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
   - name: PlayerDamage
     clip: {fileID: 8300000, guid: 41d427e06680b474d945efe9b1f34382, type: 3}
     volume: 0.5
+    minDistance: 0
+    maxDistance: 0
   - name: PlayerDeath
     clip: {fileID: 8300000, guid: d8d622a6d80420446a7c5b3ec505164c, type: 3}
     volume: 1
+    minDistance: 0
+    maxDistance: 0
 --- !u!82 &3436531380093248819
 AudioSource:
   m_ObjectHideFlags: 0
