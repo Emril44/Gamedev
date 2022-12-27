@@ -45,7 +45,7 @@ public class DialogueManager : MonoBehaviour
         onlyText = textWithoutName.GetComponent<TextMeshProUGUI>();
         dialogueText.text = "";
     }
-    
+
     public void GetTriggered(Dialogue dialogue)
     {
         this.dialogue = dialogue;
@@ -199,7 +199,7 @@ public class DialogueManager : MonoBehaviour
             dialogOptions[i].GetComponentInChildren<TMP_Text>().text = options[i];
             int j = i;
             dialogOptions[i].GetComponent<Button>().onClick.RemoveAllListeners();
-            dialogOptions[i].GetComponent<Button>().onClick.AddListener(() => GetButtonRes(j));
+            dialogOptions[i].GetComponent<Button>().onClick.AddListener(delegate { AudioController.Instance.PlaySFXGlobally("Click"); GetButtonRes(j); });
         }
     }
 
