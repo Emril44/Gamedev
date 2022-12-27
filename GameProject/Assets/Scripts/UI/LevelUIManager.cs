@@ -39,7 +39,7 @@ public class LevelUIManager : MonoBehaviour
     private int cardsMoving = 0;
     private float fireResistanceFull;
 
-    private void OnEnable()
+    private void Start()
     {
         PlayerInteraction.Instance.onHealthUpdate += delegate { UpdateHealthbar(); };
         if (PlayerInteraction.Instance.IsFireproof())
@@ -238,6 +238,7 @@ public class LevelUIManager : MonoBehaviour
         activeQuests.Add(quest);
         quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };
         quest.onComplete += () => { RemoveQuestCard(quest); };
+        questGO.transform.localPosition = new Vector3(0, 0, 600);
     }
 
     private void EnqueMove(IEnumerator a, IEnumerator b)
