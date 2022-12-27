@@ -60,6 +60,7 @@ public class CutsceneEvent
                 target.transform.position = targetLocation.position;
                 yield break;
             case EventType.UnlockColor:
+                AudioController.Instance.PlaySFXGlobally("UnlockColor");
                 DataManager.Instance.UnlockColor();
                 AudioController.Instance.PlaySFXGlobally("UnlockColor");
                 EnvironmentManager.Instance.ActivateColoredObjects();
