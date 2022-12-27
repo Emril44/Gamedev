@@ -574,7 +574,6 @@ public class MenuUIManager : MonoBehaviour
 
     public void ShowSettingsScreen()
     {
-        Debug.Log("start");
         if (blockInstance.transform.GetChild(1).childCount > 1)
         {
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
@@ -607,7 +606,7 @@ public class MenuUIManager : MonoBehaviour
         {
             volume.value = 1;
         }
-        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); AudioController.Instance.UpdateVolume(); });
+        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); AudioController.Instance.UpdateMusicVolume(); });
         ShowBlock();
     }
 
