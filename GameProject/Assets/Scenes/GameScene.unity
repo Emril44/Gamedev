@@ -894,6 +894,10 @@ PrefabInstance:
       propertyPath: m_LocalAABB.m_Extent.y
       value: 2.7976494
       objectReference: {fileID: 0}
+    - target: {fileID: 1129797834017048489, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1775426783456773482, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: m_LocalPosition.z
       value: 1.82
@@ -1110,6 +1114,10 @@ PrefabInstance:
       propertyPath: sparks.Array.data[43]
       value: 
       objectReference: {fileID: 1531016382}
+    - target: {fileID: 2477828115658037267, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2495339806838440812, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: m_RootOrder
       value: 3
