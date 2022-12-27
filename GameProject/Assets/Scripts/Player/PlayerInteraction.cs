@@ -89,6 +89,8 @@ public class PlayerInteraction : MonoBehaviour
 
     void PutPrism(PrismShard prismShard)
     {
+        if (prismShard.getColor() == EnvironmentManager.Instance.CurrentColor) return;
+        AudioController.Instance.PlaySFXGlobally("UsePrism");
         EnvironmentManager.Instance.SetNewColor(prismShard.getColor());
     }
 
@@ -97,6 +99,7 @@ public class PlayerInteraction : MonoBehaviour
         Spark sp = spark.GetComponent<Spark>();
         if (!sp.Exhausted)
         {
+            AudioController.Instance.PlaySFXAt("CollectSpark", transform.position);
             DataManager.Instance.AddSpark();
             spark.SetActive(false);
             sp.Exhausted = true;

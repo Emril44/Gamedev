@@ -104,7 +104,8 @@ public class DialogueManager : MonoBehaviour
             DialogueText textNode = (DialogueText)currentNode;
             if (phraseCounter < textNode.text.Length)
             {
-                if((int)textNode.character == -1)
+                AudioController.Instance.PlaySFXGlobally("TextAppear");
+                if ((int)textNode.character == -1)
                 {
                     textWithoutName.SetActive(true);
                     textWithName.SetActive(false);
@@ -247,6 +248,7 @@ public class DialogueManager : MonoBehaviour
 
     public IEnumerator DisplayTextCoroutine(string displayText, float time)
     {
+        AudioController.Instance.PlaySFXGlobally("TextAppear");
         cutscenePlaying = true;
         string text = GetLocalizedText(displayText, '+');
         textWithoutName.SetActive(true);
