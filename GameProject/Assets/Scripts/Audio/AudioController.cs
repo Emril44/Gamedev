@@ -16,12 +16,14 @@ public class AudioController : MonoBehaviour
     }
 
     [System.Serializable]
-    private class Sound
+    public class Sound
     {
         public string name;
         public AudioClip clip;
         [Range(0f, 1f)]
         public float volume;
+        public float minDistance;
+        public float maxDistance;
     }
 
     private BGM currentBGM = BGM.Monochrome;
@@ -70,6 +72,7 @@ public class AudioController : MonoBehaviour
 
     public void PlaySFXAt(string name, Vector3 pos)
     {
+        if (name == "CollectSpark")
         if (!namesToSounds.ContainsKey(name))
         {
             Debug.LogWarning("Sound " + name + " not found, no sound will be played");
@@ -83,6 +86,8 @@ public class AudioController : MonoBehaviour
         source.spatialBlend = 1f;
         source.volume = sound.volume;
         source.outputAudioMixerGroup = SFXGroup;
+        source.minDistance = sound.minDistance;
+        source.maxDistance = sound.maxDistance;
         source.Play();
         Destroy(gameObject, sound.clip.length);
     }
@@ -111,6 +116,16 @@ public class AudioController : MonoBehaviour
     public void UpdateEffectsVolume()
     {
         SetMixerVolume("SFXVolume", Mathf.Max(PlayerPrefs.GetFloat("VolumeEffects", 1), 0.0001f));
+    }
+
+    public Sound GetSound(string name)
+    {
+        if (!namesToSounds.ContainsKey(name))
+        {
+            Debug.LogWarning("Sound " + name + " not found, no sound will be returned");
+            return null;
+        }
+        return namesToSounds[name];
     }
 
     private void SetMixerVolume(string propertyName, float volume)
@@ -159,7 +174,7 @@ public class AudioController : MonoBehaviour
             StopCoroutine(volumeCoroutines[(int)currentBGM]);
         }
         volumeCoroutines[(int)currentBGM] = StartCoroutine(SetVolumeSmoothly(currentBGM, 0));
-        volumeCoroutines[(int)bgm] = StartCoroutine(SetVolumeSmoothly(bgm, 1));
+        volumeCoroutines[(int)bgm] = StartCoroutine(SetVolumeSmoothly(bgm, 0.75f));
         currentBGM = bgm;
     }
 
