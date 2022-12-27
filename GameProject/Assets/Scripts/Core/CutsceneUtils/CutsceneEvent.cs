@@ -62,6 +62,7 @@ public class CutsceneEvent
             case EventType.UnlockColor:
                 AudioController.Instance.PlaySFXGlobally("UnlockColor");
                 DataManager.Instance.UnlockColor();
+                AudioController.Instance.PlaySFXGlobally("UnlockColor");
                 EnvironmentManager.Instance.ActivateColoredObjects();
                 yield break;
             case EventType.FadeIn:

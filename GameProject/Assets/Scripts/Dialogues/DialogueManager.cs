@@ -147,6 +147,10 @@ public class DialogueManager : MonoBehaviour
         for (int i = 0; i < text.Length; i++)
         {
             tmp.text += text[i];
+
+            if(i % 2 == 0)
+                AudioController.Instance.PlaySFXGlobally("TextAppear");
+            
             yield return new WaitForSeconds(0.03f);
         }
         animatingText = false;
@@ -269,6 +273,10 @@ public class DialogueManager : MonoBehaviour
         for (int i = 0; i < text.Length; i++)
         {
             tmp.text = text.Substring(i, text.Length - 1 - i);
+
+            if (i % 2 == 0)
+                AudioController.Instance.PlaySFXGlobally("TextAppear");
+
             yield return new WaitForSeconds(0.03f);
         }
     }
