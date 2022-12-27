@@ -53,6 +53,10 @@ public class LevelUIManager : MonoBehaviour
         PlayerInteraction.Instance.onFireproofApply += x => UpdateFireproof(x, x);
         PlayerInteraction.Instance.onFireproofUpdate += x => UpdateFireproof(x);
         PlayerInteraction.Instance.onFireproofEnd += delegate { fireResistance.SetActive(false); };
+        foreach (Quest q in QuestManager.Instance.GetActiveQuests())
+        {
+            AddQuestCard(q);
+        }
         QuestManager.Instance.onQuestActivate += q => AddQuestCard(q);
     }
 
@@ -62,6 +66,7 @@ public class LevelUIManager : MonoBehaviour
         fireResistanceFull = full;
         UpdateFireproof(current);
     }
+    
     void UpdateFireproof(float current)
     {
         var image = fireResistance.GetComponent<Image>();
