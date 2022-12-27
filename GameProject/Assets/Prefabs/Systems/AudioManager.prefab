@@ -56,6 +56,44 @@ MonoBehaviour:
   distortionEffectTime: 1.5
   distortionEffectDistortion: 1
   mixer: {fileID: 24100000, guid: 853b5be09602927469ab0afbd2adafe9, type: 2}
+  SFXGroup: {fileID: 8752474335402730695, guid: 853b5be09602927469ab0afbd2adafe9, type: 2}
+  sounds:
+  - name: Click
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: Jump
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: TextAppear
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: CollectSpark
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: UsePrism
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: UnlockColor
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: Reset
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: StartQuest
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: FinishQuest
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: WaterSplash
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: LavaSplash
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
+  - name: PlayerDeath
+    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    volume: 1
 --- !u!82 &3436531380093248819
 AudioSource:
   m_ObjectHideFlags: 0

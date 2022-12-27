@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
@@ -13,6 +14,16 @@ public class AudioController : MonoBehaviour
         Anger,
         Bargain
     }
+
+    [System.Serializable]
+    private class Sound
+    {
+        public string name;
+        public AudioClip clip;
+        [Range(0f, 1f)]
+        public float volume;
+    }
+
     private BGM currentBGM = BGM.Monochrome;
     [SerializeField] private AudioSource[] bgmSources;
     private Coroutine[] volumeCoroutines;
@@ -21,6 +32,9 @@ public class AudioController : MonoBehaviour
     [Range(0, 1)]
     [SerializeField] private float distortionEffectDistortion;
     [SerializeField] private AudioMixer mixer;
+    [SerializeField] private AudioMixerGroup SFXGroup;
+    [SerializeField] private Sound[] sounds;
+    private Dictionary<string, Sound> namesToSounds;
 
     public static AudioController Instance { get; private set; }
     private void Awake()
@@ -36,17 +50,66 @@ public class AudioController : MonoBehaviour
             DontDestroyOnLoad(this);
         }
         volumeCoroutines = new Coroutine[bgmSources.Length];
-        UpdateMusicVolume();
         SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
         {
             ChangeBGM(BGM.Monochrome);
         };
         bgmSources[(int)BGM.Monochrome].Play();
+        namesToSounds = new Dictionary<string, Sound>();
+        foreach (Sound sound in sounds)
+        {
+            namesToSounds.Add(sound.name, sound);
+        }
+    }
+
+    private void Start()
+    {
+        UpdateMusicVolume();
+        UpdateEffectsVolume();
+    }
+
+    public void PlaySFXAt(string name, Vector3 pos)
+    {
+        if (!namesToSounds.ContainsKey(name))
+        {
+            Debug.LogWarning("Sound " + name + " not found, no sound will be played");
+            return;
+        }
+        Sound sound = namesToSounds[name];
+        GameObject gameObject = new GameObject("One shot audio");
+        gameObject.transform.position = pos;
+        AudioSource source = gameObject.AddComponent<AudioSource>();
+        source.clip = sound.clip;
+        source.spatialBlend = 1f;
+        source.volume = sound.volume;
+        source.outputAudioMixerGroup = SFXGroup;
+        source.Play();
+        Destroy(gameObject, sound.clip.length);
+    }
+
+    public void PlaySFXGlobally(string name)
+    {
+        if (!namesToSounds.ContainsKey(name))
+        {
+            Debug.LogWarning("Sound " + name + " not found, no sound will be played");
+            return;
+        }
+        Sound sound = namesToSounds[name];
+        AudioSource source = gameObject.AddComponent<AudioSource>();
+        source.clip = sound.clip;
+        source.volume = sound.volume;
+        source.outputAudioMixerGroup = SFXGroup;
+        source.Play();
+        Destroy(source, sound.clip.length);
     }
 
     public void UpdateMusicVolume()
     {
-        SetMixerVolume("MusicVolume", Mathf.Max(PlayerPrefs.GetFloat("Volume", 1), 0.0001f));
+        SetMixerVolume("MusicVolume", Mathf.Max(PlayerPrefs.GetFloat("VolumeMusic", 1), 0.0001f));
+    }
+    public void UpdateEffectsVolume()
+    {
+        SetMixerVolume("SFXVolume", Mathf.Max(PlayerPrefs.GetFloat("VolumeEffects", 1), 0.0001f));
     }
 
     private void SetMixerVolume(string propertyName, float volume)
@@ -117,10 +180,5 @@ public class AudioController : MonoBehaviour
         audioSource.volume = target;
         if (target == 0) audioSource.Stop();
         volumeCoroutines[(int)bgm] = null;
-    }
-
-    public void UpdateEffectsVolume()
-    {
-        throw new NotImplementedException();
     }
 }
