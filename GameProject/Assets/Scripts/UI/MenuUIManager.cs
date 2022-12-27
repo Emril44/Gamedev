@@ -62,16 +62,6 @@ public class MenuUIManager : MonoBehaviour
         V = new GameObject("V");
         V.AddComponent<Image>().sprite = vSprite;
         V.SetActive(false);
-        try
-        {
-            PlayerInteraction.Instance.onDeath += delegate { ShowDeathScreen(); };
-        }
-        catch { }
-        try
-        {
-            PlayerInteraction.Instance.onCanSaveUpdate += b => saveButton.interactable = b;
-        }
-        catch { }
     }
 
     private IEnumerator SetSkin()
@@ -106,6 +96,26 @@ public class MenuUIManager : MonoBehaviour
             loadButton.interactable = false;
         }
         yield return StartCoroutine(SetSkin());
+        try
+        {
+            PlayerInteraction.Instance.onDeath += delegate { ShowDeathScreen(); };
+        }
+        catch { }
+        try
+        {
+            PlayerInteraction.Instance.onCanSaveUpdate += b => saveButton.interactable = b;
+            saveButton.interactable = PlayerInteraction.Instance.CanSave;
+        }
+        catch { }
+        if (PlayerMovement.Instance != null)
+        {
+            Button pause = canvas.transform.GetChild(1).GetChild(1).GetComponent<Button>();
+            PlayerMovement.Instance.onControllableUpdate += () =>
+            {
+                pause.interactable = PlayerMovement.Instance.Controllable;
+            };
+            pause.interactable = PlayerMovement.Instance.Controllable;
+        }
     }
 
     private void Update()
@@ -118,7 +128,7 @@ public class MenuUIManager : MonoBehaviour
     
     public void Pause()
     {
-        if (EnvironmentManager.Instance.CutsceneRunning)
+        if (!PlayerInteraction.Instance.Controllable)
         {
             return;
         }
