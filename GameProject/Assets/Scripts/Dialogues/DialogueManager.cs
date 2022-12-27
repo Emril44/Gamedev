@@ -69,11 +69,13 @@ public class DialogueManager : MonoBehaviour
             }
             else if (animatingText && Input.GetMouseButtonDown(0))
             {
+                AudioController.Instance.PlaySFXGlobally("Click");
                 StopAllCoroutines();
                 ShowAnimatedText();
             }
             else if (Input.GetMouseButtonDown(0) && !currentNode.IsOption())
             {
+                AudioController.Instance.PlaySFXGlobally("Click");
                 GetNext();
             }
         }
