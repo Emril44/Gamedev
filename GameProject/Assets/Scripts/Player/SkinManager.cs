@@ -10,7 +10,6 @@ public class SkinManager : MonoBehaviour
 {
     // All skin packs that the game knows about
     [SerializeField] private SkinPack[] skinPacks;
-    [SerializeField] private bool loadAllOnStart;
     public static SkinManager Instance { get; private set; }
     private SkinAssetReference chosenSkin;
     public bool Loaded { get; private set; }
@@ -46,7 +45,7 @@ public class SkinManager : MonoBehaviour
 
     private IEnumerator Start()
     {
-        if (loadAllOnStart) yield return LoadAvailablePacks();
+        yield return LoadAvailablePacks();
     }
 
     private SkinAssetReference SkinFromPrefs()
