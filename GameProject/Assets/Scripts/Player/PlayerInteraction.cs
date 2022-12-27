@@ -99,6 +99,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             DataManager.Instance.AddSpark();
             spark.SetActive(false);
+            AudioController.Instance.PlaySFXGlobally("CollectSpark");
             sp.Exhausted = true;
         }
     }
@@ -161,6 +162,7 @@ public class PlayerInteraction : MonoBehaviour
                 if (nearPrism)
                 {
                     PutPrism(prismGO.gameObject.GetComponent<PrismShard>());
+                    AudioController.Instance.PlaySFXGlobally("UsePrism");
                 }
                 else if (nearLever)
                 {
@@ -247,6 +249,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
                 waterSploosh.name = "WaterSplashParticles";
                 waterSploosh.Play();
+                AudioController.Instance.PlaySFXGlobally("WaterSplashIn");
                 StartCoroutine(nameof(SetInWater), true);
                 break;
             case "Lava":
@@ -317,6 +320,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
                 waterSploosh.name = "WaterSplashParticles";
                 waterSploosh.Play();
+                AudioController.Instance.PlaySFXGlobally("WaterSplashOut");
                 StartCoroutine(nameof(SetInWater), false);
                 break;
             case "Lava":

@@ -62,19 +62,19 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
     volume: 1
   - name: Jump
-    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 3ed04acba552a28459316b9ab969fef1, type: 3}
+    volume: 0.5
   - name: TextAppear
     clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
     volume: 1
   - name: CollectSpark
-    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 931314dbe43d6c94b850742d6d9da9d0, type: 3}
+    volume: 0.75
   - name: UsePrism
-    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
-    volume: 1
+    clip: {fileID: 8300000, guid: 50b7ed8ff5c6d4b4aaad10d354243a9a, type: 3}
+    volume: 0.75
   - name: UnlockColor
-    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+    clip: {fileID: 8300000, guid: a79e453cf9873cc45b818158a1f5f69d, type: 3}
     volume: 1
   - name: Reset
     clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
@@ -85,8 +85,11 @@ MonoBehaviour:
   - name: FinishQuest
     clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
     volume: 1
-  - name: WaterSplash
-    clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
+  - name: WaterSplashIn
+    clip: {fileID: 8300000, guid: 57619855f8c747a4cae01f730663ac1a, type: 3}
+    volume: 0.15
+  - name: WaterSplashOut
+    clip: {fileID: 8300000, guid: 5edf373fcfd641b4596489b939513e36, type: 3}
     volume: 1
   - name: LavaSplash
     clip: {fileID: 8300000, guid: d9c41f7f900641a478b323db93c565e8, type: 3}
