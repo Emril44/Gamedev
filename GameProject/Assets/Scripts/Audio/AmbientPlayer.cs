@@ -3,11 +3,13 @@ using UnityEngine;
 public class AmbientPlayer : MonoBehaviour
 {
     [SerializeField] private string soundName;
+    [SerializeField] private float minDistance = 1;
+    [SerializeField] private float maxDistance = 10;
     private AudioController.Sound sound;
     private AudioSource source;
     private GameObject player;
 
-    /*void Start()
+    void Start()
     {
         sound = AudioController.Instance.GetSound(soundName);
         if (sound == null)
@@ -21,8 +23,8 @@ public class AmbientPlayer : MonoBehaviour
             source.clip = sound.clip;
             source.spatialBlend = 1f;
             source.volume = sound.volume;
-            source.minDistance = sound.minDistance;
-            source.maxDistance = sound.maxDistance;
+            source.minDistance = minDistance;
+            source.maxDistance = maxDistance;
             source.rolloffMode = AudioRolloffMode.Linear;
             player = GameObject.FindWithTag("Player");
         }
@@ -33,5 +35,5 @@ public class AmbientPlayer : MonoBehaviour
     {
         if (!source.isPlaying && Vector3.Distance(transform.position, player.transform.position) < sound.maxDistance) source.Play();
         else if (source.isPlaying && Vector3.Distance(transform.position, player.transform.position) > sound.maxDistance) source.Pause();
-    }*/
+    }
 }
