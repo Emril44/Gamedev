@@ -65,9 +65,9 @@ MonoBehaviour:
     maxDistance: 0
   - name: Jump
     clip: {fileID: 8300000, guid: 3ed04acba552a28459316b9ab969fef1, type: 3}
-    volume: 0.5
+    volume: 1
     minDistance: 1
-    maxDistance: 1
+    maxDistance: 25
   - name: TextAppear
     clip: {fileID: 8300000, guid: 86002122354841f4e8d4720c15d12e9e, type: 3}
     volume: 0.6
@@ -77,7 +77,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 931314dbe43d6c94b850742d6d9da9d0, type: 3}
     volume: 0.9
     minDistance: 1
-    maxDistance: 1
+    maxDistance: 20
   - name: UsePrism
     clip: {fileID: 8300000, guid: 50b7ed8ff5c6d4b4aaad10d354243a9a, type: 3}
     volume: 1
@@ -107,22 +107,22 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 57619855f8c747a4cae01f730663ac1a, type: 3}
     volume: 0.5
     minDistance: 1
-    maxDistance: 1
+    maxDistance: 25
   - name: WaterSplashOut
     clip: {fileID: 8300000, guid: 5edf373fcfd641b4596489b939513e36, type: 3}
     volume: 0.5
     minDistance: 1
-    maxDistance: 1
+    maxDistance: 25
   - name: LavaSplashIn
     clip: {fileID: 8300000, guid: b13b7ba34e715fd4bb44171e6c3c0fc9, type: 3}
     volume: 0.5
     minDistance: 1
-    maxDistance: 1
+    maxDistance: 15
   - name: LavaSplashOut
     clip: {fileID: 8300000, guid: 5281b59e068bdba4fb9878f5e3b69b05, type: 3}
     volume: 0.5
     minDistance: 1
-    maxDistance: 1
+    maxDistance: 15
   - name: PlayerDamage
     clip: {fileID: 8300000, guid: 41d427e06680b474d945efe9b1f34382, type: 3}
     volume: 0.5
