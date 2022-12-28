@@ -78,6 +78,7 @@ public class MobileCharacter : MonoBehaviour
 
     public void SetMobile(bool mobile)
     {
+        if (rb == null) rb = GetComponent<Rigidbody2D>(); // for when the MobileCharacter was disabled before the call of this
         if (mobile)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
