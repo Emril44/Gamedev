@@ -66,8 +66,8 @@ MonoBehaviour:
   - name: Jump
     clip: {fileID: 8300000, guid: 3ed04acba552a28459316b9ab969fef1, type: 3}
     volume: 0.5
-    minDistance: 0
-    maxDistance: 0
+    minDistance: 1
+    maxDistance: 1
   - name: TextAppear
     clip: {fileID: 8300000, guid: 86002122354841f4e8d4720c15d12e9e, type: 3}
     volume: 0.6
@@ -76,8 +76,8 @@ MonoBehaviour:
   - name: CollectSpark
     clip: {fileID: 8300000, guid: 931314dbe43d6c94b850742d6d9da9d0, type: 3}
     volume: 0.9
-    minDistance: 0
-    maxDistance: 0
+    minDistance: 1
+    maxDistance: 1
   - name: UsePrism
     clip: {fileID: 8300000, guid: 50b7ed8ff5c6d4b4aaad10d354243a9a, type: 3}
     volume: 1
@@ -105,24 +105,24 @@ MonoBehaviour:
     maxDistance: 0
   - name: WaterSplashIn
     clip: {fileID: 8300000, guid: 57619855f8c747a4cae01f730663ac1a, type: 3}
-    volume: 0.75
-    minDistance: 0
-    maxDistance: 0
+    volume: 0.5
+    minDistance: 1
+    maxDistance: 1
   - name: WaterSplashOut
     clip: {fileID: 8300000, guid: 5edf373fcfd641b4596489b939513e36, type: 3}
-    volume: 0.75
-    minDistance: 0
-    maxDistance: 0
+    volume: 0.5
+    minDistance: 1
+    maxDistance: 1
   - name: LavaSplashIn
     clip: {fileID: 8300000, guid: b13b7ba34e715fd4bb44171e6c3c0fc9, type: 3}
-    volume: 1
-    minDistance: 0
-    maxDistance: 0
+    volume: 0.5
+    minDistance: 1
+    maxDistance: 1
   - name: LavaSplashOut
     clip: {fileID: 8300000, guid: 5281b59e068bdba4fb9878f5e3b69b05, type: 3}
-    volume: 1
-    minDistance: 0
-    maxDistance: 0
+    volume: 0.5
+    minDistance: 1
+    maxDistance: 1
   - name: PlayerDamage
     clip: {fileID: 8300000, guid: 41d427e06680b474d945efe9b1f34382, type: 3}
     volume: 0.5
@@ -133,8 +133,23 @@ MonoBehaviour:
     volume: 1
     minDistance: 0
     maxDistance: 0
-  globalCachedCount: 3
-  localCachedCount: 3
+  - name: CrackAmbient
+    clip: {fileID: 8300000, guid: 5b42e9d89a7460a49b897006f4fbc93d, type: 3}
+    volume: 1
+    minDistance: 1
+    maxDistance: 10
+  - name: LavaAmbient
+    clip: {fileID: 8300000, guid: ac29f5e902724e5488bcb5b27f14c611, type: 3}
+    volume: 0.75
+    minDistance: 1
+    maxDistance: 10
+  - name: BlackAmbient
+    clip: {fileID: 8300000, guid: e88348c58bfc6394cbff871567b28090, type: 3}
+    volume: 1
+    minDistance: 1
+    maxDistance: 10
+  globalBufferedCount: 2
+  localBufferedCount: 2
 --- !u!82 &3436531380093248819
 AudioSource:
   m_ObjectHideFlags: 0

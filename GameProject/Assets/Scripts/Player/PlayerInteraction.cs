@@ -99,7 +99,7 @@ public class PlayerInteraction : MonoBehaviour
         Spark sp = spark.GetComponent<Spark>();
         if (!sp.Exhausted)
         {
-            AudioController.Instance.PlaySFXAt("CollectSpark", transform.position);
+            AudioController.Instance.PlaySFXGlobally("CollectSpark");
             DataManager.Instance.AddSpark();
             spark.SetActive(false);
             sp.Exhausted = true;
@@ -252,7 +252,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
                 waterSploosh.name = "WaterSplashParticles";
                 waterSploosh.Play();
-                AudioController.Instance.PlaySFXAt("WaterSplashIn", transform.position);
+                AudioController.Instance.PlaySFXGlobally("WaterSplashIn");
                 StartCoroutine(nameof(SetInWater), true);
                 break;
             case "Lava":
@@ -260,7 +260,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
                 lavaSploosh.name = "LavaSplashParticles";
                 lavaSploosh.Play();
-                AudioController.Instance.PlaySFXAt("LavaSplashIn", transform.position);
+                AudioController.Instance.PlaySFXGlobally("LavaSplashIn");
                 StartCoroutine(nameof(SetInLava), true);
                 break;
             case "Lever":
@@ -324,7 +324,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
                 waterSploosh.name = "WaterSplashParticles";
                 waterSploosh.Play();
-                AudioController.Instance.PlaySFXAt("WaterSplashOut", transform.position);
+                AudioController.Instance.PlaySFXGlobally("WaterSplashOut");
                 StartCoroutine(nameof(SetInWater), false);
                 break;
             case "Lava":
@@ -332,7 +332,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
                 lavaSploosh.name = "LavaSplashParticles";
                 lavaSploosh.Play();
-                AudioController.Instance.PlaySFXAt("LavaSplashOut", transform.position);
+                AudioController.Instance.PlaySFXGlobally("LavaSplashOut");
                 StartCoroutine(nameof(SetInLava), false);
                 break;
             case "Lever":
