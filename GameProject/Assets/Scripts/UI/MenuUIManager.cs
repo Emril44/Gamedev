@@ -75,6 +75,10 @@ public class MenuUIManager : MonoBehaviour
 
     private IEnumerator Start()
     {
+        foreach (Button b in canvas.transform.GetComponentsInChildren<Button>())
+        {
+            b.onClick.AddListener(delegate { AudioController.Instance.PlaySFXGlobally("Click"); });
+        }
         try
         {
             baseButtonPos = new Vector3[]
@@ -367,6 +371,7 @@ public class MenuUIManager : MonoBehaviour
                 {
                     card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
                 }
+                card.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save #{n}?+Перезаписати збереження #{n}?", delegate { SavesManager.Instance.Save(n); AudioController.Instance.PlaySFXGlobally("Click"); RemoveBlock(); }); });
             }
             else
             {

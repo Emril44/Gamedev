@@ -58,7 +58,6 @@ public class LevelUIManager : MonoBehaviour
             AddQuestCard(q);
         }
         QuestManager.Instance.onQuestActivate += q => AddQuestCard(q);
-        canvasHUD.transform.GetComponentInChildren<Button>().onClick.AddListener(delegate { AudioController.Instance.PlaySFXGlobally("Click"); });
     }
 
     void UpdateFireproof(float full, float current)
