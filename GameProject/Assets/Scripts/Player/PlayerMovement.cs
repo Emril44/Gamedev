@@ -134,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
                     ResetParent();
                     verticalMove = jumpVelocity;
                     animator.Play(JUMP_NAME);
-                    AudioController.Instance.PlaySFXGlobally("Jump");
+                    AudioController.Instance.PlaySFXAt("Jump", transform.position);
                 }
                 rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
             }

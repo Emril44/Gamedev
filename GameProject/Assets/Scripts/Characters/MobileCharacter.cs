@@ -73,6 +73,7 @@ public class MobileCharacter : MonoBehaviour
             animator.Play(jumpAnimationName);
         }
         rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+        AudioController.Instance.PlaySFXAt("Jump", transform.position);
     }
 
     public void SetMobile(bool mobile)
