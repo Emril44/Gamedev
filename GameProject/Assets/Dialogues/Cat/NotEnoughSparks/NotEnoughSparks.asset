@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05648aab54f8643499ab797884ce6a5c, type: 3}
-  m_Name: Objective 1
+  m_Script: {fileID: 11500000, guid: 0562645db54ef2e4c959daf10fc40472, type: 3}
+  m_Name: NotEnoughSparks
   m_EditorClassIdentifier: 
-  separator: 43
-  message: 'Hello
-
-'
-  dialogue: {fileID: 11400000, guid: a2931e36413fef94a9a2e0c54eca0aef, type: 2}
+  <firstNode>k__BackingField: {fileID: 11400000, guid: 4c8c7ed55f46a0b479f1f078c5cd6c9a, type: 2}
