@@ -14,7 +14,8 @@ public class AmbientPlayer : MonoBehaviour
         sound = AudioController.Instance.GetSound(soundName);
         if (sound == null)
         {
-            Debug.LogError("Illegal sound " + soundName + " on ambient player on game object " + gameObject.name);
+            Debug.LogError("Illegal sound " + soundName + " on ambient player on game object " + gameObject.name + ", ambient player will be destroyed");
+            Destroy(this);
         }
         else
         {
