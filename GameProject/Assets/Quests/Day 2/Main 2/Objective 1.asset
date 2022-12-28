@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Objective 1
   m_EditorClassIdentifier: 
   separator: 43
-  message: 'Hello
+  message: '
 
 '
   dialogue: {fileID: 11400000, guid: a2931e36413fef94a9a2e0c54eca0aef, type: 2}
