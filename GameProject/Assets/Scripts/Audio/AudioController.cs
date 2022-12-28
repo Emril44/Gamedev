@@ -38,6 +38,13 @@ public class AudioController : MonoBehaviour
     [SerializeField] private Sound[] sounds;
     private Dictionary<string, Sound> namesToSounds;
 
+    [Range(1, 10)]
+    [SerializeField] private int globalBufferedCount = 2;
+    [Range(1, 10)]
+    [SerializeField] private int localBufferedCount = 2;
+    private AudioSource[] bufferedGlobalSources;
+    private AudioSource[] bufferedLocalSources;
+
     public static AudioController Instance { get; private set; }
     private void Awake()
     {
@@ -62,6 +69,25 @@ public class AudioController : MonoBehaviour
         {
             namesToSounds.Add(sound.name, sound);
         }
+        bufferedGlobalSources = new AudioSource[globalBufferedCount];
+        // cache global sources on this persistent object
+        for (int i = 0; i < globalBufferedCount; i++)
+        {
+            bufferedGlobalSources[i] = gameObject.AddComponent<AudioSource>();
+            bufferedGlobalSources[i].outputAudioMixerGroup = SFXGroup;
+            bufferedGlobalSources[i].playOnAwake = false;
+        }
+        // create proxy gameobjects and cache sources on them on every scene load
+        SceneManager.sceneLoaded += (Scene scene, LoadSceneMode mode) =>
+        {
+            bufferedLocalSources = new AudioSource[localBufferedCount];
+            for (int i = 0; i < localBufferedCount; i++)
+            {
+                bufferedLocalSources[i] = new GameObject("Cached one shot audio " + i).AddComponent<AudioSource>();
+                bufferedLocalSources[i].outputAudioMixerGroup = SFXGroup;
+                bufferedLocalSources[i].playOnAwake = false;
+            }
+        };
     }
 
     private void Start()
@@ -72,16 +98,28 @@ public class AudioController : MonoBehaviour
 
     public void PlaySFXAt(string name, Vector3 pos)
     {
-        if (name == "CollectSpark")
         if (!namesToSounds.ContainsKey(name))
         {
             Debug.LogWarning("Sound " + name + " not found, no sound will be played");
             return;
         }
         Sound sound = namesToSounds[name];
-        GameObject gameObject = new GameObject("One shot audio");
-        gameObject.transform.position = pos;
-        AudioSource source = gameObject.AddComponent<AudioSource>();
+        AudioSource source = null;
+        bool fromBuffer = false;
+        for (int i = 0; i < bufferedLocalSources.Length; i++)
+        {
+            if (!bufferedLocalSources[i].isPlaying)
+            {
+                source = bufferedLocalSources[i];
+                fromBuffer = true;
+                break;
+            }
+        }
+        if (source == null)
+        {
+            source = new GameObject("One shot audio").AddComponent<AudioSource>();
+        }
+        source.gameObject.transform.position = pos;
         source.clip = sound.clip;
         source.spatialBlend = 1f;
         source.volume = sound.volume;
@@ -89,7 +127,10 @@ public class AudioController : MonoBehaviour
         source.minDistance = sound.minDistance;
         source.maxDistance = sound.maxDistance;
         source.Play();
-        Destroy(gameObject, sound.clip.length);
+        if (!fromBuffer)
+        {
+            Destroy(source.gameObject, sound.clip.length);
+        }
     }
 
     public void PlaySFXGlobally(string name)
@@ -100,13 +141,30 @@ public class AudioController : MonoBehaviour
             return;
         }
         Sound sound = namesToSounds[name];
-        AudioSource source = gameObject.AddComponent<AudioSource>();
+        AudioSource source = null;
+        bool fromBuffer = false;
+        for (int i = 0; i < bufferedGlobalSources.Length; i++)
+        {
+            if (!bufferedGlobalSources[i].isPlaying)
+            {
+                source = bufferedGlobalSources[i];
+                fromBuffer = true;
+                break;
+            }
+        }
+        if (source == null)
+        {
+            source = gameObject.AddComponent<AudioSource>();
+        }
         source.clip = sound.clip;
         source.volume = sound.volume;
         source.outputAudioMixerGroup = SFXGroup;
         source.Play();
 
-        Destroy(source, sound.clip.length);
+        if (!fromBuffer)
+        {
+            Destroy(source, sound.clip.length);
+        }
     }
 
     public void UpdateMusicVolume()

@@ -133,6 +133,8 @@ MonoBehaviour:
     volume: 1
     minDistance: 0
     maxDistance: 0
+  globalCachedCount: 3
+  localCachedCount: 3
 --- !u!82 &3436531380093248819
 AudioSource:
   m_ObjectHideFlags: 0
