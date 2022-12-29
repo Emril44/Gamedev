@@ -15,5 +15,7 @@ MonoBehaviour:
   separator: 0
   character: -1
   text:
-  - Black Circle is completely ignoring Rectangle now.
+  - "Black Circle is completely ignoring Rectangle now.+\u0427\u043E\u0440\u043D\u0435
+    \u043A\u043E\u043B\u043E \u0442\u0435\u043F\u0435\u0440 \u043F\u043E\u0432\u043D\u0456\u0441\u0442\u044E
+    \u0456\u0433\u043D\u043E\u0440\u0443\u0454 \u041F\u0440\u044F\u043C\u043E\u043A\u0443\u0442\u043D\u0438\u043A\u0430."
   next: {fileID: 0}
