@@ -202,7 +202,7 @@ public class AudioController : MonoBehaviour
                 time += Time.fixedDeltaTime;
                 mixer.SetFloat("Distortion", Mathf.Lerp(0, distortionEffectDistortion, time / distortionEffectTime));
             }
-            mixer.SetFloat("Distortion", 1);
+            mixer.SetFloat("Distortion", distortionEffectDistortion);
         }
         else
         {

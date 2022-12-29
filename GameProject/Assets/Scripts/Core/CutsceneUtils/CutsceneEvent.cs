@@ -19,7 +19,7 @@ public class CutsceneEvent
         FadeIn,
         DisplayText,
         ChangeColor,
-        SetBGMDistortion
+        SetDistortion
     }
 
     public EventType Type { get { return type;  } }
@@ -77,7 +77,7 @@ public class CutsceneEvent
             case EventType.ChangeColor:
                 EnvironmentManager.Instance.SetNewColor(color);
                 yield break;
-            case EventType.SetBGMDistortion:
+            case EventType.SetDistortion:
                 yield return AudioController.Instance.SetDistorted(setToDistorted);
                 break;
             default:
