@@ -21,6 +21,12 @@ public class QuestDay3Main1 : Quest
        
     }
 
+    private IEnumerator Outro()
+    {
+        yield return cutscenes[2].Play();
+        yield return cutscenes[3].Play();
+    }
+
     protected override void ActOnObjective(int objective)
     {
         switch (objective)
@@ -29,7 +35,7 @@ public class QuestDay3Main1 : Quest
                 cat.SetDialogueBatch(fireResBatch);
                 break;
             case 3:
-                StartCoroutine(cutscenes[2].Play());
+                StartCoroutine(Outro());
                 break;
 
         }
