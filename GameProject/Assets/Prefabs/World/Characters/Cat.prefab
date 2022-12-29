@@ -327,7 +327,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 7928529913700521231}
-  fireproofGrants: []
+  fireproofGrants:
+  - <Dialogue>k__BackingField: {fileID: 11400000, guid: 87dd9e39d9c39ee4ebb73d93af1bc370, type: 2}
+    <Time>k__BackingField: 45
 --- !u!1001 &6379649447351904296
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -399,12 +401,24 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.size
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: batches.Array.data[0]
       value: 
+      objectReference: {fileID: 11400000, guid: d9e328a5d4d0b5744aa6c1565c427eec, type: 2}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 6c3f528807270b047b205b0de2e1b639, type: 2}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[2]
+      value: 
       objectReference: {fileID: 11400000, guid: 22d55894de1f70e4e82b1c2db9ad1134, type: 2}
+    - target: {fileID: 2228589503153941654, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
+      propertyPath: batches.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: c01dae7695963284eb74908b0a3840ef, type: 2}
     - target: {fileID: 3593797973173693372, guid: 33424883e922fd44bab7f1c15834f013, type: 3}
       propertyPath: m_Name
       value: DialogueTrigger
