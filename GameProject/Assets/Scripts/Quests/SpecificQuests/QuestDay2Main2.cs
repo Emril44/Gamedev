@@ -31,6 +31,7 @@ public class QuestDay2Main2 : Quest
                 break;
             case 5:
                 cat.SetDialogueBatch(catBatches[2]);
+                DataManager.Instance.day++;
                 break;
             
         }

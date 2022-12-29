@@ -24,6 +24,9 @@ public class QuestDay3Main1 : Quest
     private IEnumerator Outro()
     {
         yield return cutscenes[2].Play();
+        DataManager.Instance.day++;
+        DataManager.Instance.unlockedColors = 0;
+        EnvironmentManager.Instance.ActivateColoredObjects();
         yield return cutscenes[3].Play();
         PlayerPrefs.SetString("EndingSkinUnlocked", "True");
     }

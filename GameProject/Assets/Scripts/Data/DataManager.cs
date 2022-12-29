@@ -6,7 +6,7 @@ public class DataManager : MonoBehaviour
     public event Action onSparksUpdate;
     public event Action<int> onTouchedLettersGathered; // parameter is day (1-3)
     public int sparksAmount { get; private set; }
-    public int unlockedColors { get; private set; }
+    [NonSerialized] public int unlockedColors;
     public int day;
     private int timePlayed;
     private float startTime;
