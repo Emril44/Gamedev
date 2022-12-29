@@ -794,14 +794,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8792204370015360701, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
   m_PrefabInstance: {fileID: 3583609863825038943}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1750467939 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3420604478104352255, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
+  m_PrefabInstance: {fileID: 3583609863825038943}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1772286676 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5190946241954924446, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
-  m_PrefabInstance: {fileID: 3583609863825038943}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1772734965 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2906141318555206247, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
   m_PrefabInstance: {fileID: 3583609863825038943}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1788755604 stripped
@@ -1104,7 +1104,7 @@ PrefabInstance:
     - target: {fileID: 2212532053784978693, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: sparks.Array.data[38]
       value: 
-      objectReference: {fileID: 1772734965}
+      objectReference: {fileID: 0}
     - target: {fileID: 2212532053784978693, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: sparks.Array.data[39]
       value: 
@@ -1415,7 +1415,7 @@ PrefabInstance:
       objectReference: {fileID: 1850792488}
     - target: {fileID: 9222127692696693790, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: objects.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9222127692696693790, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: sparks.Array.data[0]
@@ -1469,6 +1469,10 @@ PrefabInstance:
       propertyPath: objects.Array.data[2]
       value: 
       objectReference: {fileID: 435074542}
+    - target: {fileID: 9222127692696693790, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
+      propertyPath: objects.Array.data[3]
+      value: 
+      objectReference: {fileID: 1750467939}
     - target: {fileID: 9222127692696693790, guid: 2ed6111cd166e6e4eb9d1b7bcca414f5, type: 3}
       propertyPath: sparks.Array.data[10]
       value: 
@@ -2189,11 +2193,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 306780637449941568, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
       propertyPath: m_Points.Array.data[4].x
-      value: 5.8157196
+      value: 4.7821655
+      objectReference: {fileID: 0}
+    - target: {fileID: 306780637449941568, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
+      propertyPath: m_Points.Array.data[4].y
+      value: -0.31573677
       objectReference: {fileID: 0}
     - target: {fileID: 306780637449941568, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
       propertyPath: m_Points.Array.data[9].y
-      value: 0.007801056
+      value: -0.25348064
       objectReference: {fileID: 0}
     - target: {fileID: 330365806686172239, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
       propertyPath: m_Points.Array.data[0].x
