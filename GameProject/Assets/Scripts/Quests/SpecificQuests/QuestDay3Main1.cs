@@ -18,7 +18,7 @@ public class QuestDay3Main1 : Quest
     {
         yield return cutscenes[0].Play();
         yield return cutscenes[1].Play();
-       
+        GameObject.FindGameObjectWithTag("SavesManager").SendMessage("Autosave");
     }
 
     private IEnumerator Outro()
@@ -29,6 +29,7 @@ public class QuestDay3Main1 : Quest
         EnvironmentManager.Instance.ActivateColoredObjects();
         yield return cutscenes[3].Play();
         PlayerPrefs.SetString("EndingSkinUnlocked", "True");
+        GameObject.FindGameObjectWithTag("SavesManager").SendMessage("Autosave");
     }
 
     protected override void ActOnObjective(int objective)
