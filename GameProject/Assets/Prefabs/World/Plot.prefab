@@ -2049,6 +2049,10 @@ PrefabInstance:
       value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 1228092644146351292, guid: aa060cc3d3752c640bb63fde9df7acbd, type: 3}
+      propertyPath: events.Array.data[7].dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: d65557319bbff04438b9a0b54bcc2f51, type: 2}
+    - target: {fileID: 1228092644146351292, guid: aa060cc3d3752c640bb63fde9df7acbd, type: 3}
       propertyPath: events.Array.data[7].velocity
       value: 14
       objectReference: {fileID: 0}
@@ -2056,6 +2060,10 @@ PrefabInstance:
       propertyPath: events.Array.data[8].velocity
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 1228092644146351292, guid: aa060cc3d3752c640bb63fde9df7acbd, type: 3}
+      propertyPath: events.Array.data[9].dialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: 8627534f029b9b944be6549e233acb4a, type: 2}
     - target: {fileID: 1228092644146351292, guid: aa060cc3d3752c640bb63fde9df7acbd, type: 3}
       propertyPath: events.Array.data[9].velocity
       value: 14
@@ -2071,7 +2079,7 @@ PrefabInstance:
     - target: {fileID: 1228092644146351292, guid: aa060cc3d3752c640bb63fde9df7acbd, type: 3}
       propertyPath: events.Array.data[11].dialogue
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 34c9a6e8a82be4c4298a89414ffe274f, type: 2}
     - target: {fileID: 1228092644146351292, guid: aa060cc3d3752c640bb63fde9df7acbd, type: 3}
       propertyPath: events.Array.data[11].velocity
       value: 14
@@ -2499,7 +2507,7 @@ PrefabInstance:
     - target: {fileID: 1228092644146351292, guid: aa060cc3d3752c640bb63fde9df7acbd, type: 3}
       propertyPath: events.Array.data[1].dialogue
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: dc4c4316b7ae22c4ebd2b46ae7fdebbe, type: 2}
     - target: {fileID: 1228092644146351292, guid: aa060cc3d3752c640bb63fde9df7acbd, type: 3}
       propertyPath: events.Array.data[3].displayText
       value: 
