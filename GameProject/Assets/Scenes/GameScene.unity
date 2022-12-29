@@ -3704,6 +3704,10 @@ PrefabInstance:
       propertyPath: m_Points.Array.data[11].y
       value: 0.47423744
       objectReference: {fileID: 0}
+    - target: {fileID: 3015102013448495942, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
+      propertyPath: events.Array.data[3].displayText
+      value: "The circle was stolen.+\u041A\u043E\u043B\u043E \u0432\u0438\u043A\u0440\u0430\u043B\u0438."
+      objectReference: {fileID: 0}
     - target: {fileID: 3035833561291663105, guid: 62d190417f9dec74ba80de92dea7adb9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -95.59
