@@ -25,6 +25,7 @@ public class QuestDay3Main1 : Quest
     {
         yield return cutscenes[2].Play();
         yield return cutscenes[3].Play();
+        PlayerPrefs.SetString("EndingSkinUnlocked", "True");
     }
 
     protected override void ActOnObjective(int objective)

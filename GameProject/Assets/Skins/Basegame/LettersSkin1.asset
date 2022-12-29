@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5a413f9f5fd2a4cb003c51af3c3360, type: 3}
   m_Name: LettersSkin1
   m_EditorClassIdentifier: 
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 6a4ea4931a4f82d4a8f32c9514c2f90d, type: 3}
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 435af3cc8abb21440a0a86edf8724f07, type: 3}
   <conditionKeyNames>k__BackingField:
   - LettersSkin1Unlocked
