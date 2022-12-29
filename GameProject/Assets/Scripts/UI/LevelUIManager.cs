@@ -39,7 +39,7 @@ public class LevelUIManager : MonoBehaviour
     private int cardsMoving = 0;
     private float fireResistanceFull;
 
-    private void OnEnable()
+    private void Start()
     {
         PlayerInteraction.Instance.onHealthUpdate += delegate { UpdateHealthbar(); };
         if (PlayerInteraction.Instance.IsFireproof())
@@ -53,6 +53,10 @@ public class LevelUIManager : MonoBehaviour
         PlayerInteraction.Instance.onFireproofApply += x => UpdateFireproof(x, x);
         PlayerInteraction.Instance.onFireproofUpdate += x => UpdateFireproof(x);
         PlayerInteraction.Instance.onFireproofEnd += delegate { fireResistance.SetActive(false); };
+        foreach (Quest q in QuestManager.Instance.GetActiveQuests())
+        {
+            AddQuestCard(q);
+        }
         QuestManager.Instance.onQuestActivate += q => AddQuestCard(q);
     }
 
@@ -62,6 +66,7 @@ public class LevelUIManager : MonoBehaviour
         fireResistanceFull = full;
         UpdateFireproof(current);
     }
+    
     void UpdateFireproof(float current)
     {
         var image = fireResistance.GetComponent<Image>();
@@ -238,6 +243,7 @@ public class LevelUIManager : MonoBehaviour
         activeQuests.Add(quest);
         quest.onUpdate += () => { UpdateQuestText(quest, objectiveTMP); };
         quest.onComplete += () => { RemoveQuestCard(quest); };
+        questGO.transform.localPosition = new Vector3(0, 0, 600);
     }
 
     private void EnqueMove(IEnumerator a, IEnumerator b)

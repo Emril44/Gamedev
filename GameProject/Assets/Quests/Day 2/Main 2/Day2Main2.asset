@@ -19,6 +19,12 @@ MonoBehaviour:
     \u041A\u043E\u043B\u043E. \u0412\u043E\u043D\u0438. \u0417\u0430\u043F\u043B\u0430\u0442\u044F\u0442\u044C."
   <Objectives>k__BackingField:
   - {fileID: 11400000, guid: f1f41087358df9542be5552a4e8e0f31, type: 2}
+  - {fileID: 11400000, guid: fae013bdba73a524c9006619e8619819, type: 2}
+  - {fileID: 11400000, guid: f0e347686a5a4344a90872bae8288c80, type: 2}
+  - {fileID: 11400000, guid: 6c40f30505d480d4eaffe4691ab50e26, type: 2}
+  - {fileID: 11400000, guid: eb3bd4fd7fe229743a1def1b7eea581b, type: 2}
+  - {fileID: 11400000, guid: e250512e500b51e49962ed97653adb9e, type: 2}
   <RequisiteObjectives>k__BackingField: 1
   <Prerequisites>k__BackingField: []
-  <NextQuests>k__BackingField: []
+  <NextQuests>k__BackingField:
+  - {fileID: 11400000, guid: 1e79eb9a5897e6e4ca51b7c7451d8e57, type: 2}

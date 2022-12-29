@@ -25,4 +25,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 22272e386475f5047a2bc8b0306c3e1d, type: 2}
   <RequisiteObjectives>k__BackingField: 1
   <Prerequisites>k__BackingField: []
-  <NextQuests>k__BackingField: []
+  <NextQuests>k__BackingField:
+  - {fileID: 11400000, guid: 9710f367cac349a4b8f0c28dca43adbc, type: 2}

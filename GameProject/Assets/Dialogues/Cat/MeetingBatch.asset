@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acbcb52695596440b810933b12957ed, type: 3}
   m_Name: MeetingBatch
   m_EditorClassIdentifier: 
-  <dialogueList>k__BackingField: []
-  <fallbackDialogue>k__BackingField: {fileID: 0}
+  <dialogueList>k__BackingField:
+  - {fileID: 11400000, guid: 24287a9099a41054387580afc66a8120, type: 2}
+  <fallbackDialogue>k__BackingField: {fileID: 11400000, guid: c1d1ae618e97ede42b8e1e2ff23ea690, type: 2}

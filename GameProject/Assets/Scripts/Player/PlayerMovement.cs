@@ -17,8 +17,10 @@ public class PlayerMovement : MonoBehaviour
         {
             controllable = value;
             if (!value) rb.velocity = new Vector2(rb.velocity.x / 10, rb.velocity.y);
+            onControllableUpdate?.Invoke();
         }
     }
+    public Action onControllableUpdate;
     [SerializeField] private float movementSpeed = 14f;
     [SerializeField] private float jumpVelocity = 14f;
     [SerializeField] private float outOfWaterMultiplier = 1.6f;
@@ -132,6 +134,7 @@ public class PlayerMovement : MonoBehaviour
                     ResetParent();
                     verticalMove = jumpVelocity;
                     animator.Play(JUMP_NAME);
+                    AudioController.Instance.PlaySFXAt("Jump", transform.position);
                 }
                 rb.velocity = new Vector2(horizontalMove * movementSpeed, verticalMove);
             }

@@ -98,6 +98,7 @@ public class QuestManager : MonoBehaviour
         void StartQuest()
         {
             quest.onStart -= StartQuest;
+            AudioController.Instance.PlaySFXGlobally("StartQuest");
             onQuestActivate?.Invoke(quest);
         }
         quest.onStart += StartQuest;
@@ -109,6 +110,7 @@ public class QuestManager : MonoBehaviour
         void CompleteQuest()
         {
             completedQuests.Add(questId);
+            AudioController.Instance.PlaySFXGlobally("FinishQuest");
             quest.onComplete -= CompleteQuest;
             quest.gameObject.SetActive(false);
             // add all direct next quests (whose prerequisites are met)

@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acbcb52695596440b810933b12957ed, type: 3}
   m_Name: SparksCollectedBatch
   m_EditorClassIdentifier: 
-  <dialogueList>k__BackingField: []
-  <fallbackDialogue>k__BackingField: {fileID: 0}
+  <dialogueList>k__BackingField:
+  - {fileID: 11400000, guid: 1ea4b5dfa4b17f044ae214192fd7dde6, type: 2}
+  <fallbackDialogue>k__BackingField: {fileID: 11400000, guid: 61c17fb011258d14fb3457e8790b2c92, type: 2}

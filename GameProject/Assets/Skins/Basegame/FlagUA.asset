@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: FlagUA
   m_EditorClassIdentifier: 
   <Sprite>k__BackingField: {fileID: 21300000, guid: fde1e53b18c7f0243a5b568af1ee4b0f, type: 3}
-  <conditionKeyNames>k__BackingField:
-  - FlagUAUnlocked
+  <conditionKeyNames>k__BackingField: []

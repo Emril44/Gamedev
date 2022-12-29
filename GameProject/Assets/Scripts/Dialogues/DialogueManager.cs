@@ -45,7 +45,7 @@ public class DialogueManager : MonoBehaviour
         onlyText = textWithoutName.GetComponent<TextMeshProUGUI>();
         dialogueText.text = "";
     }
-    
+
     public void GetTriggered(Dialogue dialogue)
     {
         this.dialogue = dialogue;
@@ -69,11 +69,13 @@ public class DialogueManager : MonoBehaviour
             }
             else if (animatingText && Input.GetMouseButtonDown(0))
             {
+                AudioController.Instance.PlaySFXGlobally("Click");
                 StopAllCoroutines();
                 ShowAnimatedText();
             }
             else if (Input.GetMouseButtonDown(0) && !currentNode.IsOption())
             {
+                AudioController.Instance.PlaySFXGlobally("Click");
                 GetNext();
             }
         }
@@ -102,7 +104,8 @@ public class DialogueManager : MonoBehaviour
             DialogueText textNode = (DialogueText)currentNode;
             if (phraseCounter < textNode.text.Length)
             {
-                if((int)textNode.character == -1)
+                AudioController.Instance.PlaySFXGlobally("TextAppear");
+                if ((int)textNode.character == -1)
                 {
                     textWithoutName.SetActive(true);
                     textWithName.SetActive(false);
@@ -144,6 +147,10 @@ public class DialogueManager : MonoBehaviour
         for (int i = 0; i < text.Length; i++)
         {
             tmp.text += text[i];
+
+            if(i % 2 == 0)
+                AudioController.Instance.PlaySFXGlobally("TextAppear");
+            
             yield return new WaitForSeconds(0.03f);
         }
         animatingText = false;
@@ -199,7 +206,7 @@ public class DialogueManager : MonoBehaviour
             dialogOptions[i].GetComponentInChildren<TMP_Text>().text = options[i];
             int j = i;
             dialogOptions[i].GetComponent<Button>().onClick.RemoveAllListeners();
-            dialogOptions[i].GetComponent<Button>().onClick.AddListener(() => GetButtonRes(j));
+            dialogOptions[i].GetComponent<Button>().onClick.AddListener(delegate { AudioController.Instance.PlaySFXGlobally("Click"); GetButtonRes(j); });
         }
     }
 
@@ -245,6 +252,7 @@ public class DialogueManager : MonoBehaviour
 
     public IEnumerator DisplayTextCoroutine(string displayText, float time)
     {
+        AudioController.Instance.PlaySFXGlobally("TextAppear");
         cutscenePlaying = true;
         string text = GetLocalizedText(displayText, '+');
         textWithoutName.SetActive(true);
@@ -265,6 +273,10 @@ public class DialogueManager : MonoBehaviour
         for (int i = 0; i < text.Length; i++)
         {
             tmp.text = text.Substring(i, text.Length - 1 - i);
+
+            if (i % 2 == 0)
+                AudioController.Instance.PlaySFXGlobally("TextAppear");
+
             yield return new WaitForSeconds(0.03f);
         }
     }

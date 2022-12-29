@@ -53,25 +53,15 @@ public class MenuUIManager : MonoBehaviour
         blockInstance.SetActive(false);
         blockInstance.transform.SetParent(canvas.transform, false);
         var x = blockInstance.transform.GetChild(1).GetChild(0).gameObject;
-        x.GetComponent<Button>().onClick.AddListener(() => { RemoveBlock(); });
+        x.GetComponent<Button>().onClick.AddListener(() => { RemoveBlock(); AudioController.Instance.PlaySFXGlobally("Click"); });
         yesNoInstance = Instantiate(yesNo);
         yesNoInstance.SetActive(false);
         yesNoInstance.transform.SetParent(canvas.transform, false);
         var no = yesNoInstance.transform.GetChild(1).GetChild(2).gameObject;
-        no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); });
+        no.GetComponent<Button>().onClick.AddListener(() => { RemoveYesNo(); AudioController.Instance.PlaySFXGlobally("Click"); });
         V = new GameObject("V");
         V.AddComponent<Image>().sprite = vSprite;
         V.SetActive(false);
-        try
-        {
-            PlayerInteraction.Instance.onDeath += delegate { ShowDeathScreen(); };
-        }
-        catch { }
-        try
-        {
-            PlayerInteraction.Instance.onCanSaveUpdate += b => saveButton.interactable = b;
-        }
-        catch { }
     }
 
     private IEnumerator SetSkin()
@@ -85,6 +75,10 @@ public class MenuUIManager : MonoBehaviour
 
     private IEnumerator Start()
     {
+        foreach (Button b in canvas.transform.GetComponentsInChildren<Button>())
+        {
+            b.onClick.AddListener(delegate { AudioController.Instance.PlaySFXGlobally("Click"); });
+        }
         try
         {
             baseButtonPos = new Vector3[]
@@ -106,6 +100,26 @@ public class MenuUIManager : MonoBehaviour
             loadButton.interactable = false;
         }
         yield return StartCoroutine(SetSkin());
+        try
+        {
+            PlayerInteraction.Instance.onDeath += delegate { ShowDeathScreen(); };
+        }
+        catch { }
+        try
+        {
+            PlayerInteraction.Instance.onCanSaveUpdate += b => saveButton.interactable = b;
+            saveButton.interactable = PlayerInteraction.Instance.CanSave;
+        }
+        catch { }
+        if (PlayerMovement.Instance != null)
+        {
+            Button pause = canvas.transform.GetChild(1).GetChild(1).GetComponent<Button>();
+            PlayerMovement.Instance.onControllableUpdate += () =>
+            {
+                pause.interactable = PlayerMovement.Instance.Controllable;
+            };
+            pause.interactable = PlayerMovement.Instance.Controllable;
+        }
     }
 
     private void Update()
@@ -118,7 +132,7 @@ public class MenuUIManager : MonoBehaviour
     
     public void Pause()
     {
-        if (EnvironmentManager.Instance.CutsceneRunning)
+        if (!PlayerInteraction.Instance.Controllable)
         {
             return;
         }
@@ -335,13 +349,13 @@ public class MenuUIManager : MonoBehaviour
         {
             var card = SaveCard(autosaveString, autosave, s.transform, 0);
             card.GetComponent<Button>().onClick.RemoveAllListeners();
-            card.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Overwrite autosave?+Перезаписати автозбереження?", delegate { SavesManager.Instance.Save(0); RemoveBlock(); }); });
+            card.GetComponent<Button>().onClick.AddListener(() => { SetYesNo("Overwrite autosave?+Перезаписати автозбереження?", delegate { SavesManager.Instance.Save(0); AudioController.Instance.PlaySFXGlobally("Click"); RemoveBlock(); }); });
         }
         else
         {
             var card = Instantiate(newSave, s.transform);
             card.transform.localPosition = card.transform.localPosition + new Vector3(-246, 425);
-            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Save(0); RemoveBlock(); });
+            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Save(0); AudioController.Instance.PlaySFXGlobally("Click"); RemoveBlock(); });
         }
         var l = Instantiate(line, s.transform);
         l.transform.localPosition = l.transform.localPosition + new Vector3(0, -375);
@@ -357,13 +371,13 @@ public class MenuUIManager : MonoBehaviour
                 {
                     card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
                 }
-                card.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save #{n}?+Перезаписати збереження #{n}?", delegate { SavesManager.Instance.Save(n);RemoveBlock(); }); });
+                card.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save #{n}?+Перезаписати збереження #{n}?", delegate { SavesManager.Instance.Save(n); AudioController.Instance.PlaySFXGlobally("Click"); RemoveBlock(); }); });
             }
             else
             {
                 var card = Instantiate(newSave, s.transform);
                 card.transform.localPosition = card.transform.localPosition + new Vector3(-246, -338 * (j) + 415);
-                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Save(n); RemoveBlock(); });
+                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Save(n); AudioController.Instance.PlaySFXGlobally("Click"); RemoveBlock(); });
             }
         }
         ShowBlock();
@@ -385,7 +399,7 @@ public class MenuUIManager : MonoBehaviour
         {
             var card = SaveCard(autosaveString, autosave, s.transform, 0);
             card.GetComponent<Button>().onClick.RemoveAllListeners();
-            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(0); Time.timeScale = 1; }); 
+            card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(0); AudioController.Instance.PlaySFXGlobally("Click"); Time.timeScale = 1; }); 
         }
         else
         {
@@ -408,7 +422,7 @@ public class MenuUIManager : MonoBehaviour
                     card.transform.localPosition = card.transform.localPosition + new Vector3(0, -20);
                 }
                 int n = j;
-                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(n);Time.timeScale = 1; });
+                card.GetComponent<Button>().onClick.AddListener(() => { SavesManager.Instance.Load(n); AudioController.Instance.PlaySFXGlobally("Click"); Time.timeScale = 1; });
             }
             else
             {
@@ -436,7 +450,7 @@ public class MenuUIManager : MonoBehaviour
 
         //save.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Overwrite save{num}+Перезаписати збереження{num}", () => { SavesManager.Instance.NewGame(); }) ; });
         var x = save.transform.GetChild(1).gameObject;
-        x.GetComponent<Button>().onClick.AddListener(() => { SetYesNo($"Delete save{num}+Видалити збереження{num}", () => 
+        x.GetComponent<Button>().onClick.AddListener(() => {AudioController.Instance.PlaySFXGlobally("Click"); SetYesNo($"Delete save{num}+Видалити збереження{num}", () => 
         {   
             SavesManager.Instance.RemoveSave(n);
             Destroy(save);
@@ -461,7 +475,7 @@ public class MenuUIManager : MonoBehaviour
         yesNoInstance.SetActive(true);
         yesNoInstance.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = message.Split('+')[PlayerPrefs.GetInt("Language")];
         yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.RemoveAllListeners();
-        yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { onYes(); yesNoInstance.SetActive(false); blockInstance.transform.GetChild(0).gameObject.SetActive(true); });
+        yesNoInstance.transform.GetChild(1).GetChild(1).GetComponent<Button>().onClick.AddListener(() => { AudioController.Instance.PlaySFXGlobally("Click"); onYes(); yesNoInstance.SetActive(false); blockInstance.transform.GetChild(0).gameObject.SetActive(true); });
     }
 
     public void ShowSkinpacks(bool showBlock)
@@ -482,7 +496,7 @@ public class MenuUIManager : MonoBehaviour
             s.transform.localPosition = new Vector3(-30 + 30 * (i % 3), 17.5f + -40 * (i / 3));
             if (SkinManager.Instance.IsLoaded(skinPack))
             {
-                s.GetComponent<Button>().onClick.AddListener(() => { ShowAppearanceScreen(skinPack); });
+                s.GetComponent<Button>().onClick.AddListener(() => { AudioController.Instance.PlaySFXGlobally("Click"); ShowAppearanceScreen(skinPack); });
                 var skin = (Skin)skinPack.Skins[0].Asset;
                 s.GetComponent<Image>().sprite = skin.Sprite;
             }
@@ -501,7 +515,7 @@ public class MenuUIManager : MonoBehaviour
         else
         {
             block0.GetChild(0).gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
-            block0.GetChild(0).gameObject.GetComponent<Button>().onClick.AddListener(() => { RemoveBlock(); });
+            block0.GetChild(0).gameObject.GetComponent<Button>().onClick.AddListener(() => { AudioController.Instance.PlaySFXGlobally("Click"); RemoveBlock(); });
         }
     }
     
@@ -518,7 +532,7 @@ public class MenuUIManager : MonoBehaviour
         }
         var block0 = blockInstance.transform.GetChild(1);
         block0.GetChild(0).gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
-        block0.GetChild(0).gameObject.GetComponent<Button>().onClick.AddListener(() => { V.transform.SetParent(null, false); ShowSkinpacks(false); V.SetActive(false); });
+        block0.GetChild(0).gameObject.GetComponent<Button>().onClick.AddListener(() => { AudioController.Instance.PlaySFXGlobally("Click"); V.transform.SetParent(null, false); ShowSkinpacks(false); V.SetActive(false); });
         var block = new GameObject("Appearance");
         block.transform.SetParent(block0, false);
         var layout = Instantiate(this.skinsScroll, block.transform).transform.GetChild(1).GetChild(0);
@@ -541,7 +555,7 @@ public class MenuUIManager : MonoBehaviour
                     skinButton.GetComponent<Image>().sprite = sprites[r * 4 + i];
                     skinButton.GetComponent<Image>().color = Color.white;
                     int j = r * 4 + i;
-                    skinButton.GetComponent<Button>().onClick.AddListener(delegate { SetV(skinButton, j, pack); });
+                    skinButton.GetComponent<Button>().onClick.AddListener(delegate { AudioController.Instance.PlaySFXGlobally("Click"); SetV(skinButton, j, pack); });
                 }
                 else
                 {
@@ -574,7 +588,6 @@ public class MenuUIManager : MonoBehaviour
 
     public void ShowSettingsScreen()
     {
-        Debug.Log("start");
         if (blockInstance.transform.GetChild(1).childCount > 1)
         {
             Destroy(blockInstance.transform.GetChild(1).GetChild(1).gameObject);
@@ -598,16 +611,13 @@ public class MenuUIManager : MonoBehaviour
         fullscreen.value = fullscreen.options.Select(option => option.text).ToList().IndexOf(Screen.fullScreenMode.ToString());
         fullscreen.onValueChanged.AddListener(delegate { ChangeFullscreen(fullscreen.options[fullscreen.value].text); });
 
-        var volume = settings.transform.GetChild(9).GetComponent<Slider>();
-        try
-        {
-            volume.value = PlayerPrefs.GetFloat("Volume");
-        }
-        catch
-        {
-            volume.value = 1;
-        }
-        volume.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("Volume", volume.value); AudioController.Instance.UpdateVolume(); });
+        var volumeMusic = settings.transform.GetChild(9).GetComponent<Slider>();
+        volumeMusic.value = PlayerPrefs.GetFloat("VolumeMusic", 1);
+        volumeMusic.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("VolumeMusic", volumeMusic.value); AudioController.Instance.UpdateMusicVolume(); });
+        
+        var volumeEffects = settings.transform.GetChild(11).GetComponent<Slider>();
+        volumeEffects.value = PlayerPrefs.GetFloat("VolumeEffects", 1);
+        volumeEffects.onValueChanged.AddListener(delegate { PlayerPrefs.SetFloat("VolumeEffects", volumeEffects.value); AudioController.Instance.UpdateEffectsVolume(); });
         ShowBlock();
     }
 

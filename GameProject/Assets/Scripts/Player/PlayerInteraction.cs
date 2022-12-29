@@ -89,6 +89,8 @@ public class PlayerInteraction : MonoBehaviour
 
     void PutPrism(PrismShard prismShard)
     {
+        if (prismShard.getColor() == EnvironmentManager.Instance.CurrentColor) return;
+        AudioController.Instance.PlaySFXGlobally("UsePrism");
         EnvironmentManager.Instance.SetNewColor(prismShard.getColor());
     }
 
@@ -97,6 +99,7 @@ public class PlayerInteraction : MonoBehaviour
         Spark sp = spark.GetComponent<Spark>();
         if (!sp.Exhausted)
         {
+            AudioController.Instance.PlaySFXGlobally("CollectSpark");
             DataManager.Instance.AddSpark();
             spark.SetActive(false);
             sp.Exhausted = true;
@@ -113,6 +116,7 @@ public class PlayerInteraction : MonoBehaviour
                 health--;
                 onHealthUpdate?.Invoke();
                 animator.Play(DAMAGE_NAME);
+                AudioController.Instance.PlaySFXGlobally("PlayerDamage");
                 StartCoroutine(Undamageable());
             }
             if (health <= 0)
@@ -137,6 +141,7 @@ public class PlayerInteraction : MonoBehaviour
             Controllable = false;
             rb.bodyType = RigidbodyType2D.Static;
             animator.Play(DEATH_NAME);
+            AudioController.Instance.PlaySFXGlobally("PlayerDeath");
             AnalyticsManager.Instance.DeathEvent(DataManager.Instance.day,source);
             yield return new WaitForSeconds(GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).length);
             onDeath?.Invoke();
@@ -247,6 +252,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
                 waterSploosh.name = "WaterSplashParticles";
                 waterSploosh.Play();
+                AudioController.Instance.PlaySFXGlobally("WaterSplashIn");
                 StartCoroutine(nameof(SetInWater), true);
                 break;
             case "Lava":
@@ -254,6 +260,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
                 lavaSploosh.name = "LavaSplashParticles";
                 lavaSploosh.Play();
+                AudioController.Instance.PlaySFXGlobally("LavaSplashIn");
                 StartCoroutine(nameof(SetInLava), true);
                 break;
             case "Lever":
@@ -317,6 +324,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem waterSploosh = waterSplash.GetComponent<ParticleSystem>();
                 waterSploosh.name = "WaterSplashParticles";
                 waterSploosh.Play();
+                AudioController.Instance.PlaySFXGlobally("WaterSplashOut");
                 StartCoroutine(nameof(SetInWater), false);
                 break;
             case "Lava":
@@ -324,6 +332,7 @@ public class PlayerInteraction : MonoBehaviour
                 ParticleSystem lavaSploosh = lavaSplash.GetComponent<ParticleSystem>();
                 lavaSploosh.name = "LavaSplashParticles";
                 lavaSploosh.Play();
+                AudioController.Instance.PlaySFXGlobally("LavaSplashOut");
                 StartCoroutine(nameof(SetInLava), false);
                 break;
             case "Lever":

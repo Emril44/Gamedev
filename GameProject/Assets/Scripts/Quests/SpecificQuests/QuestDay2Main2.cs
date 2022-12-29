@@ -15,16 +15,25 @@ public class QuestDay2Main2 : Quest
     {
         switch (objective)
         {
-            case 1:
+           
+            case 0:
                 cat.SetDialogueBatch(catBatches[0]);
                 StartCoroutine(cutscenes[1].Play());
+                break;
+            case 2:
+                StartCoroutine(cutscenes[2].Play());
                 break;
             case 3:
                 cat.SetDialogueBatch(catBatches[1]);
                 break;
             case 4:
-                StartCoroutine(cutscenes[2].Play());
+                StartCoroutine(cutscenes[3].Play());
                 break;
+            case 5:
+                cat.SetDialogueBatch(catBatches[2]);
+                DataManager.Instance.day++;
+                break;
+            
         }
     }
 

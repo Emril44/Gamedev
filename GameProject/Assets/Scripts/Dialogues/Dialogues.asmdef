@@ -2,7 +2,8 @@
     "name": "Dialogues",
     "rootNamespace": "",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:c658d68d7cebaaf4b8ff614d026cfde0"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

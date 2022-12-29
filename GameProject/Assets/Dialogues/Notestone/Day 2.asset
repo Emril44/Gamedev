@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Day 2
   m_EditorClassIdentifier: 
   <dialogueList>k__BackingField: []
-  <fallbackDialogue>k__BackingField: {fileID: 11400000, guid: 273260c8830a0c4469d6f6fc29b82adb, type: 2}
+  <fallbackDialogue>k__BackingField: {fileID: 11400000, guid: 91b5429b70b0fb24b81883e73b127f4f, type: 2}

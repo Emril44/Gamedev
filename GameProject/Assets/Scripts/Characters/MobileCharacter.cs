@@ -73,10 +73,12 @@ public class MobileCharacter : MonoBehaviour
             animator.Play(jumpAnimationName);
         }
         rb.velocity = new Vector2(rb.velocity.x, jumpVelocity);
+        AudioController.Instance.PlaySFXAt("Jump", transform.position);
     }
 
     public void SetMobile(bool mobile)
     {
+        if (rb == null) rb = GetComponent<Rigidbody2D>(); // for when the MobileCharacter was disabled before the call of this
         if (mobile)
         {
             rb.bodyType = RigidbodyType2D.Dynamic;

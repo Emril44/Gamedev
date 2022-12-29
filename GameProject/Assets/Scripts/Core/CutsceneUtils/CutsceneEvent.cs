@@ -19,7 +19,7 @@ public class CutsceneEvent
         FadeIn,
         DisplayText,
         ChangeColor,
-        SetBGMDistortion
+        SetDistortion
     }
 
     public EventType Type { get { return type;  } }
@@ -60,7 +60,9 @@ public class CutsceneEvent
                 target.transform.position = targetLocation.position;
                 yield break;
             case EventType.UnlockColor:
+                AudioController.Instance.PlaySFXGlobally("UnlockColor");
                 DataManager.Instance.UnlockColor();
+                AudioController.Instance.PlaySFXGlobally("UnlockColor");
                 EnvironmentManager.Instance.ActivateColoredObjects();
                 yield break;
             case EventType.FadeIn:
@@ -75,7 +77,7 @@ public class CutsceneEvent
             case EventType.ChangeColor:
                 EnvironmentManager.Instance.SetNewColor(color);
                 yield break;
-            case EventType.SetBGMDistortion:
+            case EventType.SetDistortion:
                 yield return AudioController.Instance.SetDistorted(setToDistorted);
                 break;
             default:
