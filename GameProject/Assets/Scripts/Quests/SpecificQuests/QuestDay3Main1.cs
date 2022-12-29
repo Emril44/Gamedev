@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class QuestDay3Main1 : Quest
 {
+    [SerializeField] private NPC cat;
+    [SerializeField] private DialogueBatch fireResBatch;
     [SerializeField] private Cutscene[] cutscenes;
 
 
@@ -23,6 +25,9 @@ public class QuestDay3Main1 : Quest
     {
         switch (objective)
         {
+            case 1:
+                cat.SetDialogueBatch(fireResBatch);
+                break;
             case 3:
                 StartCoroutine(cutscenes[2].Play());
                 break;

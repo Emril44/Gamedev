@@ -17,4 +17,4 @@ MonoBehaviour:
   - option: "What a warm welcome.+\u042F\u043A \u0434\u0440\u0443\u0436\u043D\u044C\u043E."
     optionBranch: {fileID: 11400000, guid: 208d3623efe594e499e97eabbe8f9b1e, type: 2}
   - option: "...how many?+...\u0441\u043A\u0456\u043B\u044C\u043A\u0438?"
-    optionBranch: {fileID: 11400000, guid: 208d3623efe594e499e97eabbe8f9b1e, type: 2}
+    optionBranch: {fileID: 11400000, guid: c3f2071f41e98434489ab61d526a711d, type: 2}

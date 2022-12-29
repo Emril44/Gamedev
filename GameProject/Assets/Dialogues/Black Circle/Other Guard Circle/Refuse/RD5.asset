@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: D5
+  m_Name: RD5
   m_EditorClassIdentifier: 
   separator: 0
-  character: -1
+  character: 0
   text:
-  - ...+...
-  - ...+...
-  next: {fileID: 11400000, guid: 9c557b519a389aa47b02d3f7341cc0cc, type: 2}
+  - While we're at it, maybe you can tell me something about the treasure?
+  next: {fileID: 11400000, guid: 208d3623efe594e499e97eabbe8f9b1e, type: 2}

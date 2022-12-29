@@ -29,6 +29,9 @@ public class QuestDay2Main2 : Quest
             case 4:
                 StartCoroutine(cutscenes[3].Play());
                 break;
+            case 5:
+                cat.SetDialogueBatch(catBatches[2]);
+                break;
             
         }
     }
