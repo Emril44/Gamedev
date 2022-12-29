@@ -5883,6 +5883,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlackCircle
       objectReference: {fileID: 0}
+    - target: {fileID: 6721677520812252836, guid: 1ecd1016e55f72f4c9150fc4dcc95ae6, type: 3}
+      propertyPath: batches.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3620310fefcbab342a3dfb13246eb520, type: 2}
+    - target: {fileID: 6721677520812252836, guid: 1ecd1016e55f72f4c9150fc4dcc95ae6, type: 3}
+      propertyPath: batches.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: cd0f2f64e58d7894991975eb12aa461a, type: 2}
     - target: {fileID: 6946353778326226605, guid: 1ecd1016e55f72f4c9150fc4dcc95ae6, type: 3}
       propertyPath: m_RootOrder
       value: 13

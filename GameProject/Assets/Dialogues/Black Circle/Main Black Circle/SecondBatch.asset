@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene3.4.1.3
+  m_Script: {fileID: 11500000, guid: 5acbcb52695596440b810933b12957ed, type: 3}
+  m_Name: SecondBatch
   m_EditorClassIdentifier: 
-  separator: 0
-  character: 4
-  text:
-  - ....
-  - You couldn't have been any more specific?
-  next: {fileID: 11400000, guid: 4b8d4adfdcd3aa14dbc6f6fc15bfed4b, type: 2}
+  <dialogueList>k__BackingField:
+  - {fileID: 11400000, guid: e2ab4207178327848a353e8fe046382a, type: 2}
+  <fallbackDialogue>k__BackingField: {fileID: 0}

@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene3.4.1.7
+  m_Name: Cutscene3.8.1.7
   m_EditorClassIdentifier: 
   separator: 0
   character: 0
   text:
-  - 'Then at least let me go through that door! I really need to find it!
-
-'
-  next: {fileID: 11400000, guid: 2b9f8a4370933044d9b14f887e1f4f3e, type: 2}
+  - "What?...+\u0429\u043E?"
+  next: {fileID: 11400000, guid: 5a86797ccf04bd34390eed919dc64671, type: 2}

@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene3.4.1.4
+  m_Name: Cutscene3.4.1.5
   m_EditorClassIdentifier: 
   separator: 0
-  character: 0
+  character: 4
   text:
-  - The white one!
-  next: {fileID: 11400000, guid: 510f85ba5e45ca44897c2b0494064a47, type: 2}
+  - "There's no one like that here. Now go away.+\u041D\u0435\u043C\u0430 \u0442\u0443\u0442
+    \u0442\u0430\u043A\u0438\u0445. \u0422\u0435\u043F\u0435\u0440 \u043F\u0456\u0448\u043E\u0432
+    \u0433\u0435\u0442\u044C."
+  next: {fileID: 11400000, guid: b83ba7e58c9165f488743751689595a6, type: 2}

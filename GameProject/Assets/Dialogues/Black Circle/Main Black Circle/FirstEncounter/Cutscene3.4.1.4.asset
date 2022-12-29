@@ -10,13 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1328222253a6034429c4f608c26a644b, type: 3}
-  m_Name: Cutscene3.8.1.8
+  m_Name: Cutscene3.4.1.4
   m_EditorClassIdentifier: 
   separator: 0
-  character: 4
+  character: 0
   text:
-  - "You could've saved her, but you didn't.\r\nDon't pretend to be worried about
-    her now.\r"
-  - I bet if she was still alive she wouldn't want to see you ever again.
-  - Go through that door and get lost already.
-  next: {fileID: 0}
+  - "The white one!+\u0411\u0456\u043B\u0435 \u041A\u043E\u043B\u043E!"
+  next: {fileID: 11400000, guid: 510f85ba5e45ca44897c2b0494064a47, type: 2}
