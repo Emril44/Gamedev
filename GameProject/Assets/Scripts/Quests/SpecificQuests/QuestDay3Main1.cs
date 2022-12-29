@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class QuestDay3Main1 : Quest
@@ -7,8 +8,15 @@ public class QuestDay3Main1 : Quest
 
     protected override void FirstEnableSequence()
     {
-        StartCoroutine(cutscenes[0].Play());
-        StartCoroutine(cutscenes[1].Play());
+        StartCoroutine(Intro());
+        
+    }
+
+    private IEnumerator Intro()
+    {
+        yield return cutscenes[0].Play();
+        yield return cutscenes[1].Play();
+       
     }
 
     protected override void ActOnObjective(int objective)
