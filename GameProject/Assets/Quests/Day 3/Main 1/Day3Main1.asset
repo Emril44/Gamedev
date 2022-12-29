@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdcdd68e1fe504c49b7f5f5ad261652f, type: 3}
+  m_Name: Day3Main1
+  m_EditorClassIdentifier: 
+  separator: 43
+  <Title>k__BackingField: "Where is the Circle+\u0414\u0435 \u041A\u043E\u043B\u043E?"
+  <Description>k__BackingField: 
+  <Objectives>k__BackingField:
+  - {fileID: 11400000, guid: 584c04381f188944cb7ddfdd0a301cc1, type: 2}
+  - {fileID: 11400000, guid: 9466b7c71ab5cec4ba0ea297a1acf21d, type: 2}
+  - {fileID: 11400000, guid: b6f4e054ca038a747be70fe1b5cefeba, type: 2}
+  - {fileID: 11400000, guid: bd30a182ba5943847b9e190f80087203, type: 2}
+  <RequisiteObjectives>k__BackingField: 1
+  <Prerequisites>k__BackingField: []
+  <NextQuests>k__BackingField: []

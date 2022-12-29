@@ -29,15 +29,7 @@ public class QuestDay2Main2 : Quest
             case 4:
                 StartCoroutine(cutscenes[3].Play());
                 break;
-            case 5:
-                StartCoroutine(cutscenes[4].Play());
-                break;
-
-                /*
-                case 1:
-                    StartCoroutine(cutscenes[1].Play());
-                    break;
-                */
+            
         }
     }
 
